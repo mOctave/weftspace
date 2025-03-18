@@ -25,6 +25,8 @@ public class LoadedNode extends DataNode {
 	 * @param flag A flag indicating how this node should be treated during instantiation.
 	 * @param args A list of arguments attached to this node.
 	 * @param children A list of nodes which are children of this node.
+	 * @param line The line this node was loaded from.
+	 * @param file The file this node was loaded from.
 	 */
 	public LoadedNode(
 		String name,

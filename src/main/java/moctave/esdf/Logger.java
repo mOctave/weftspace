@@ -15,7 +15,8 @@ package moctave.esdf;
 
 import java.io.File;
 
-public class Logger {
+/** A class which handles error logging for this library. */
+public abstract class Logger {
 	// MARK: Constants
 	// ANSI Colours
 	/** Escape sequence for ANSI black text. */
@@ -54,25 +55,39 @@ public class Logger {
 	}
 
 	// MARK: Messages
+	/** Fatal Error: No context */
 	public static final Message FATAL_GENERIC = new GenericMessage(Severity.FATAL, "A fatal error was encountered. No other information is available.");
 
+	/** Error: No context */
 	public static final Message ERROR_GENERIC = new GenericMessage(Severity.ERROR, "An error was encountered. No other information is available.");
+	/** Error: File does not exist */
 	public static final FileMessage ERROR_FILE_DNE = new FileMessage(Severity.ERROR, "The file $FILEPATH does not exist or could not be found.");
 
+	/** Error: Node failed to parse */
 	public static final NodeIOMessage ERROR_NODE_PARSE_GENERIC = new NodeIOMessage(Severity.ERROR, "There was an error parsing the node $NODE.");
 
+	/** Error: Node missing arg for builder */
 	public static final NodeInstantiationMessage ERROR_BUILDER_MISSING_ARG = new NodeInstantiationMessage(Severity.ERROR, "Missing argument for $NODE in $CONTEXT.");
+	/** Error: Node argument not a valid integer */
 	public static final NodeInstantiationMessage ERROR_BUILDER_MALFORMED_INT = new NodeInstantiationMessage(Severity.ERROR, "$NODE argument in $CONTEXT is not a valid integer.");
+	/** Error: Node argument not a valid long */
 	public static final NodeInstantiationMessage ERROR_BUILDER_MALFORMED_LONG = new NodeInstantiationMessage(Severity.ERROR, "$NODE argument in $CONTEXT is not a valid long integer.");
+	/** Error: Node argument not a valid double */
 	public static final NodeInstantiationMessage ERROR_BUILDER_MALFORMED_REAL = new NodeInstantiationMessage(Severity.ERROR, "$NODE argument in $CONTEXT is not a real number.");
 
+	/** Warning: Node is a root node and should not be written */
 	public static final NodeIOMessage WARN_NODE_WRITE_ROOT = new NodeIOMessage(Severity.WARN, "$NODE is a root node and should not be written.");
 
+	/** Warning: Node argument is out of the expected range for a natural number */
 	public static final NodeInstantiationMessage WARN_BUILDER_NATURAL_OUT_OF_BOUNDS = new NodeInstantiationMessage(Severity.WARN, "$NODE argument in $CONTEXT should be a natural number, but is less than 0.");
+	/** Warning: Node argument is out of the expected range for a random roll */
 	public static final NodeInstantiationMessage WARN_BUILDER_ROLL_OUT_OF_BOUNDS = new NodeInstantiationMessage(Severity.WARN, "$NODE argument in $CONTEXT is either too large or too small to be a valid default random roll.");
+	/** Warning: Node argument is out of the expected range for a swizzle number */
 	public static final NodeInstantiationMessage WARN_BUILDER_SWIZZLE_OUT_OF_BOUNDS = new NodeInstantiationMessage(Severity.WARN, "$NODE argument in $CONTEXT is either too large or too small to be a valid swizzle number.");
 
+	/** Warning: Node argument is out of the expected range for a positive real number */
 	public static final NodeInstantiationMessage WARN_BUILDER_POSREAL_OUT_OF_BOUNDS = new NodeInstantiationMessage(Severity.WARN, "$NODE argument in $CONTEXT should non-negative, but is less than 0.");
+	/** Warning: Node argument is out of the expected range 0...1 */
 	public static final NodeInstantiationMessage WARN_BUILDER_SMALLREAL_OUT_OF_BOUNDS = new NodeInstantiationMessage(Severity.WARN, "$NODE argument in $CONTEXT is outside the expected range of 0 to 1 inclusive.");
 
 
@@ -228,6 +243,7 @@ public class Logger {
 
 
 	// MARK: Generic Message
+	/** A class representing a standalone message. */
 	public static class GenericMessage extends Message {
 		/**
 		 * Sole constructor.

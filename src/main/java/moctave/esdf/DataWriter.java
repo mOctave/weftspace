@@ -18,6 +18,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+/** A class which writes data from a node into a file. */
 public class DataWriter {
 	// MARK: Constructor
 	/**
