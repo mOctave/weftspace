@@ -37,7 +37,7 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         id: pages
         with:
-          path: target/site/
+          path: target/site/apidocs
   deploy-docs:
     environment:
       name: github-pages
