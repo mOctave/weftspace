@@ -90,7 +90,11 @@ public class DataWriter {
 	 * @return A single-line representation of the node, excluding its children.
 	 */
 	public static String nodeToLine(DataNode node) {
+		if (node.getFlag() == DataNode.Flag.ROOT)
+			Logger.WARN_NODE_WRITE_ROOT.log(node);
+
 		String s = "";
+
 		if (node.getFlag() == DataNode.Flag.ADD)
 			s += "add ";
 		else if (node.getFlag() == DataNode.Flag.REMOVE)

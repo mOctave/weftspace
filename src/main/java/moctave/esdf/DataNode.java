@@ -13,6 +13,7 @@
 
 package moctave.esdf;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /** A class representing a node on the data tree. */
@@ -27,14 +28,17 @@ public class DataNode {
 		/** This node should always result in the addition of an object, even if it would usually overwrite one instead. */
 		ADD,
 		/** This node should result in the removal of its associated object. */
-		REMOVE
+		REMOVE,
+		/** This node is a root node, and should not be parsed or written. */
+		ROOT
 	}
 
 
 
-	// MARK: Constructor
+	// MARK: Constructors
 	/**
-	 * Sole constructor.
+	 * Primary constructor. Takes all the standard arguments, except
+	 * those defined by {@link LoadedNode}.
 	 * @param name The name of this node, typically the first phrase present on its line.
 	 * @param flag A flag indicating how this node should be treated during instantiation.
 	 * @param args A list of arguments attached to this node.
@@ -50,6 +54,18 @@ public class DataNode {
 		this.flag = flag;
 		this.args = args;
 		this.children = children;
+	}
+
+
+	/**
+	 * A simplified constructor that creates an empty node intended to be used as a root
+	 * node for the {@link DataReader}.
+	 */
+	public DataNode() {
+		setName("--ROOT--");
+		this.flag = Flag.ROOT;
+		this.args = new ArrayList<>();
+		this.children = new ArrayList<>();
 	}
 
 

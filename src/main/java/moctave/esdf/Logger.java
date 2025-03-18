@@ -59,12 +59,14 @@ public class Logger {
 	public static final Message ERROR_GENERIC = new GenericMessage(Severity.ERROR, "An error was encountered. No other information is available.");
 	public static final FileMessage ERROR_FILE_DNE = new FileMessage(Severity.ERROR, "The file $FILEPATH does not exist or could not be found.");
 
-	public static final NodeParseMessage ERROR_NODE_PARSE_GENERIC = new NodeParseMessage(Severity.ERROR, "There was an error parsing the node $NODE.");
+	public static final NodeIOMessage ERROR_NODE_PARSE_GENERIC = new NodeIOMessage(Severity.ERROR, "There was an error parsing the node $NODE.");
 
 	public static final NodeInstantiationMessage ERROR_BUILDER_MISSING_ARG = new NodeInstantiationMessage(Severity.ERROR, "Missing argument for $NODE in $CONTEXT.");
 	public static final NodeInstantiationMessage ERROR_BUILDER_MALFORMED_INT = new NodeInstantiationMessage(Severity.ERROR, "$NODE argument in $CONTEXT is not a valid integer.");
 	public static final NodeInstantiationMessage ERROR_BUILDER_MALFORMED_LONG = new NodeInstantiationMessage(Severity.ERROR, "$NODE argument in $CONTEXT is not a valid long integer.");
 	public static final NodeInstantiationMessage ERROR_BUILDER_MALFORMED_REAL = new NodeInstantiationMessage(Severity.ERROR, "$NODE argument in $CONTEXT is not a real number.");
+
+	public static final NodeIOMessage WARN_NODE_WRITE_ROOT = new NodeIOMessage(Severity.WARN, "$NODE is a root node and should not be written.");
 
 	public static final NodeInstantiationMessage WARN_BUILDER_NATURAL_OUT_OF_BOUNDS = new NodeInstantiationMessage(Severity.WARN, "$NODE argument in $CONTEXT should be a natural number, but is less than 0.");
 	public static final NodeInstantiationMessage WARN_BUILDER_ROLL_OUT_OF_BOUNDS = new NodeInstantiationMessage(Severity.WARN, "$NODE argument in $CONTEXT is either too large or too small to be a valid default random roll.");
@@ -73,6 +75,33 @@ public class Logger {
 	public static final NodeInstantiationMessage WARN_BUILDER_POSREAL_OUT_OF_BOUNDS = new NodeInstantiationMessage(Severity.WARN, "$NODE argument in $CONTEXT should non-negative, but is less than 0.");
 	public static final NodeInstantiationMessage WARN_BUILDER_SMALLREAL_OUT_OF_BOUNDS = new NodeInstantiationMessage(Severity.WARN, "$NODE argument in $CONTEXT is outside the expected range of 0 to 1 inclusive.");
 
+
+
+	// MARK: Error Count
+	private static int errorCount = 0;
+	
+	/**
+	 * Mutator method to reset the error count to 0.
+	 */
+	public static void resetErrorCount() {
+		errorCount = 0;
+	}
+	
+	/**
+	 * Mutator method to increment the error count by 1.
+	 */
+	public static void countError() {
+		errorCount++;
+	}
+
+
+	/**
+	 * Getter: Returns the number of errors currently tracked.
+	 * @return {@link #errorCount}
+	 */
+	public static int getErrorCount() {
+		return errorCount;
+	}
 
 
 
@@ -114,6 +143,7 @@ public class Logger {
 					System.err.print(Logger.BOLD);
 				case ERROR:
 					System.err.print(Logger.RED);
+					countError();
 					break;
 				case WARN:
 					System.err.print(Logger.YELLOW);
@@ -155,7 +185,7 @@ public class Logger {
 			System.err.print(RESET);
 			System.err.println();
 			if (severity.equals(Severity.FATAL)) {
-				System.exit(1);
+				System.exit(errorCount);
 			}
 		}
 
@@ -256,14 +286,14 @@ public class Logger {
 
 
 	// MARK: Node Parse Message
-	/** A class representing a message associated with a file. */
-	public static class NodeParseMessage extends Message {
+	/** A class representing a message associated with a node being parsed or written. */
+	public static class NodeIOMessage extends Message {
 		/**
 		 * Sole constructor.
 		 * @param severity The severity of this message.
 		 * @param content The content of this message.
 		 */
-		public NodeParseMessage(
+		public NodeIOMessage(
 			Logger.Severity severity,
 			String content
 		) {
