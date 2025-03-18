@@ -11,16 +11,6 @@ import org.junit.jupiter.api.Test;
  * A class containing all the unit tests to be run on this library.
  */
 public class UnitTests {
-
-	/**
-	 * Rigorous Test :-)
-	 */
-	@Test
-	public void shouldAnswerWithTrue() {
-		assertTrue(true);
-	}
-
-
 	/**
 	 * A method which constructs a sample data node that can be used across multiple tests.
 	 * @return The node to use for testing.
@@ -100,5 +90,40 @@ public class UnitTests {
 
 		// Check to make sure there were no issues
 		assertTrue(Logger.getErrorCount() == 0 && getTestNode().equals(loadedNode));
+	}
+
+	/**
+	 * This test takes data from the test node, builds it, and makes sure it's
+	 * working properly.
+	 */
+	@Test
+	public void testBuilder() {
+		// Start the error counter
+		Logger.resetErrorCount();
+
+		// Build the node
+		DataNode node = getTestNode();
+		String name = Builder.buildString(node, 0, "ship");
+		int mass = 0;
+		double drag = 0.;
+		String description = "";
+		for (DataNode child : node.getChildren()) {
+			if (child.getName().equals("mass")) {
+				mass = Builder.buildInt(child, 0, "ship");
+			} else if (child.getName().equals("drag")) {
+				drag = Builder.buildDouble(child, 0, "ship");
+			}  else if (child.getName().equals("description")) {
+				description += Builder.buildString(child, 0, "ship");
+			}
+		}
+
+		// Check to make sure there were no issues
+		assertTrue(
+			Logger.getErrorCount() == 0
+			&& name.equals("Much Confused Wardragon")
+			&& mass == 35
+			&& drag == 0.3
+			&& description.equals("This Wardragon bears no resemblance to any actual ship in the game Endless Sky. It has no material existence, despite having mass and possibly explaining the existence of the dark matter in our universe.")
+		);
 	}
 }
