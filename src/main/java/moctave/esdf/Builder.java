@@ -219,4 +219,31 @@ public abstract class Builder {
 
 		return 0l;
 	};
+
+
+
+	/**
+	 * Takes a node and uses it as a key to search the scope for a node
+	 * with a matching name and first argument, handling any exceptions that occur.
+	 * @param node The node to use as a search key.
+	 * @param scope The node whose children should be searched.
+	 * @param context The name of the object being made from the node.
+	 * @return The node with the same name, or {@code null} if none exist.
+	 */
+	public static DataNode search(DataNode node, DataNode scope, String context) {
+		try {
+			for (DataNode child : scope.getChildren()) {
+				if (
+					node.getName().equals(child.getName())
+					&& node.getArg(0).equals(child.getArg(0))
+				) {
+					return child;
+				}
+			}
+		} catch (IndexOutOfBoundsException e) {
+			// This is not necessarily and error, and so nothing is done.
+		}
+
+		return null;
+	};
 }
