@@ -86,6 +86,53 @@ public class DataNode {
 
 
 	// MARK: Methods
+	/**
+	 * Generates a hash code for this node, so that all nodes which are equal
+	 * have the same hash code.
+	 * @return A hash code value for this node.
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int hash = 1;
+		hash = prime * hash + (name == null ? 0 : name.hashCode());
+		hash = prime * hash + (flag == null ? 0 : flag.hashCode());
+		hash = prime * hash + (args == null ? 0 : args.hashCode());
+		hash = prime * hash + (children == null ? 0 : children.hashCode());
+		return hash;
+	}
+
+
+
+	/**
+	 * Indicates whether an object is equal to this node, comparing the names, flags,
+	 * arguments, and children of the two nodes.
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		// The object is a reference for this node!
+		if (obj == this) return true;
+
+		// The object is not a data node!
+		if (!(obj instanceof DataNode)) return false;
+
+
+		DataNode node = (DataNode) obj;
+		
+		// Check if the two nodes have a different parameter
+		if (!node.getName().equals(name)) return false;
+		if (!node.getFlag().equals(flag)) return false;
+
+		// Check if the arguments and children are equal
+		if (!node.getArgs().equals(args)) return false;
+		if (!node.getChildren().equals(children)) return false;
+
+		// Everything that matters is equal, return true
+		return true;
+	}
+
+
+
 	/** 
 	 * Returns a string representation of this node, including name, arguments,
 	 * and the number of children it has.
