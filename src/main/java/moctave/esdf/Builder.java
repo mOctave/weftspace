@@ -15,40 +15,6 @@ package moctave.esdf;
 
 /** A class of utility methods designed to allow easy conversion from nodes to objects. */
 public abstract class Builder {
-	// MARK: General Building
-	/** An enum storing a list of all valid data types that can be built. */
-	public static enum ArgumentType {
-		/** A string, storing any value. */
-		STRING,
-		/** A default integer, between {@code Integer.MIN_VALUE} and {@code Integer.MAX_VALUE} inclusive. */
-		INTEGER,
-		/** A non-negative integer, between {@code 0} and {@code Integer.MAX_VALUE} inclusive. */
-		NATURAL,
-		/**
-		 * An integer in the range that could be rolled using Endless Sky's default
-		 * {@code random} function, between {@code 0} and {@code 99} inclusive.
-		 */
-		POSSIBLE_ROLL,
-		/**
-		 * An integer in the valid range for Endless Sky swizzles, between
-		 * {@code 0} and {@code 28} inclusive.
-		 */
-		SWIZZLE,
-		/** A default double. */
-		REAL,
-		/** A non-negative double n such that {@code n ≥ 0.}. */
-		POSREAL,
-		/**
-		 * A double in the range {@code 0.} to {@code 1.} inclusive, as used in colour definitions.
-		 */
-		SMALLREAL,
-		/** A long integer. */
-		LONG,
-	}
-
-
-
-	// MARK: Single-Argument
 	/**
 	 * Takes an argument from a node and returns it as a string, handling any
 	 * exceptions that occur.
@@ -91,9 +57,15 @@ public abstract class Builder {
 
 
 
-	/** An enum storing a list of potential integer types, for use in {@link #buildInt(DataNode, int, String, IntType)}. */
+	/**
+	 * An enum storing a list of potential integer types, for use in
+	 * {@link #buildInt(DataNode, int, String, IntType)}.
+	 */
 	public static enum IntType {
-		/** A default integer, between {@code Integer.MIN_VALUE} and {@code Integer.MAX_VALUE} inclusive. */
+		/**
+		 * A default integer, between {@code Integer.MIN_VALUE} and
+		 * {@code Integer.MAX_VALUE} inclusive.
+		 */
 		STANDARD,
 		/** A non-negative integer, between {@code 0} and {@code Integer.MAX_VALUE} inclusive. */
 		NATURAL,
@@ -174,7 +146,10 @@ public abstract class Builder {
 
 
 
-	/** An enum storing a list of potential double types, for use in {@link #buildDouble(DataNode, int, String, DoubleType)}. */
+	/**
+	 * An enum storing a list of potential double types, for use in
+	 * {@link #buildDouble(DataNode, int, String, DoubleType)}.
+	 */
 	public static enum DoubleType {
 		/** A default double. */
 		STANDARD,
