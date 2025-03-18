@@ -46,7 +46,10 @@ jobs:
     needs: build-docs
     permissions:
       id-token: write
+      pages: write
     steps:
       - name: Deploy to GitHub Pages
         id: pages
         uses: actions/deploy-pages@v4
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
