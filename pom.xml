@@ -22,6 +22,8 @@
     <developer>
       <name>mOctave</name>
       <email>moctave31415@gmail.com</email>
+      <organization>mOctave</organization>
+      <organizationUrl>https://github.com/mOctave</organizationUrl>
     </developer>
   </developers>
   <scm>
