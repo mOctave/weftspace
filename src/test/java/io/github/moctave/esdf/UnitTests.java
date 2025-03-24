@@ -1,4 +1,4 @@
-package moctave.esdf;
+package io.github.moctave.esdf;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 

@@ -11,7 +11,7 @@
 // You should have received a copy of the GNU Affero General Public License along with
 // this program. If not, see <https://www.gnu.org/licenses/>.
 
-package moctave.esdf;
+package io.github.moctave.esdf;
 
 /** A class of utility methods designed to allow easy conversion from nodes to objects. */
 public abstract class Builder {
