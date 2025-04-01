@@ -15,10 +15,17 @@ jobs:
         with:
           java-version: '17'
           distribution: 'oracle'
-      - name: Publish package
-        run: mvn --batch-mode deploy
+      - name: Get tag
+        id: get-tag
+        uses: "WyriHaximus/github-action-get-previous-tag@v1"
+        with:
+          fallback: 0.0.0
+          prefix: v
+      - name: Publish to Maven
+        run: mvn -P release -Dversion=${{ steps.get-tag.outputs.tag }} deploy
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          MVN_CENTRAL_USERNAME: ${{ secrets.MVN_CENTRAL_USERNAME }}
+          MVN_CENTRAL_PASSWORD: ${{ secrets.MVN_CENTRAL_PASSWORD }}
   build-docs:
     runs-on: ubuntu-latest
     permissions:
