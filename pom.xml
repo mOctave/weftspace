@@ -7,10 +7,6 @@
   <artifactId>esdf-manager</artifactId>
   <version>${version}</version>
 
-  <properties>
-    <version>0.0.0-SNAPSHOT</version>
-  </properties>
-
   <name>esdf-manager</name>
   <description>
     This library is designed to make it easier to develop Endless Sky tools in Java by providing support for the datafile syntax.
@@ -37,6 +33,7 @@
   </scm>
 
   <properties>
+    <version>0.0.0-SNAPSHOT</version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.release>17</maven.compiler.release>
   </properties>
