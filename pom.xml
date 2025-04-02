@@ -5,11 +5,7 @@
 
   <groupId>io.github.moctave.esdf</groupId>
   <artifactId>esdf-manager</artifactId>
-  <version>${version}</version>
-
-  <properties>
-    <version>0.0.0-SNAPSHOT</version>
-  </properties>
+  <version>0.1.3</version>
 
   <name>esdf-manager</name>
   <description>
@@ -43,13 +39,10 @@
 
   <distributionManagement>
     <repository>
-      <id>ossrh</id>
-      <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+      <id>github</id>
+      <name>GitHub Packages</name>
+      <url>https://maven.pkg.github.com/mOctave/esdf-manager</url>
     </repository>
-    <snapshotRepository>
-      <id>ossrh</id>
-      <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
-    </snapshotRepository>
   </distributionManagement>
 
   <dependencyManagement>
