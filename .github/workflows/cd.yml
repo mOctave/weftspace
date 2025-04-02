@@ -29,8 +29,9 @@ jobs:
         uses: WyriHaximus/github-action-get-previous-tag@v1
         with:
           fallback: 0.0.0
+          prefix: v
       - name: Publish to Maven
-        run: mvn -P release:perform -Dgpg.keyname=${{ secrets.GPG_KEY_NAME }} -Dgpg.passphrase=${{ secrets.MAVEN_SIGNING_KEY_PASSPHRASE }} -Drevision=${{ steps.get-tag.outputs.tag }} deploy
+        run: mvn -P release -Dgpg.keyname=${{ secrets.GPG_KEY_NAME }} -Dgpg.passphrase=${{ secrets.MAVEN_SIGNING_KEY_PASSPHRASE }} -Dversion=${{ steps.get-tag.outputs.tag }} deploy
         env:
           MVN_CENTRAL_USERNAME: ${{ secrets.MVN_CENTRAL_USERNAME }}
           MVN_CENTRAL_PASSWORD: ${{ secrets.MVN_CENTRAL_PASSWORD }}
