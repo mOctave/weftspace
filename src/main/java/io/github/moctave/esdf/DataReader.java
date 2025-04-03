@@ -63,6 +63,9 @@ public class DataReader {
 			while (s.hasNextLine()) {
 				lineNumber ++;
 				String line = s.nextLine();
+				if (line.split("#")[0].isBlank())
+					continue;
+
 				tabs = countLeadingTabs(line);
 				if (tabs > lastTabs && currentNode != null) {
 					nodeStack.push(currentNode);
