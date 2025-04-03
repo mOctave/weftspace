@@ -63,7 +63,14 @@ public class DataReader {
 			while (s.hasNextLine()) {
 				lineNumber ++;
 				String line = s.nextLine();
-				if (line.split("#")[0].isBlank())
+				if (line.contains("#")) {
+					if (line.split("#")[0].isBlank())
+						continue;
+				} else {
+					if (line.isBlank())
+						continue;
+				}
+				if (line.split("#").length > 0 && line.split("#")[0].isBlank())
 					continue;
 
 				tabs = countLeadingTabs(line);
