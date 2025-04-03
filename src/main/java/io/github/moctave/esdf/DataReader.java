@@ -70,8 +70,6 @@ public class DataReader {
 					if (line.isBlank())
 						continue;
 				}
-				if (line.split("#").length > 0 && line.split("#")[0].isBlank())
-					continue;
 
 				tabs = countLeadingTabs(line);
 				if (tabs > lastTabs && currentNode != null) {
