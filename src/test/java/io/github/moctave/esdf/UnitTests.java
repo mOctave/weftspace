@@ -1,3 +1,16 @@
+// Copyright (c) 2025 by mOctave
+//
+// This program is free software: you can redistribute it and/or modify it under the
+// terms of the GNU Affero General Public License as published by the Free Software
+// Foundation, either version 3 of the License, or (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful, but WITHOUT ANY
+// WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+// PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
+//
+// You should have received a copy of the GNU Affero General Public License along with
+// this program. If not, see <https://www.gnu.org/licenses/>.
+
 package io.github.moctave.esdf;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -125,5 +138,28 @@ public class UnitTests {
 			&& drag == 0.3
 			&& description.equals("This Wardragon bears no resemblance to any actual ship in the game Endless Sky. It has no material existence, despite having mass and possibly explaining the existence of the dark matter in our universe.")
 		);
+	}
+
+
+
+	/**
+	 * This test checks to make sure that nodes with extra empty lines in the
+	 * middle of their definitions still working properly.
+	 */
+	@Test
+	public void testHumanReadableNodes() {
+		// Start the error counter
+		Logger.resetErrorCount();
+
+		// Open and parse the test data
+		File testData = new File("testdata/humanreadable.txt");
+		DataNode rootNode = new DataNode();
+		DataReader reader = new DataReader(testData, rootNode);
+		reader.parse();
+
+		DataNode loadedNode = rootNode.getChildren().get(0);
+
+		// Check to make sure there were no issues
+		assertTrue(Logger.getErrorCount() == 0 && getTestNode().equals(loadedNode));
 	}
 }

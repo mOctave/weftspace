@@ -63,11 +63,11 @@ public class DataReader {
 			while (s.hasNextLine()) {
 				lineNumber ++;
 				String line = s.nextLine();
-				if (line.contains("#")) {
-					if (line.split("#")[0].isBlank())
+				if (line.split("#").length == 0) {
+					if (line.isBlank())
 						continue;
 				} else {
-					if (line.isBlank())
+					if (line.split("#")[0].isBlank())
 						continue;
 				}
 
