@@ -179,6 +179,16 @@ public class DataNode {
 
 
 
+	/**
+	 * Convenience method to get the size of this node's argument list.
+	 * @return The number of arguments this node has.
+	 */
+	public int countArgs() {
+		return args.size();
+	}
+
+
+
 	// MARK: Getters / Setters
 	/**
 	 * Getter: Returns the name of this node.
