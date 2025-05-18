@@ -150,15 +150,6 @@ public class DataNode {
 
 
 	/**
-	 * Mutator method to add a node to the tree as a child of this node.
-	 * @param child The node to add.
-	 */
-	public void addChild(DataNode child) {
-		children.add(child);
-	}
-
-
-	/**
 	 * Mutator method to add an argument to this node's argument list.
 	 * @param arg The argument to add.
 	 */
@@ -185,6 +176,36 @@ public class DataNode {
 	 */
 	public int countArgs() {
 		return args.size();
+	}
+
+
+	/**
+	 * Mutator method to add a node to the tree as a child of this node.
+	 * @param child The node to add.
+	 */
+	public void addChild(DataNode child) {
+		children.add(child);
+	}
+
+
+
+	/**
+	 * Accessor method to get a specific child from this node.
+	 * @param i The index of the child to get.
+	 * @return The selected child.
+	 */
+	public DataNode getChild(int i) {
+		return children.get(i);
+	}
+
+
+
+	/**
+	 * Convenience method to get the size of this node's child list.
+	 * @return The number of children this node has.
+	 */
+	public int countChildren() {
+		return children.size();
 	}
 
 
