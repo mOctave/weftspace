@@ -41,12 +41,14 @@ public class DataNode {
 	 * those defined by {@link LoadedNode}.
 	 * @param name The name of this node, typically the first phrase present on its line.
 	 * @param flag A flag indicating how this node should be treated during instantiation.
+	 * @param parent This node's parent node (or {@code null} if it should be the root of its tree).
 	 * @param args A list of arguments attached to this node.
 	 * @param children A list of nodes which are children of this node.
 	 */
 	public DataNode(
 		String name,
 		Flag flag,
+		DataNode parent,
 		List<String> args,
 		List<DataNode> children
 	) {
@@ -64,6 +66,7 @@ public class DataNode {
 	public DataNode() {
 		setName("--ROOT--");
 		this.flag = Flag.ROOT;
+		this.parent = null;
 		this.args = new ArrayList<>();
 		this.children = new ArrayList<>();
 	}
@@ -77,6 +80,9 @@ public class DataNode {
 	/** The flag attached to this node. */
 	private Flag flag;
 
+	/** The parent of this node. */
+	private DataNode parent;
+
 	/** This node's arguments. */
 	private List<String> args;
 
@@ -89,6 +95,11 @@ public class DataNode {
 	/**
 	 * Generates a hash code for this node, so that all nodes which are equal
 	 * have the same hash code.
+	 * 
+	 * Multiple distinct nodes may have the same hash code, as
+	 * (1) the mechanics for name.hashCode() and flag.hashCode() are not controlled,
+	 * (2) parents are not taken into account in this method, and
+	 * (3) nodes which have themself as a child will not have their childen considered.
 	 * @return A hash code value for this node.
 	 */
 	@Override
@@ -98,7 +109,7 @@ public class DataNode {
 		hash = prime * hash + (name == null ? 0 : name.hashCode());
 		hash = prime * hash + (flag == null ? 0 : flag.hashCode());
 		hash = prime * hash + (args == null ? 0 : args.hashCode());
-		hash = prime * hash + (children == null ? 0 : children.hashCode());
+		hash = prime * hash + ((children == null || children.contains(this)) ? 0 : children.hashCode());
 		return hash;
 	}
 
@@ -107,6 +118,12 @@ public class DataNode {
 	/**
 	 * Indicates whether an object is equal to this node, comparing the names, flags,
 	 * arguments, and children of the two nodes.
+	 * 
+	 * NOTE: Parents are NOT considered by this method, to reduce complexity. If you
+	 * need to check if two nodes have identical parents, use {@link #sameParent(DataNode)}
+	 * 
+	 * @param obj The object to compare this node against.
+	 * @return {@code true} if this node is equal to {@code obj}, {@code false} otherwise.
 	 */
 	@Override
 	public boolean equals(Object obj) {
@@ -129,6 +146,23 @@ public class DataNode {
 
 		// Everything that matters is equal, return true
 		return true;
+	}
+
+
+
+	/**
+	 * Compares the parent of this node against another node to see if they are equal.
+	 * 
+	 * @param node The node to compare this node against.
+	 * @return {@code true} if this node has the same parent as the other node,
+	 * {@code false} otherwise.
+	 */
+	public boolean sameParent(DataNode node) {
+		if (node.hasParent()) {
+			return (node.getParent().equals(this));
+		} else {
+			return !(this.hasParent());
+		}
 	}
 
 
@@ -210,6 +244,16 @@ public class DataNode {
 
 
 
+	/**
+	 * Convenience method to check whether a node has a defined parent.
+	 * @return {@code true} if a node has a parent, or {@code false} otherwise.
+	 */
+	public boolean hasParent() {
+		return parent != null;
+	}
+
+
+
 	// MARK: Getters / Setters
 	/**
 	 * Getter: Returns the name of this node.
@@ -246,6 +290,25 @@ public class DataNode {
 
 
 	/**
+	 * Getter: Returns the parent of this node.
+	 * @return {@link #parent}
+	 */
+	public DataNode getParent() {
+		return parent;
+	}
+
+	/**
+	 * Setter: Changes this node's parent.
+	 * This method should be used very cautiously, as it can easily
+	 * damage the structure of the node tree.
+	 * @param parent This node's new {@link #parent}.
+	 */
+	public void setParent(DataNode parent) {
+		this.parent = parent;
+	}
+
+
+	/**
 	 * Getter: Returns the full argument list of this node.
 	 * @return {@link #args}
 	 */
@@ -272,6 +335,8 @@ public class DataNode {
 
 	/**
 	 * Setter: Entirely overwrites the children of this node.
+	 * This method should be used very cautiously, as it can easily
+	 * damage the structure of the node tree.
 	 * @param children The new value for {@link #children}.
 	 */
 	public void setChildren(List<DataNode> children) {

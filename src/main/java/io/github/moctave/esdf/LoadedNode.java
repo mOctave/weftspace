@@ -23,6 +23,7 @@ public class LoadedNode extends DataNode {
 	 * Sole constructor.
 	 * @param name The name of this node, typically the first phrase present on its line.
 	 * @param flag A flag indicating how this node should be treated during instantiation.
+	 * @param parent This node's parent node (or {@code null} if it should be the root of its tree).
 	 * @param args A list of arguments attached to this node.
 	 * @param children A list of nodes which are children of this node.
 	 * @param line The line this node was loaded from.
@@ -31,12 +32,13 @@ public class LoadedNode extends DataNode {
 	public LoadedNode(
 		String name,
 		Flag flag,
+		DataNode parent,
 		List<String> args,
 		List<DataNode> children,
 		int line,
 		File file
 	) {
-		super(name, flag, args, children);
+		super(name, flag, parent, args, children);
 
 		setLine(line);
 		setFile(file);

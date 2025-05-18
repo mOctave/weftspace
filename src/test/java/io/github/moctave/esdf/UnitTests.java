@@ -29,33 +29,33 @@ public class UnitTests {
 	 * @return The node to use for testing.
 	 */
 	public DataNode getTestNode() {
-		DataNode testNode = new DataNode("ship", DataNode.Flag.NORMAL, new ArrayList<>(), new ArrayList<>());
+		DataNode testNode = new DataNode("ship", DataNode.Flag.NORMAL, null, new ArrayList<>(), new ArrayList<>());
 		testNode.addArg("Much Confused Wardragon");
 
-		DataNode childNode = new DataNode("mass", DataNode.Flag.NORMAL, new ArrayList<>(), new ArrayList<>());
+		DataNode childNode = new DataNode("mass", DataNode.Flag.NORMAL, testNode, new ArrayList<>(), new ArrayList<>());
 		childNode.addArg("35");
 		testNode.addChild(childNode);
 
-		childNode = new DataNode("drag", DataNode.Flag.NORMAL, new ArrayList<>(), new ArrayList<>());
+		childNode = new DataNode("drag", DataNode.Flag.NORMAL, testNode, new ArrayList<>(), new ArrayList<>());
 		childNode.addArg("0.3");
 		testNode.addChild(childNode);
 
-		childNode = new DataNode("weapon", DataNode.Flag.NORMAL, new ArrayList<>(), new ArrayList<>());
+		childNode = new DataNode("weapon", DataNode.Flag.NORMAL, testNode, new ArrayList<>(), new ArrayList<>());
 		testNode.addChild(childNode);
 
-		DataNode grandNode = new DataNode("hit force", DataNode.Flag.NORMAL, new ArrayList<>(), new ArrayList<>());
+		DataNode grandNode = new DataNode("hit force", DataNode.Flag.NORMAL, childNode, new ArrayList<>(), new ArrayList<>());
 		grandNode.addArg("308");
 		childNode.addChild(grandNode);
 
-		grandNode = new DataNode("hull damage", DataNode.Flag.NORMAL, new ArrayList<>(), new ArrayList<>());
+		grandNode = new DataNode("hull damage", DataNode.Flag.NORMAL, childNode, new ArrayList<>(), new ArrayList<>());
 		grandNode.addArg("6100");
 		childNode.addChild(grandNode);
 
-		grandNode = new DataNode("shield damage", DataNode.Flag.NORMAL, new ArrayList<>(), new ArrayList<>());
+		grandNode = new DataNode("shield damage", DataNode.Flag.NORMAL, childNode, new ArrayList<>(), new ArrayList<>());
 		grandNode.addArg("42");
 		childNode.addChild(grandNode);
 
-		childNode = new DataNode("description", DataNode.Flag.NORMAL, new ArrayList<>(), new ArrayList<>());
+		childNode = new DataNode("description", DataNode.Flag.NORMAL, testNode, new ArrayList<>(), new ArrayList<>());
 		childNode.addArg("This Wardragon bears no resemblance to any actual ship in the game Endless Sky. It has no material existence, despite having mass and possibly explaining the existence of the dark matter in our universe.");
 		testNode.addChild(childNode);
 

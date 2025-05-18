@@ -83,8 +83,11 @@ public class DataReader {
 
 				if (nodeStack.isEmpty() && currentNode != null) {
 					root.addChild(currentNode);
+					currentNode.setParent(root);
 				} else if (currentNode != null) {
-					nodeStack.peek().addChild(currentNode);
+					DataNode parent = nodeStack.peek();
+					parent.addChild(currentNode);
+					currentNode.setParent(parent);
 				}
 
 				lastTabs = tabs;
@@ -170,7 +173,7 @@ public class DataReader {
 		}
 
 
-		return new LoadedNode(nodeName, flag, data, new ArrayList<>(), number, file);
+		return new LoadedNode(nodeName, flag, null, data, new ArrayList<>(), number, file);
 	}
 
 
