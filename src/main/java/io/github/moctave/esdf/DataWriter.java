@@ -63,6 +63,16 @@ public class DataWriter {
 
 
 
+	/*
+	 * Writes a node to a file with no indent.
+	 * @param node The node to write.
+	 */
+	public void write(DataNode node) {
+		write(node, 0);
+	}
+
+
+
 	/**
 	 * Writes a node to the file.
 	 * @param node The node to write.
