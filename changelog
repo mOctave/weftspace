@@ -1,0 +1,12 @@
+Version 0.2.0:
+- GitHub stuff:
+  - Added issue templates, PR templates, and CONTRIBUTING.md
+  - Enabled Discussions
+- Documentation:
+  - Greatly expanded upon the README, providing general documentation for everything
+- Features:
+  - Added references to parent nodes in their children
+  - Added several convenience methods to DataNode and DataWriter
+  - Added support for parsing options and an option to disable node flags when parsing
+
+Version 0.1.12 and previous are not included in this changelog because I was too lazy to keep track of what I was doing.
