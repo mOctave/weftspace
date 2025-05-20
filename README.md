@@ -69,13 +69,18 @@ reader.parse(); // Parses every line in the file, writing its contents as childr
 
 These four lines should turn your file of ES-formatted data into a node tree, ready for use!
 
+### Options
+
+`DataReader` currently has the following options that can be used as varargs when parsing:
+- `IGNORE_NODE_FLAGS`: Treats the keywords `add` and `remove` as node names rather than flags.
+
 ## Working with the Node Tree
 
 Now that you've parsed your data, it should end up written to a (sometimes enormous) tree, with a single root node. Keep track of that root node, because it's how you access the rest of the tree!
 
 The tree itself is made up of a whole bunch of `DataNode`s, each with three major properties: a name, a list of arguments, and a list of child nodes. Additionally, nodes include a reference to their parent node (if they aren't the root of a tree), and a special `Flag` that usually isn't all that important. Any nodes loaded using `DataReader` will also contain information about where they were loaded from for debug purposes.
 
-For example, suppose you have the following lines in a datafile:
+Suppose you have the following lines in a datafile:
 
 ```ruby
 "some node"

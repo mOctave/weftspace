@@ -18,11 +18,20 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Deque;
 
 /** A class which reads data from a file and stores it in a node tree. */
 public class DataReader {
+	// MARK: Constants
+	/** Special flags that can be used when parsing */
+	public enum Option {
+		/** Do not apply node flags. */
+		IGNORE_NODE_FLAGS
+	}
+
+
 	// MARK: Constructor
 	/**
 	 * Sole constructor.
@@ -48,8 +57,11 @@ public class DataReader {
 	// MARK: Methods
 	/**
 	 * Parses the file associated with this object, and stores all nodes in the tree.
+	 * @param options Any {@link Option}s you wish to apply to the parse.
 	 */
-	public void parse() {
+	public void parse(Option... options) {
+		List<Option> optionList = Arrays.asList(options);
+		boolean ignoreNodeFlags = optionList.contains(Option.IGNORE_NODE_FLAGS);
 		try {
 			Scanner s = new Scanner(file);
 			int lineNumber = 0;
@@ -79,7 +91,7 @@ public class DataReader {
 						nodeStack.pop();
 					}
 				}
-				currentNode = makeNode(line, lineNumber);
+				currentNode = makeNode(line, lineNumber, !ignoreNodeFlags);
 
 				if (nodeStack.isEmpty() && currentNode != null) {
 					root.addChild(currentNode);
@@ -105,9 +117,10 @@ public class DataReader {
 	 * Parses a single line and converts it to a node.
 	 * @param line The line to parse.
 	 * @param number The number of the line being parsed, for debugging purposes.
+	 * @param checkForFlags Whether or not node flags should be considered and applied.
 	 * @return The node created from the line.
 	 */
-	public DataNode makeNode(String line, int number) {
+	public DataNode makeNode(String line, int number, boolean checkForFlags) {
 		String trimmedLine = line.trim();
 		List<String> data = new ArrayList<>();
 		char splitOn = ' ';
@@ -162,14 +175,16 @@ public class DataReader {
 		DataNode.Flag flag = DataNode.Flag.NORMAL;
 
 		// Check for flags
-		if (nodeName.equals("add")) {
-			flag = DataNode.Flag.ADD;
-			nodeName = data.get(0);
-			data.remove(0);
-		} else if (nodeName.equals("remove")) {
-			flag = DataNode.Flag.REMOVE;
-			nodeName = data.get(0);
-			data.remove(0);
+		if (checkForFlags) {
+			if (nodeName.equals("add")) {
+				flag = DataNode.Flag.ADD;
+				nodeName = data.get(0);
+				data.remove(0);
+			} else if (nodeName.equals("remove")) {
+				flag = DataNode.Flag.REMOVE;
+				nodeName = data.get(0);
+				data.remove(0);
+			}
 		}
 
 
