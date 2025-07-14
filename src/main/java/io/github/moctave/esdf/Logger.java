@@ -14,6 +14,7 @@
 package io.github.moctave.esdf;
 
 import java.io.File;
+import java.io.PrintStream;
 
 /** A class which handles error logging for this library. */
 public abstract class Logger {
@@ -56,39 +57,39 @@ public abstract class Logger {
 
 	// MARK: Messages
 	/** Fatal Error: No context */
-	public static final Message FATAL_GENERIC = new GenericMessage(Severity.FATAL, "A fatal error was encountered. No other information is available.");
+	public static final DynamicMessage FATAL_GENERIC = new DynamicMessage(Severity.FATAL, "A fatal error was encountered. No other information is available.");
 
 	/** Error: No context */
-	public static final Message ERROR_GENERIC = new GenericMessage(Severity.ERROR, "An error was encountered. No other information is available.");
+	public static final DynamicMessage ERROR_GENERIC = new DynamicMessage(Severity.ERROR, "An error was encountered. No other information is available.");
 	/** Error: File does not exist */
-	public static final FileMessage ERROR_FILE_DNE = new FileMessage(Severity.ERROR, "The file $FILEPATH does not exist or could not be found.");
+	public static final DynamicMessage ERROR_FILE_DNE = new DynamicMessage(Severity.ERROR, "The file $FILEPATH does not exist or could not be found.");
 
 	/** Error: Node failed to parse */
-	public static final NodeIOMessage ERROR_NODE_PARSE_GENERIC = new NodeIOMessage(Severity.ERROR, "There was an error parsing the node $NODE.");
+	public static final DynamicMessage ERROR_NODE_PARSE_GENERIC = new DynamicMessage(Severity.ERROR, "There was an error parsing the node $NODE.");
 
 	/** Error: Node missing arg for builder */
-	public static final NodeInstantiationMessage ERROR_BUILDER_MISSING_ARG = new NodeInstantiationMessage(Severity.ERROR, "Missing argument for $NODE in $CONTEXT.");
+	public static final DynamicMessage ERROR_BUILDER_MISSING_ARG = new DynamicMessage(Severity.ERROR, "Missing argument for $NODE in $CONTEXT.");
 	/** Error: Node argument not a valid integer */
-	public static final NodeInstantiationMessage ERROR_BUILDER_MALFORMED_INT = new NodeInstantiationMessage(Severity.ERROR, "$NODE argument in $CONTEXT is not a valid integer.");
+	public static final DynamicMessage ERROR_BUILDER_MALFORMED_INT = new DynamicMessage(Severity.ERROR, "$NODE argument in $CONTEXT is not a valid integer.");
 	/** Error: Node argument not a valid long */
-	public static final NodeInstantiationMessage ERROR_BUILDER_MALFORMED_LONG = new NodeInstantiationMessage(Severity.ERROR, "$NODE argument in $CONTEXT is not a valid long integer.");
+	public static final DynamicMessage ERROR_BUILDER_MALFORMED_LONG = new DynamicMessage(Severity.ERROR, "$NODE argument in $CONTEXT is not a valid long integer.");
 	/** Error: Node argument not a valid double */
-	public static final NodeInstantiationMessage ERROR_BUILDER_MALFORMED_REAL = new NodeInstantiationMessage(Severity.ERROR, "$NODE argument in $CONTEXT is not a real number.");
+	public static final DynamicMessage ERROR_BUILDER_MALFORMED_REAL = new DynamicMessage(Severity.ERROR, "$NODE argument in $CONTEXT is not a real number.");
 
 	/** Warning: Node is a root node and should not be written */
-	public static final NodeIOMessage WARN_NODE_WRITE_ROOT = new NodeIOMessage(Severity.WARN, "$NODE is a root node and should not be written.");
+	public static final DynamicMessage WARN_NODE_WRITE_ROOT = new DynamicMessage(Severity.WARN, "$NODE is a root node and should not be written.");
 
 	/** Warning: Node argument is out of the expected range for a natural number */
-	public static final NodeInstantiationMessage WARN_BUILDER_NATURAL_OUT_OF_BOUNDS = new NodeInstantiationMessage(Severity.WARN, "$NODE argument in $CONTEXT should be a natural number, but is less than 0.");
+	public static final DynamicMessage WARN_BUILDER_NATURAL_OUT_OF_BOUNDS = new DynamicMessage(Severity.WARN, "$NODE argument in $CONTEXT should be a natural number, but is less than 0.");
 	/** Warning: Node argument is out of the expected range for a random roll */
-	public static final NodeInstantiationMessage WARN_BUILDER_ROLL_OUT_OF_BOUNDS = new NodeInstantiationMessage(Severity.WARN, "$NODE argument in $CONTEXT is either too large or too small to be a valid default random roll.");
+	public static final DynamicMessage WARN_BUILDER_ROLL_OUT_OF_BOUNDS = new DynamicMessage(Severity.WARN, "$NODE argument in $CONTEXT is either too large or too small to be a valid default random roll.");
 	/** Warning: Node argument is out of the expected range for a swizzle number */
-	public static final NodeInstantiationMessage WARN_BUILDER_SWIZZLE_OUT_OF_BOUNDS = new NodeInstantiationMessage(Severity.WARN, "$NODE argument in $CONTEXT is either too large or too small to be a valid swizzle number.");
+	public static final DynamicMessage WARN_BUILDER_SWIZZLE_OUT_OF_BOUNDS = new DynamicMessage(Severity.WARN, "$NODE argument in $CONTEXT is either too large or too small to be a valid swizzle number.");
 
 	/** Warning: Node argument is out of the expected range for a positive real number */
-	public static final NodeInstantiationMessage WARN_BUILDER_POSREAL_OUT_OF_BOUNDS = new NodeInstantiationMessage(Severity.WARN, "$NODE argument in $CONTEXT should non-negative, but is less than 0.");
+	public static final DynamicMessage WARN_BUILDER_POSREAL_OUT_OF_BOUNDS = new DynamicMessage(Severity.WARN, "$NODE argument in $CONTEXT should non-negative, but is less than 0.");
 	/** Warning: Node argument is out of the expected range 0...1 */
-	public static final NodeInstantiationMessage WARN_BUILDER_SMALLREAL_OUT_OF_BOUNDS = new NodeInstantiationMessage(Severity.WARN, "$NODE argument in $CONTEXT is outside the expected range of 0 to 1 inclusive.");
+	public static final DynamicMessage WARN_BUILDER_SMALLREAL_OUT_OF_BOUNDS = new DynamicMessage(Severity.WARN, "$NODE argument in $CONTEXT is outside the expected range of 0 to 1 inclusive.");
 
 
 
@@ -148,45 +149,45 @@ public abstract class Logger {
 		private String content;
 
 
-	
+
 		/**
 		 * Prints the appropriate ANSI escape code for the severity of this message.
 		 */
-		public void formatOn() {
+		public void formatOn(PrintStream stream) {
 			switch(severity) {
 				case FATAL:
-					System.err.print(Logger.BOLD);
+					stream.print(Logger.BOLD);
 				case ERROR:
-					System.err.print(Logger.RED);
+					stream.print(Logger.RED);
 					countError();
 					break;
 				case WARN:
-					System.err.print(Logger.YELLOW);
+					stream.print(Logger.YELLOW);
 					break;
 				case SUCCESS:
-					System.err.print(Logger.GREEN);
+					stream.print(Logger.GREEN);
 					break;
 				default:
-					System.err.print(Logger.BLUE);
+					stream.print(Logger.BLUE);
 			}
 		}
 
 
 
 		/** Prints the prefix for this error message. */
-		public void printPrefix() {
+		public void printPrefix(PrintStream stream) {
 			switch(severity) {
 				case FATAL:
-					System.err.print("Fatal Error: ");
+					stream.print("Fatal Error: ");
 					break;
 				case ERROR:
-					System.err.print("Error: ");
+					stream.print("Error: ");
 					break;
 				case WARN:
-					System.err.print("Warning: ");
+					stream.print("Warning: ");
 					break;
 				default:
-					System.err.print("");
+					stream.print("");
 			}
 		}
 
@@ -243,7 +244,12 @@ public abstract class Logger {
 
 
 	// MARK: Generic Message
-	/** A class representing a standalone message. */
+	/**
+	 * A class representing a standalone message.
+	 * 
+	 * This class is deprecated and may be removed in a future update. Use {@link DynamicMessage} instead.
+	 */
+	@Deprecated
 	public static class GenericMessage extends Message {
 		/**
 		 * Sole constructor.
@@ -259,8 +265,8 @@ public abstract class Logger {
 
 		/** Prints this message to {@link System#err}. */
 		public void log() {
-			formatOn();
-			printPrefix();
+			formatOn(System.err);
+			printPrefix(System.err);
 			System.err.print(getContent());
 			endMessage();
 		}
@@ -269,7 +275,12 @@ public abstract class Logger {
 
 
 	// MARK: File Message
-	/** A class representing a message associated with a file. */
+	/**
+	 * A class representing a message associated with a file.
+	 * 
+	 * This class is deprecated and may be removed in a future update. Use {@link DynamicMessage} instead.
+	 */
+	@Deprecated
 	public static class FileMessage extends Message {
 		/**
 		 * Sole constructor.
@@ -289,8 +300,8 @@ public abstract class Logger {
 		 * @param file The file with an error.
 		 */
 		public void log(File file) {
-			formatOn();
-			printPrefix();
+			formatOn(System.err);
+			printPrefix(System.err);
 			String content = getContent();
 			content = content.replace("$FILENAME", file.getName());
 			content = content.replace("$FILEPATH", file.getAbsolutePath());
@@ -302,7 +313,12 @@ public abstract class Logger {
 
 
 	// MARK: Node Parse Message
-	/** A class representing a message associated with a node being parsed or written. */
+	/**
+	 * A class representing a message associated with a node being parsed or written.
+	 * 
+	 * This class is deprecated and may be removed in a future update. Use {@link DynamicMessage} instead.
+	 */
+	@Deprecated
 	public static class NodeIOMessage extends Message {
 		/**
 		 * Sole constructor.
@@ -323,8 +339,8 @@ public abstract class Logger {
 		 * @param node The node with an error.
 		 */
 		public void log(DataNode node) {
-			formatOn();
-			printPrefix();
+			formatOn(System.err);
+			printPrefix(System.err);
 			String content = getContent();
 			content = content.replace("$NODE", node.getName());
 			System.err.print(content);
@@ -339,7 +355,12 @@ public abstract class Logger {
 
 
 	// MARK: Node Instantiation Message
-	/** A class representing a message associated with a file. */
+	/**
+	 * A class representing a message associated with a file.
+	 * 
+	 * This class is deprecated and may be removed in a future update. Use {@link DynamicMessage} instead.
+	 */
+	@Deprecated
 	public static class NodeInstantiationMessage extends Message {
 		/**
 		 * Sole constructor.
@@ -361,8 +382,8 @@ public abstract class Logger {
 		 * @param context The object that was being instantiated when an error was encountered.
 		 */
 		public void log(DataNode node, String context) {
-			formatOn();
-			printPrefix();
+			formatOn(System.err);
+			printPrefix(System.err);
 			String content = getContent();
 			content = content.replace("$NODE", node.getName());
 			content = content.replace("$CONTEXT", context);
@@ -370,6 +391,91 @@ public abstract class Logger {
 			if (node instanceof LoadedNode) {
 				LoadedNode loaded = (LoadedNode) node;
 				System.err.printf(" (line %d of %s)", loaded.getLine(), loaded.getFile());
+			}
+			endMessage();
+		}
+	}
+
+
+
+	// MARK: Dynamic Message
+	/**
+	 * A class that automatically fills in data based on the classes of its arguments.
+	 * 
+	 * This class fulfills the behaviour of all other extant Message subclasses, and should be
+	 * used instead of creating new subclasses if possible.
+	 */
+	public static class DynamicMessage extends Message {
+		/**
+		 * Sole constructor.
+		 * @param severity The severity of this message.
+		 * @param content The content of this message.
+		 */
+		public DynamicMessage(
+			Logger.Severity severity,
+			String content
+		) {
+			super(severity, content);
+		}
+
+
+		/**
+		 * Prints this message (usually to {@link System#err}) after filling in all appropriate text
+		 * replacements using the objects provided.
+		 * @param data Data used to fill out the template. Can include strings, {@link DataNode}
+		 * or {@link File} objects, or an alternate {@link PrintStream} to print to. If no PrintStream
+		 * is provided, {@link System#err} is used. If a {@link LoadedNode} is provided, the first such
+		 * node will be used to generate a line and file reference that is appended to the message.
+		 */
+		public void log(Object... data) {
+			formatOn(System.err);
+			printPrefix(System.err);			
+			String content = getContent();
+
+			int stringCount = 0;
+			int nodeCount = 0;
+			int fileCount = 0;
+			LoadedNode loadedNode = null;
+			PrintStream printStream = System.err;
+
+			for (Object arg : data) {
+				if (arg instanceof String) {
+					if (stringCount == 0) content = content.replace("$CONTEXT", (String) arg);
+					content = content.replace(String.format("$CONTEXT[%d]", stringCount), (String) arg);
+
+					stringCount++;
+				} else if (arg instanceof DataNode) {
+					DataNode node = (DataNode) arg;
+
+					if (nodeCount == 0) content = content.replace("$NODE", node.getName());
+					content = content.replace(String.format("$NODE[%d]", stringCount), node.getName());
+
+					if (nodeCount == 0) content = content.replace("$PARENT", node.getParent().getName());
+					content = content.replace(String.format("$PARENT[%d]", stringCount), node.getParent().getName());
+
+					nodeCount++;
+				} else if (arg instanceof File) {
+					File file = (File) arg;
+
+					if (fileCount == 0) content = content.replace("$FILENAME", file.getName());
+					content = content.replace(String.format("$FILENAME[%d]", stringCount), file.getName());
+
+					if (fileCount == 0) content = content.replace("$FILEPATH", file.getAbsolutePath());
+					content = content.replace(String.format("$FILEPATH[%d]", stringCount), file.getAbsolutePath());
+
+					nodeCount++;
+				} else if (arg instanceof PrintStream) {
+					printStream = (PrintStream) arg;
+				}
+
+				if (arg instanceof LoadedNode && loadedNode == null) {
+					loadedNode = (LoadedNode) arg;
+				}
+			}
+
+			printStream.print(content);
+			if (loadedNode != null) {
+				printStream.printf(" (line %d of %s)", loadedNode.getLine(), loadedNode.getFile());
 			}
 			endMessage();
 		}
