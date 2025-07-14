@@ -152,7 +152,7 @@ public class UnitTests {
 		Logger.resetErrorCount();
 
 		// Open and parse the test data
-		File testData = new File("testdata/humanreadable.txt");
+		File testData = new File("../testdata/humanreadable.txt");
 		DataNode rootNode = new DataNode();
 		DataReader reader = new DataReader(testData, rootNode);
 		reader.parse();
