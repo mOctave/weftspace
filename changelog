@@ -1,3 +1,7 @@
+Version 0.2.1:
+- Overhauled the Logger class to simplify how it's used and remove the need for custom subclassing of Message
+- Deprecated all existing subclasses of Message in favour of DynamicMessage
+
 Version 0.2.0:
 - GitHub stuff:
   - Added issue templates, PR templates, and CONTRIBUTING.md
