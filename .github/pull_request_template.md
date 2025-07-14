@@ -13,7 +13,7 @@ This PR addresses the issue/bug described in issue #{{issue number}}.
 
 ## Checklist
 
-- [ ] I have read and understand the [Contributing Guidelines](https://github.com/mOctave/esdf-manager/CONTRIBUTING.md)
+- [ ] I have read and understand the [Contributing Guidelines](https://github.com/mOctave/weftspace/CONTRIBUTING.md)
 - [ ] I did not use generative AI to write any code or create any other part of this PR
 
 For code PRs only:

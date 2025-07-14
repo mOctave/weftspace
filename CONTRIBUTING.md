@@ -1,20 +1,20 @@
-# Contributing to ESDF Manager
+# Contributing to Weftspace
 
 Thank you for showing interest in my little project! I'd love your help in making this library more powerful and reliable.
 
 ## Issues
 
-The [Issues](https://github.com/mOctave/esdf-manager/issues/) page is intended for posting bug reports and feature requests. When you post a new issue, please:
+The [Issues](https://github.com/mOctave/weftspace/issues/) page is intended for posting bug reports and feature requests. When you post a new issue, please:
 - Check to make sure it's not a duplicate of an existing issue
 - Complete one issue per bug or feature you want to bring up
 - Choose the proper template, and fill it out completely
 
 If you're not sure whether something belongs in Issues or Discussions, don't worry too much about it. However, if it's isn't a bug report or feature request,
-you should probably head over to [Discussions]([Issues](https://github.com/mOctave/esdf-manager/discussions/) to post it instead.
+you should probably head over to [Discussions]([Issues](https://github.com/mOctave/weftspace/discussions/) to post it instead.
 
 ## Pull Requests
 
-Pull Requests are the most direct form of contributing to ESDF Manager. Feel free to PR any documentation fixes, code, or tests that you think would be helpful
+Pull Requests are the most direct form of contributing to Weftspace. Feel free to PR any documentation fixes, code, or tests that you think would be helpful
 for this project, so long as it follows the policies listed in this section.
 
 When you PR your work, you relinquish sole ownership of it. Code—or anything else—you PR may be added, modified, or removed by any future contributor. If your

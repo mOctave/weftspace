@@ -37,9 +37,9 @@ Otherwise, delete everything in this box.
  - Java Version: [use java -version to check]
 
 Please select one:
- - [ ] I am using the latest published release of ESDF Manager
- - [ ] I am using an unstable but up-to-date copy of ESDF Manager I built myself
- - [ ] I am using an old build of ESDF Manager and should check my bug against a newer version before I submit this report.
+ - [ ] I am using the latest published release of Weftspace
+ - [ ] I am using an unstable but up-to-date copy of Weftspace I built myself
+ - [ ] I am using an old build of Weftspace or ESDF Manager and should check my bug against a newer version before I submit this report.
 
 **Additional context**
 Add any other context about the problem here.

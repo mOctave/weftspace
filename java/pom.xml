@@ -3,15 +3,15 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>io.github.moctave.esdf</groupId>
-  <artifactId>esdf-manager</artifactId>
+  <groupId>io.github.moctave.weftspace</groupId>
+  <artifactId>weftspace</artifactId>
   <version>0.2.1</version>
 
-  <name>esdf-manager</name>
+  <name>weftspace</name>
   <description>
-    This library is designed to make it easier to develop Endless Sky tools in Java by providing support for the datafile syntax.
+    Weftspace is a Java library designed to provide the maximum possible level of support for Endless Sky datafile syntax. As well as providing read/write functionality through the DataReader and DataWriter classes, it provides support for handling the data nodes themselves.
   </description>
-  <url>https://github.com/mOctave/esdf-manager</url>
+  <url>https://github.com/mOctave/weftspace</url>
   <licenses>
     <license>
       <name>Gnu Affero General Public License, Version 3</name>
@@ -27,9 +27,9 @@
     </developer>
   </developers>
   <scm>
-    <connection>scm:git:git@github.com:mOctave/esdf-manager.git</connection>
-    <developerConnection>scm:git:ssh://github.com:mOctave/esdf-manager.git</developerConnection>
-    <url>https://github.com/mOctave/esdf-manager/tree/main</url>
+    <connection>scm:git:git@github.com:mOctave/weftspace.git</connection>
+    <developerConnection>scm:git:ssh://github.com:mOctave/weftspace.git</developerConnection>
+    <url>https://github.com/mOctave/weftspace/tree/main</url>
   </scm>
 
   <properties>
@@ -41,7 +41,7 @@
     <repository>
       <id>github</id>
       <name>GitHub Packages</name>
-      <url>https://maven.pkg.github.com/mOctave/esdf-manager</url>
+      <url>https://maven.pkg.github.com/mOctave/weftspace</url>
     </repository>
   </distributionManagement>
 
