@@ -197,9 +197,9 @@ public abstract class Logger {
 		 * Ends the message, reseting formating. If this message is a fatal error, calling
 		 * this method will also exit the program with an error code of 1.
 		 */
-		public void endMessage() {
-			System.err.print(RESET);
-			System.err.println();
+		public void endMessage(PrintStream stream) {
+			stream.print(RESET);
+			stream.println();
 			if (severity.equals(Severity.FATAL)) {
 				System.exit(errorCount);
 			}
@@ -243,161 +243,6 @@ public abstract class Logger {
 
 
 
-	// MARK: Generic Message
-	/**
-	 * A class representing a standalone message.
-	 * 
-	 * This class is deprecated and may be removed in a future update. Use {@link DynamicMessage} instead.
-	 */
-	@Deprecated
-	public static class GenericMessage extends Message {
-		/**
-		 * Sole constructor.
-		 * @param severity The severity of this message.
-		 * @param content The content of this message.
-		 */
-		public GenericMessage(
-			Logger.Severity severity,
-			String content
-		) {
-			super(severity, content);
-		}
-
-		/** Prints this message to {@link System#err}. */
-		public void log() {
-			formatOn(System.err);
-			printPrefix(System.err);
-			System.err.print(getContent());
-			endMessage();
-		}
-	}
-
-
-
-	// MARK: File Message
-	/**
-	 * A class representing a message associated with a file.
-	 * 
-	 * This class is deprecated and may be removed in a future update. Use {@link DynamicMessage} instead.
-	 */
-	@Deprecated
-	public static class FileMessage extends Message {
-		/**
-		 * Sole constructor.
-		 * @param severity The severity of this message.
-		 * @param content The content of this message.
-		 */
-		public FileMessage(
-			Logger.Severity severity,
-			String content
-		) {
-			super(severity, content);
-		}
-
-
-		/**
-		 * Prints this message to {@link System#err}.
-		 * @param file The file with an error.
-		 */
-		public void log(File file) {
-			formatOn(System.err);
-			printPrefix(System.err);
-			String content = getContent();
-			content = content.replace("$FILENAME", file.getName());
-			content = content.replace("$FILEPATH", file.getAbsolutePath());
-			System.err.print(content);
-			endMessage();
-		}
-	}
-
-
-
-	// MARK: Node Parse Message
-	/**
-	 * A class representing a message associated with a node being parsed or written.
-	 * 
-	 * This class is deprecated and may be removed in a future update. Use {@link DynamicMessage} instead.
-	 */
-	@Deprecated
-	public static class NodeIOMessage extends Message {
-		/**
-		 * Sole constructor.
-		 * @param severity The severity of this message.
-		 * @param content The content of this message.
-		 */
-		public NodeIOMessage(
-			Logger.Severity severity,
-			String content
-		) {
-			super(severity, content);
-		}
-
-
-		/**
-		 * Prints this message to {@link System#err}. If the attached node is a {@link LoadedNode},
-		 * it includes the line and file it was loaded from.
-		 * @param node The node with an error.
-		 */
-		public void log(DataNode node) {
-			formatOn(System.err);
-			printPrefix(System.err);
-			String content = getContent();
-			content = content.replace("$NODE", node.getName());
-			System.err.print(content);
-			if (node instanceof LoadedNode) {
-				LoadedNode loaded = (LoadedNode) node;
-				System.err.printf(" (line %d of %s)", loaded.getLine(), loaded.getFile());
-			}
-			endMessage();
-		}
-	}
-
-
-
-	// MARK: Node Instantiation Message
-	/**
-	 * A class representing a message associated with a file.
-	 * 
-	 * This class is deprecated and may be removed in a future update. Use {@link DynamicMessage} instead.
-	 */
-	@Deprecated
-	public static class NodeInstantiationMessage extends Message {
-		/**
-		 * Sole constructor.
-		 * @param severity The severity of this message.
-		 * @param content The content of this message.
-		 */
-		public NodeInstantiationMessage(
-			Logger.Severity severity,
-			String content
-		) {
-			super(severity, content);
-		}
-
-
-		/**
-		 * Prints this message to {@link System#err}. If the attached node is a {@link LoadedNode},
-		 * it includes the line and file it was loaded from.
-		 * @param node The node with an error.
-		 * @param context The object that was being instantiated when an error was encountered.
-		 */
-		public void log(DataNode node, String context) {
-			formatOn(System.err);
-			printPrefix(System.err);
-			String content = getContent();
-			content = content.replace("$NODE", node.getName());
-			content = content.replace("$CONTEXT", context);
-			System.err.print(content);
-			if (node instanceof LoadedNode) {
-				LoadedNode loaded = (LoadedNode) node;
-				System.err.printf(" (line %d of %s)", loaded.getLine(), loaded.getFile());
-			}
-			endMessage();
-		}
-	}
-
-
-
 	// MARK: Dynamic Message
 	/**
 	 * A class that automatically fills in data based on the classes of its arguments.
@@ -428,8 +273,6 @@ public abstract class Logger {
 		 * node will be used to generate a line and file reference that is appended to the message.
 		 */
 		public void log(Object... data) {
-			formatOn(System.err);
-			printPrefix(System.err);			
 			String content = getContent();
 
 			int stringCount = 0;
@@ -450,8 +293,10 @@ public abstract class Logger {
 					if (nodeCount == 0) content = content.replace("$NODE", node.getName());
 					content = content.replace(String.format("$NODE[%d]", stringCount), node.getName());
 
-					if (nodeCount == 0) content = content.replace("$PARENT", node.getParent().getName());
-					content = content.replace(String.format("$PARENT[%d]", stringCount), node.getParent().getName());
+					if (node.hasParent()) {
+						if (nodeCount == 0) content = content.replace("$PARENT", node.getParent().getName());
+						content = content.replace(String.format("$PARENT[%d]", stringCount), node.getParent().getName());
+					}
 
 					nodeCount++;
 				} else if (arg instanceof File) {
@@ -473,11 +318,14 @@ public abstract class Logger {
 				}
 			}
 
+			formatOn(printStream);
+			printPrefix(printStream);
+
 			printStream.print(content);
 			if (loadedNode != null) {
-				printStream.printf(" (line %d of %s)", loadedNode.getLine(), loadedNode.getFile());
+				printStream.printf(" (line %d of %s)", loadedNode.getLine(), loadedNode.getFile().getName());
 			}
-			endMessage();
+			endMessage(printStream);
 		}
 	}
 }

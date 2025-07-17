@@ -127,7 +127,7 @@ public class DataReader {
 		String currentItem = "";
 		boolean isEmpty = true;
 		for (char c : trimmedLine.toCharArray()) {
-			if (isEmpty && c != ' ') {
+			if (isEmpty && !Character.isWhitespace(c)) {
 				isEmpty = false;
 				if (c == '"') {
 					// Item will end with a double quote, ignore this one.

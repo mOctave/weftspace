@@ -75,9 +75,12 @@ public abstract class Builder {
 		 */
 		POSSIBLE_ROLL,
 		/**
-		 * An integer in the valid range for Endless Sky swizzles, between
+		 * An integer in the valid range for traditional Endless Sky swizzles, between
 		 * {@code 0} and {@code 28} inclusive.
+		 * 
+		 * Deprecated since v1.0.0 as swizzles are now named rather than numbered.
 		 */
+		@Deprecated
 		SWIZZLE,
 	}
 
@@ -241,7 +244,7 @@ public abstract class Builder {
 				}
 			}
 		} catch (IndexOutOfBoundsException e) {
-			// This is not necessarily and error, and so nothing is done.
+			// This is not necessarily an error, so no error message is printed.
 		}
 
 		return null;

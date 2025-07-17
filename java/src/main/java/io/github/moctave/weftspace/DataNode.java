@@ -16,7 +16,7 @@ package io.github.moctave.weftspace;
 import java.util.ArrayList;
 import java.util.List;
 
-/** A class representing a node on the data tree. */
+/** A class representing a node in the data tree. */
 public class DataNode {
 	// MARK: Constants
 	/**

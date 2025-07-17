@@ -28,7 +28,7 @@ public class UnitTests {
 	 * A method which constructs a sample data node that can be used across multiple tests.
 	 * @return The node to use for testing.
 	 */
-	public DataNode getTestNode() {
+	public static DataNode getTestNode() {
 		DataNode testNode = new DataNode("ship", DataNode.Flag.NORMAL, null, new ArrayList<>(), new ArrayList<>());
 		testNode.addArg("Much Confused Wardragon");
 
@@ -89,14 +89,14 @@ public class UnitTests {
 		File file = new File("test.txt");
 		DataWriter writer = new DataWriter(file);
 		writer.open();
-		writer.write(getTestNode(), 0);
+		writer.write(getTestNode());
 		writer.close();
 
 
 		// Read test data from the file
 		DataReader reader = new DataReader(file, new DataNode());
 		reader.parse();
-		DataNode loadedNode = reader.getRoot().getChildren().get(0);
+		DataNode loadedNode = reader.getRoot().getChild(0);
 
 		// Do clean-up
 		file.delete();
@@ -144,7 +144,7 @@ public class UnitTests {
 
 	/**
 	 * This test checks to make sure that nodes with extra empty lines in the
-	 * middle of their definitions still working properly.
+	 * middle of their definitions still parse properly.
 	 */
 	@Test
 	public void testHumanReadableNodes() {
@@ -157,7 +157,7 @@ public class UnitTests {
 		DataReader reader = new DataReader(testData, rootNode);
 		reader.parse();
 
-		DataNode loadedNode = rootNode.getChildren().get(0);
+		DataNode loadedNode = rootNode.getChild(0);
 
 		// Check to make sure there were no issues
 		assertTrue(Logger.getErrorCount() == 0 && getTestNode().equals(loadedNode));

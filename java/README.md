@@ -1,15 +1,13 @@
 ![Latest release](https://img.shields.io/github/v/release/mOctave/weftspace)
-![Test status](https://img.shields.io/github/actions/workflow/status/mOctave/weftspace/ci.yml?label=test-java)
+![Test status](https://img.shields.io/github/actions/workflow/status/mOctave/weftspace/ci-java.yml)
 ![Build status](https://img.shields.io/github/actions/workflow/status/mOctave/weftspace/cd-java.yml)
 ![Commits since last release](https://img.shields.io/github/commits-since/mOctave/weftspace/latest)
 
 # Weftspace
-Weftspace is a Java library designed to provide the maximum possible level of support for Endless Sky datafile syntax. As well as providing read/write functionality through the DataReader and DataWriter classes, it provides support for handling the data nodes themselves.
-
-Weftspace is currently in public beta. As far as I am aware, it is fully functional, but documentation is lacking and edge cases may cause unexpected errors. Any and all feedback, stress testing, and constructive criticism is much appreciated.
+Weftspace was originally written in Java, and the Java library continues to provide the maximum possible level of support for Endless Sky datafile syntax. As well as providing read/write functionality through the DataReader and DataWriter classes, it provides support for handling the data nodes themselves.
 
 ## Installation and Usage
-Weftspace is best used with Maven. To use it, add both a repository and a dependency to your `pom.xml` file. Something along the following lines should work:
+The Weftspace Java library is best used with Maven. To use it, add both a repository and a dependency to your `pom.xml` file. Something along the following lines should work:
 
 ```xml
   <repositories>
