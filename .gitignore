@@ -18,8 +18,9 @@ buildNumber.properties
 .classpath
 
 # Python Library
-python/dist
-python/venv
+python/dist/
+python/venv/
+.pytest_cache/
 __pycache__
 
 # General

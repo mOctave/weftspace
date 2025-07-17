@@ -12,3 +12,8 @@ Weftspace is the library which makes developing Endless Sky tools easy. As well 
 Weftspace is currently available as a Java library, and there are plans in place to provide Python and NodeJS support as well.
 
 Please see the [README for the Java library](java/README.md) for installation and usage instructions.
+
+
+## Contributing and Contact Information
+
+All forms of contribution are welcome! If you've found a bug, want a feature, or would like to contribute your own code to Weftspace, feel free to open an issue or PR. You can reach me anytime on the Endless Sky Discord or by email (moctave31415@gmail.com).

@@ -54,18 +54,18 @@ Now, assuming everything went right, you should be able to install with `mvn ins
 
 ## Parser
 
-The most common use case of Weftspace is to read data from a file into a node tree. This is accomplished by using the `DataReader` class. 
+The most common use case of Weftspace is to read data from a file into a node tree. This is accomplished by using the `DataReader` class.
 
-Although the DataReader class does have some potentially useful methods, in the vast majority of cases a variation on the following four lines are all you need.
+Although the DataReader class does have several potentially useful methods, in the vast majority of cases a variation on the following four lines is all you need.
 
 ```java
-File file = new File([path to file]); // From java.io.File
-DataNode rootNode = new DataNode(); // Creates a generic root node that you'll access nodes from later
-DataReader reader = new DataReader(file, rootNode); // Construct a DataReader
+File file = new File("path/to/file"); // From java.io.File
+DataNode rootNode = new DataNode(); // Creates a generic root node that you'll access your parsed nodes from later
+DataReader reader = new DataReader(file, rootNode); // Constructs a DataReader
 reader.parse(); // Parses every line in the file, writing its contents as children of rootNode, and automatically handling exceptions
 ```
 
-These four lines should turn your file of ES-formatted data into a node tree, ready for use!
+These lines should turn your file of ES-formatted data into a node tree, ready for use!
 
 ### Options
 
@@ -112,7 +112,7 @@ Here's an example of how you could convert a node to an object:
 					setMass(Builder.buildInt(child, 0, CONTEXT, Builder.IntType.NATURAL));
 					break;
 				case "random number for fun": // Any double-precision float
-					setDescription(Builder.buildDouble(child, 0, CONTEXT));
+					setThingy(Builder.buildDouble(child, 0, CONTEXT));
 					break;
 				case "position": // From "position" x y
 					setX(Builder.buildInt(child, 0, CONTEXT));
@@ -128,10 +128,10 @@ Here's an example of how you could convert a node to an object:
 Occasionally, you may find that you need to write data to a file. This can be accomplished using the `DataWriter` class. This can be done almost as simply as parsing, as follows:
 
 ```java
-File file = new File([path to file]); // The file you want to write to.
-DataWriter writer = new DataReader(file); // Construct a DataWriter for the file
-writer.open(); // Open the DataWriter so you can add to the file
-writer.write(someNode); // Write the node to the end of the file
+File file = new File("path/to/file"); // The file you want to write to
+DataWriter writer = new DataReader(file); // Constructs a DataWriter for the file
+writer.open(); // Opens the DataWriter so you can add to the file
+writer.write(someNode); // Writes the node to the end of the file
 writer.close(); // Don't forget to do this, or else you may have memory leaks!
 ```
 
