@@ -6,7 +6,7 @@ on:
   pull_request:
     branches: ["main"]
 jobs:
-  python-package:
+  test-python:
     runs-on: ubuntu-latest
     permissions:
       contents: read
