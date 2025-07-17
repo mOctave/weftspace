@@ -10,7 +10,7 @@ The [Issues](https://github.com/mOctave/weftspace/issues/) page is intended for 
 - Choose the proper template, and fill it out completely
 
 If you're not sure whether something belongs in Issues or Discussions, don't worry too much about it. However, if it's isn't a bug report or feature request,
-you should probably head over to [Discussions]([Issues](https://github.com/mOctave/weftspace/discussions/) to post it instead.
+you should probably head over to [Discussions](https://github.com/mOctave/weftspace/discussions/) to post it instead.
 
 ## Pull Requests
 
@@ -21,9 +21,9 @@ When you PR your work, you relinquish sole ownership of it. Code—or anything e
 code is removed, you *will* still retain credit for your contribution to the file it was a part of.
 
 Before you hurry to post your PR, please check the following:
-- All tests are passing on your machine (use `mvn test`)
+- All tests are passing on your machine (use `mvn test`, `pytest tests/__init__.py`, etc.)
 - The dif contains no accidental or unrelated changes
-- All methods and fields have proper, helpful Javadoc comments
+- All methods and fields have proper, helpful doc comments
 - All indentation has been done with tabs, except for in XML files where two spaces should be used
 - Lines wrap at a reasonable point (no hard limit, but please don't PR a 3000-char line of code)
 - All other normal programming conventions are followed, and your work's style aligns roughly with the style of the existing codebase
@@ -43,6 +43,6 @@ I will not personally review draft PRs, although I may comment on them and you'r
 
 Personally, I am opposed to the use of generative AI, and there are a number of ethical and legal issues around its usage that I really don't want to have to worry about.
 For that reason:
-- Asking AI simple questions and using it to provide feedback on your work or link to external sources is acceptable (eg "Is this proper grammar?")
+- Asking AI simple questions and using it to provide feedback on your work or link to external sources is acceptable (eg "Is this proper grammar?" or "Help me debug this code:")
 - Using an AI like Grammarly to spot-check grammar is acceptable
 - Using AI to generate, in whole or in part, code, documentation, or any other text or images for this project is **forbidden**

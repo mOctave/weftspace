@@ -9,9 +9,9 @@
 
 Weftspace is the library which makes developing Endless Sky tools easy. As well as providing read/write functionality for Endless Sky's data syntax, it also provides support for handling the data you've parsed and converting it to other data types.
 
-Weftspace is currently available as a Java library, and there are plans in place to provide Python and NodeJS support as well.
+Weftspace is currently available as a library for both Java and Python, although it is implemented slightly differently for each language. There are plans in place to provide NodeJS support as well.
 
-Please see the [README for the Java library](java/README.md) for installation and usage instructions.
+For installation and usage instructions, see the README inside the directory corresponding to the language you wish to use.
 
 
 ## Contributing and Contact Information
