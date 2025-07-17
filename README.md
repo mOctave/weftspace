@@ -1,8 +1,8 @@
 ![Latest release](https://img.shields.io/github/v/release/mOctave/weftspace)
-![CI (Java)](https://img.shields.io/github/actions/workflow/status/mOctave/weftspace/ci-java.yml?label=CI (Java))
-![CD (Java)](https://img.shields.io/github/actions/workflow/status/mOctave/weftspace/cd-java.yml?label=CD (Java))
-![CI (Python)](https://img.shields.io/github/actions/workflow/status/mOctave/weftspace/ci-python.yml?label=CI (Python))
-![CD (Python)](https://img.shields.io/github/actions/workflow/status/mOctave/weftspace/cd-python.yml?label=CD (Python))
+![CI (Java)](https://img.shields.io/github/actions/workflow/status/mOctave/weftspace/ci-java.yml?label="CI (Java)")
+![CD (Java)](https://img.shields.io/github/actions/workflow/status/mOctave/weftspace/cd-java.yml?label="CD (Java)")
+![CI (Python)](https://img.shields.io/github/actions/workflow/status/mOctave/weftspace/ci-python.yml?label="CI (Python)")
+![CD (Python)](https://img.shields.io/github/actions/workflow/status/mOctave/weftspace/cd-python.yml?label="CD (Python)")
 ![Commits since last release](https://img.shields.io/github/commits-since/mOctave/weftspace/latest)
 
 # Weftspace
