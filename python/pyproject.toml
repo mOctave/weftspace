@@ -1,0 +1,92 @@
+# Copyright (c) 2025 by mOctave
+#
+# This program is free software: you can redistribute it and/or modify it under the
+# terms of the GNU Affero General Public License as published by the Free Software
+# Foundation, either version 3 of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful, but WITHOUT ANY
+# WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+# PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License along with
+# this program. If not, see <https://www.gnu.org/licenses/>.
+
+[project]
+name = "weftspace"
+dynamic = ["version"]
+description = "Weftspace is a Python library designed to provide the maximum possible level of support for Endless Sky datafile syntax by providing not only IO functionality but also support in handling and converting parsed data."
+license = "AGPL-3.0-or-later"
+authors = [
+	{ name = "mOctave", email = "moctave31415@gmail.com" }
+]
+requires-python = ">= 3.8" # Change this to reflect what's actually needed
+classifiers = [
+	"Development Status :: 4 - Beta",
+	"Intended Audience :: Developers",
+	"License :: OSI Approved :: GNU Affero General Public License v3 or later (AGPLv3+)",
+	"Operating System :: OS Independent",
+	"Operating System :: POSIX",
+	"Operating System :: MacOS",
+	"Operating System :: POSIX :: Linux",
+	"Operating System :: Microsoft :: Windows",
+	"Programming Language :: Python :: 3.8",
+	"Programming Language :: Python :: 3.9",
+	"Programming Language :: Python :: 3.10",
+	"Programming Language :: Python :: 3.11",
+	"Programming Language :: Python :: 3.12",
+	"Programming Language :: Python :: 3.13",
+	"Topic :: File Formats",
+	"Topic :: Games/Entertainment",
+	"Topic :: Software Development :: Libraries :: Python Modules",
+	"Typing :: Typed",
+]
+readme = "README.md"
+
+[project.urls]
+Homepage = "https://github.com/mOctave/weftspace"
+Repository = "https://github.com/mOctave/weftspace"
+
+[project.optional-dependencies]
+# Install with `pip install -e ".[dev]"`
+dev = [
+	"build",
+	"pyright",
+	"pytest"
+]
+
+[build-system]
+requires = ["hatchling>=1.26"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build]
+include = [
+  "weftspace/*"
+]
+
+[tool.hatch.build.targets.wheel]
+packages = [
+	"weftspace"
+]
+
+[tool.hatch.build.targets.sdist]
+include = [
+	"/*.toml",
+	"/*.json",
+	"/*.lock",
+	"/*.md",
+	"/mypy.ini",
+	"/noxfile.py",
+	"src/*",
+	"tests/*",
+]
+
+[tool.hatch.version]
+path = "src/weftspace/_version.py"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+xfail_strict = true
+
+[tool.pyright]
+typeCheckingMode = "strict"
+pythonVersion = 3.13

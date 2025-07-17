@@ -1,4 +1,4 @@
-# Maven
+# Java Library
 java/target/
 pom.xml.tag
 pom.xml.releaseBackup
@@ -17,5 +17,10 @@ buildNumber.properties
 # JDT-specific (Eclipse Java Development Tools)
 .classpath
 
-# General stuff
+# Python Library
+python/dist
+python/venv
+__pycache__
+
+# General
 .DS_Store
