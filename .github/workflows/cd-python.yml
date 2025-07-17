@@ -1,0 +1,36 @@
+name: CD (Python)
+
+on:
+  release:
+    types: [published]
+jobs:
+  python-package:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+      id-token: write
+    environment:
+      name: testpypi
+      url: https://testpypi.org/p/weftspace # Switch to proper PyPI once bugs are ironed out
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Copy license
+        run: cp ./LICENSE python/LICENSE
+      - name: Install dev dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+      - name: Build
+        run: python3 -m build
+        working-directory: ./python
+      - name: Publish
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          repository-url: https://test.pypi.org/legacy/
+          packages-dir: python/dist/
