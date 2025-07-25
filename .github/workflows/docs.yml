@@ -88,5 +88,7 @@ jobs:
           path: ./site/python/tests
       - name: Commit site
         run: |
+          git config user.email "moctave31415@gmail.com"
+          git config user.name "mOctave via GitHub Actions"
           git commit -am "Site Update"
           git push
