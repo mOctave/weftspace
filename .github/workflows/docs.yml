@@ -47,14 +47,22 @@ jobs:
           python -m pip install --upgrade pip
           pip install -e ".[dev]"
         working-directory: ./python
-      - name: Test
-        run: pdoc --html weftspace
+      - name: Build site
+        run: pdoc --html src.weftspace
         working-directory: ./python
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
           name: python
           path: ./python/html
+      - name: Build tests
+        run: pdoc -o htmltests/ --html src.weftspace
+        working-directory: ./python
+      - name: Upload test artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: python-tests
+          path: ./python/htmltests
 
   commit:
     needs: [java, python]
@@ -74,9 +82,16 @@ jobs:
         uses: dawidd6/action-download-artifact@v11
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          workflow: java
-          name: java
-          path: ./site/java
+          workflow: python
+          name: python
+          path: ./site/python/main
+      - name: Download Python test site
+        uses: dawidd6/action-download-artifact@v11
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          workflow: python
+          name: python-tests
+          path: ./site/python/tests
       - name: Commit site
         run: |
           git commit -am "Site Update"

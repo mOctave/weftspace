@@ -1,5 +1,5 @@
 ![Latest release](https://img.shields.io/github/v/release/mOctave/weftspace)
-![CI](https://img.shields.io/github/actions/workflow/status/mOctave/weftspace/ci?label=CI)
+![CI](https://img.shields.io/github/actions/workflow/status/mOctave/weftspace/ci.yml?label=CI)
 ![Documentation](https://img.shields.io/github/actions/workflow/status/mOctave/weftspace/docs.yml?label=Documentation)
 ![Release](https://img.shields.io/github/actions/workflow/status/mOctave/weftspace/release.yml?label=Release)
 ![Commits since last release](https://img.shields.io/github/commits-since/mOctave/weftspace/latest)
