@@ -90,5 +90,6 @@ jobs:
         run: |
           git config user.email "moctave31415@gmail.com"
           git config user.name "mOctave via GitHub Actions"
+          git add --all
           git commit -am "Site Update"
           git push
