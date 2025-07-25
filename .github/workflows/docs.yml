@@ -82,10 +82,8 @@ jobs:
           name: python
           path: ./site/python/main
       - name: Download Python test site
-        uses: dawidd6/action-download-artifact@v11
+        uses: actions/download-artifact@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          workflow: python
           name: python-tests
           path: ./site/python/tests
       - name: Commit site
