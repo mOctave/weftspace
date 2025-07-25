@@ -72,17 +72,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Download Java site
-        uses: dawidd6/action-download-artifact@v11
+        uses: actions/download-artifact@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          workflow: java
           name: java
           path: ./site/java
       - name: Download Python site
-        uses: dawidd6/action-download-artifact@v11
+        uses: actions/download-artifact@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          workflow: python
           name: python
           path: ./site/python/main
       - name: Download Python test site
