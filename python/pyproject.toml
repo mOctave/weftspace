@@ -51,7 +51,8 @@ Repository = "https://github.com/mOctave/weftspace"
 dev = [
 	"build",
 	"pyright",
-	"pytest"
+	"pytest",
+	"pdoc3"
 ]
 
 [build-system]

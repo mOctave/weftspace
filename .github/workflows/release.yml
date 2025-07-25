@@ -1,10 +1,27 @@
-name: CD (Python)
+name: Release
 
 on:
   release:
     types: [published]
 jobs:
-  python-package:
+  java:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'oracle'
+      - name: Publish package
+        run: mvn --batch-mode deploy
+        working-directory: ./java
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  python:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -35,3 +52,16 @@ jobs:
         with:
           repository-url: https://test.pypi.org/legacy/
           packages-dir: python/dist/
+
+  docs:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      pages: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./site

@@ -19,6 +19,7 @@ buildNumber.properties
 
 # Python Library
 python/dist/
+python/html/
 python/venv/
 .pytest_cache/
 __pycache__

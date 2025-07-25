@@ -1,0 +1,12 @@
+java:
+  - 'java/**/*'
+
+python:
+  - 'python/**/*'
+
+actions:
+  - '.github/workflows/*'
+  - '.github/path-filters.yml'
+
+testdata:
+  - 'testdata/**/*'

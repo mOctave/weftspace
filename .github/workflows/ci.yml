@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  changed:
+    uses: ./.github/workflows/changed.yml
+
+  java:
+    needs: changed
+    if: ${{ needs.changed.outputs.java == 'true' || needs.changed.outputs.actions == 'true' || needs.changed.outputs.testdata == 'true' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'oracle'
+      - name: Test package
+        run: mvn test
+        working-directory: ./java
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  python:
+    needs: changed
+    if: ${{ needs.changed.outputs.python == 'true' || needs.changed.outputs.actions == 'true' || needs.changed.outputs.testdata == 'true' }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Install dev dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+        working-directory: ./python
+      - name: Test
+        run: pytest tests/__init__.py
+        working-directory: ./python
