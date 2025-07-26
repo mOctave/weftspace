@@ -20,6 +20,8 @@ jobs:
         with:
           java-version: '17'
           distribution: 'oracle'
+      - name: Remove old content
+        run: rm -rf ./site/java
       - name: Build site
         run: mvn site
         working-directory: ./java
@@ -47,8 +49,13 @@ jobs:
           python -m pip install --upgrade pip
           pip install -e ".[dev]"
         working-directory: ./python
+      - name: Remove old content
+        run: rm -rf ./site/python
+      - name: Build
+        run: python3 -m build
+        working-directory: ./python
       - name: Build site
-        run: pdoc --html src.weftspace
+        run: pdoc --html weftspace
         working-directory: ./python
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
@@ -56,7 +63,7 @@ jobs:
           name: python
           path: ./python/html
       - name: Build tests
-        run: pdoc -o htmltests/ --html src.weftspace
+        run: pdoc -o htmltests/ --html tests
         working-directory: ./python
       - name: Upload test artifacts
         uses: actions/upload-artifact@v4
@@ -90,6 +97,6 @@ jobs:
       - name: Commit changes
         uses: iarekylew00t/verified-bot-commit@v1
         with:
-          message: 'feat: Some changes'
+          message: 'chore: Update site'
           files: |
             site/**/*
