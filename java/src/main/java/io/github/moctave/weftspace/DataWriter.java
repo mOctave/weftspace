@@ -124,7 +124,7 @@ public class DataWriter {
 
 	/**
 	 * Puts quotes around text, adapting between no quotes, double quotes, and backticks as necessary.
-	 * Does not confom to Endless Sky human readability conventions, but uses the simplest
+	 * Does not conform to Endless Sky human readability conventions, but uses the simplest
 	 * possible quotes for a given word.
 	 * @param word The text to quote.
 	 * @return The text in a format that will be interpreted as a single token by a parser.

@@ -114,7 +114,7 @@ class DataWriter:
 	def quote_word(cls, word: str):
 		"""
 		Puts quotes around text, adapting between no quotes, double quotes, and backticks as
-		necessary. Does not confom to Endless Sky human readability conventions, but uses the
+		necessary. Does not conform to Endless Sky human readability conventions, but uses the
 		simplest possible quotes for a given word.
 		"""
 		if " " in word:
