@@ -51,9 +51,12 @@ jobs:
         working-directory: ./python
       - name: Remove old content
         run: rm -rf ./site/python
+      - name: Prepare
+        run: pip3 install -e .
+        working-directory: ./python
       - name: Build site
         run: pdoc --html weftspace
-        working-directory: ./python/src
+        working-directory: ./python
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:
