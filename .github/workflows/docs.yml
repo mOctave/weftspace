@@ -3,7 +3,6 @@ name: Documentation
 on:
   push:
     branches: ["main"]
-  workflow_dispatch:
 
 jobs:
   changed:
@@ -14,7 +13,7 @@ jobs:
     if: ${{ needs.changed.outputs.java == 'true' || needs.changed.outputs.actions == 'true' }}
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: read
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
@@ -30,19 +29,13 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Move files
         run: mv ./java/target/site ./site/java
-      - name: Commit changes
-        uses: iarekylew00t/verified-bot-commit@v1
-        with:
-          message: 'chore: Update site (Java)'
-          files: |
-            site/**/*
 
   python:
     needs: changed
     if: ${{ needs.changed.outputs.python == 'true' || needs.changed.outputs.actions == 'true' }}
     runs-on: ubuntu-latest
     permissions:
-      contents: write
+      contents: read
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -53,20 +46,115 @@ jobs:
           python -m pip install --upgrade pip
           pip install -e ".[dev]"
         working-directory: ./python
-      - name: Remove old content
-        run: | # Delete everything in the old site, then recreate the parent directory
-          rm -rf ./site/python
-          mkdir ./site/python
-      - name: Build main site
+      - name: Build site
         run: pdoc --html weftspace
         working-directory: ./python
-      - name: Build test site
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: python
+          path: ./python/html
+      - name: Build tests
         run: pdoc -o htmltests/ --html tests
         working-directory: ./python
-      - name: Move main files
-        run: mv ./python/html ./site/python/main
-      - name: Move test files
-        run: mv ./python/htmltests ./site/python/tests
+      - name: Upload test artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: python-tests
+          path: ./python/htmltests
+
+  # I'm sure there's a better way to handle this, but this should work to
+  # prevent merge conflicts and reduce commit count so I'm just going to
+  # use it. Feel free to improve it if you want.
+  commit-all:
+    needs: [java, python]
+    if: |
+      always() &&
+      needs.java.result == 'success' &&
+      needs.python.result == 'success'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download Java site
+        uses: actions/download-artifact@v4
+        with:
+          name: java
+          path: ./site/java
+      - name: Download Python site
+        uses: actions/download-artifact@v4
+        with:
+          name: python
+          path: ./site/python/main
+      - name: Download Python test site
+        uses: actions/download-artifact@v4
+        with:
+          name: python-tests
+          path: ./site/python/tests
+      - name: Remove old content
+        run: |
+          rm -rf ./site/java
+          rm -rf ./site/python
+          mkdir ./site/python
+      - name: Commit changes
+        uses: iarekylew00t/verified-bot-commit@v1
+        with:
+          message: 'chore: Update site (Java, Python)'
+          files: |
+            site/**/*
+
+  commit-java:
+    needs: [java, python]
+    if: |
+      always() &&
+      needs.java.result == 'success' &&
+      needs.python.result == 'skipped'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download Java site
+        uses: actions/download-artifact@v4
+        with:
+          name: java
+          path: ./site/java
+      - name: Remove old content
+        run: |
+          rm -rf ./site/java
+      - name: Commit changes
+        uses: iarekylew00t/verified-bot-commit@v1
+        with:
+          message: 'chore: Update site (Java)'
+          files: |
+            site/**/*
+
+  commit-python:
+    needs: [java, python]
+    if: |
+      always() &&
+      needs.java.result == 'skipped' &&
+      needs.python.result == 'success'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download Python site
+        uses: actions/download-artifact@v4
+        with:
+          name: python
+          path: ./site/python/main
+      - name: Download Python test site
+        uses: actions/download-artifact@v4
+        with:
+          name: python-tests
+          path: ./site/python/tests
+      - name: Remove old content
+        run: |
+          rm -rf ./site/python
+          mkdir ./site/python
       - name: Commit changes
         uses: iarekylew00t/verified-bot-commit@v1
         with:
