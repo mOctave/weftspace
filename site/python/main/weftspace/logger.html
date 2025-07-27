@@ -1,0 +1,496 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.6">
+<title>weftspace.logger API documentation</title>
+<meta name="description" content="">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+/* Collapse source docstrings */
+setTimeout(() => {
+[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
+.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
+.forEach(el => {
+let d = document.createElement('details');
+d.classList.add('hljs-string');
+d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
+el.replaceWith(d);
+});
+}, 100);
+})</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>weftspace.logger</code></h1>
+</header>
+<section id="section-intro">
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="weftspace.logger.Logger"><code class="flex name class">
+<span>class <span class="ident">Logger</span></span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Logger(ABC):
+        &#34;&#34;&#34;A class which handles error logging for this library.&#34;&#34;&#34;
+
+        # MARK: Constants
+
+        # ANSI Colours
+        BLACK: Final[str] = &#34;\u001B[30m&#34;
+        &#34;&#34;&#34;Escape sequence for ANSI black text.&#34;&#34;&#34;
+
+        RED: Final[str] = &#34;\u001B[31m&#34;
+        &#34;&#34;&#34;Escape sequence for ANSI red text.&#34;&#34;&#34;
+
+        GREEN: Final[str] = &#34;\u001B[32m&#34;
+        &#34;&#34;&#34;Escape sequence for ANSI green text.&#34;&#34;&#34;
+
+        YELLOW: Final[str] = &#34;\u001B[33m&#34;
+        &#34;&#34;&#34;Escape sequence for ANSI yellow text.&#34;&#34;&#34;
+
+        BLUE: Final[str] = &#34;\u001B[34m&#34;
+        &#34;&#34;&#34;Escape sequence for ANSI blue text.&#34;&#34;&#34;
+
+        MAGENTA: Final[str] = &#34;\u001B[35m&#34;
+        &#34;&#34;&#34;Escape sequence for ANSI magenta text.&#34;&#34;&#34;
+
+        CYAN: Final[str] = &#34;\u001B[36m&#34;
+        &#34;&#34;&#34;Escape sequence for ANSI cyan text.&#34;&#34;&#34;
+
+        WHITE: Final[str] = &#34;\u001B[37m&#34;
+        &#34;&#34;&#34;Escape sequence for ANSI white text.&#34;&#34;&#34;
+
+        RESET: Final[str] = &#34;\u001B[0m&#34;
+        &#34;&#34;&#34;Escape sequence for ANSI formatting reset.&#34;&#34;&#34;
+
+        BOLD: Final[str] = &#34;\u001B[1m&#34;
+        &#34;&#34;&#34;Escape sequence for ANSI bold text.&#34;&#34;&#34;
+
+
+        class Severity(Enum):
+                &#34;&#34;&#34;An enum storing different levels of severity that a message can have.&#34;&#34;&#34;
+
+                FATAL = 0
+                &#34;&#34;&#34;This error resulted in the program&#39;s immediate failure.&#34;&#34;&#34;
+
+                ERROR = 1
+                &#34;&#34;&#34;This error is serious, but not immediately fatal.&#34;&#34;&#34;
+
+                WARN = 2
+                &#34;&#34;&#34;This error is not serious, but may cause later issues or unintended behaviour.&#34;&#34;&#34;
+                
+                INFO = 3
+                &#34;&#34;&#34;This message is not an error.&#34;&#34;&#34;
+
+                SUCCESS = 4
+                &#34;&#34;&#34;This message is an indicator of success.&#34;&#34;&#34;
+
+
+
+        # MARK: Error Count
+        _error_count: int = 0
+
+        @classmethod
+        def get_error_count(cls):
+                &#34;&#34;&#34;Returns the number of errors thrown by this program.&#34;&#34;&#34;
+                return cls._error_count
+        
+        @classmethod
+        def reset_error_count(cls):
+                &#34;&#34;&#34;Resets the error count to 0.&#34;&#34;&#34;
+                cls._error_count = 0
+        
+        @classmethod
+        def count_error(cls):
+                &#34;&#34;&#34;Increments the error count by 1.&#34;&#34;&#34;
+                cls._error_count += 1
+
+
+
+        # MARK: Message
+        class Message(ABC):
+                def __init__(self, severity: Logger.Severity, content: str):
+                        self.severity = severity
+                        self.content = content
+
+                _severity: Logger.Severity
+
+                @property
+                def severity(self):
+                        &#34;&#34;&#34;The severity of this message.&#34;&#34;&#34;
+                        return self._severity
+        
+                @severity.setter
+                def severity(self, severity: Logger.Severity):
+                        &#34;&#34;&#34;Changes the severity of this message.&#34;&#34;&#34;
+                        self._severity = severity
+
+                
+                _content: str
+
+                @property
+                def content(self):
+                        &#34;&#34;&#34;The content of this message.&#34;&#34;&#34;
+                        return self._content
+        
+                @content.setter
+                def content(self, content: str):
+                        &#34;&#34;&#34;Changes the content of this message.&#34;&#34;&#34;
+                        self._content = content
+
+
+
+                def format_on(self, stream: TextIO):
+                        &#34;&#34;&#34;Prints the appropriate ANSI escape code for the severity of this message.&#34;&#34;&#34;
+                        match self.severity:
+                                case Logger.Severity.FATAL:
+                                        stream.write(Logger.BOLD)
+                                        stream.write(Logger.RED)
+                                        Logger.count_error()
+                                case Logger.Severity.ERROR:
+                                        stream.write(Logger.RED)
+                                        Logger.count_error()
+                                case Logger.Severity.WARN:
+                                        stream.write(Logger.YELLOW)
+                                case Logger.Severity.SUCCESS:
+                                        stream.write(Logger.GREEN)
+                                case _:
+                                        stream.write(Logger.BLUE)
+
+
+                def print_prefix(self, stream: TextIO):
+                        &#34;&#34;&#34;Prints the prefix for this error message.&#34;&#34;&#34;
+                        match self.severity:
+                                case Logger.Severity.FATAL:
+                                        stream.write(&#34;Fatal Error: &#34;)
+                                case Logger.Severity.ERROR:
+                                        stream.write(&#34;Error: &#34;)
+                                case Logger.Severity.WARN:
+                                        stream.write(&#34;Warning: &#34;)
+                                case _:
+                                        pass
+
+                def end_message(self, stream: TextIO):
+                        &#34;&#34;&#34;
+                        Ends the message, reseting formating. If this message is a fatal error, calling
+                        this method will also exit the program with an error code of 1.
+                        &#34;&#34;&#34;
+                        stream.write(Logger.RESET)
+                        stream.write(&#34;\n&#34;)
+                        if (self.severity == Logger.Severity.FATAL):
+                                sys.exit(1)
+        
+
+
+        # MARK: Dynamic Message
+        class DynamicMessage(Message):
+                &#34;&#34;&#34;
+                A class that automatically fills in data based on the classes of its arguments.
+                This class should be used instead of creating new subclasses of Message if possible.
+                &#34;&#34;&#34;
+
+                def __init__(self, severity: Logger.Severity, content: str):
+                        &#34;&#34;&#34;Sole constructor.&#34;&#34;&#34;
+                        self.severity = severity
+                        self.content = content
+                
+
+
+                def log(self, *args: Any):
+                        content: str = self.content
+
+                        str_count: int = 0
+                        node_count: int = 0
+
+                        loaded_node: LoadedNode | None = None
+                        print_stream: TextIO = sys.stderr
+
+                        for arg in args:
+                                if isinstance(arg, str):
+                                        if str_count == 0:
+                                                content = content.replace(&#34;$CONTEXT&#34;, arg)
+
+                                        content = content.replace(&#34;$CONTEXT[{}]&#34;.format(str_count), arg)
+                                        content = content.replace(&#34;$FILENAME[{}]&#34;.format(str_count), path.basename(arg))
+
+                                        str_count += 1
+                                
+                                elif isinstance(arg, DataNode):
+                                        if node_count == 0:
+                                                content = content.replace(&#34;$NODE&#34;, arg.name)
+
+                                        content = content.replace(&#34;$NODE[{}]&#34;.format(node_count), arg.name)
+
+                                        if arg.parent != None:
+                                                if node_count == 0:
+                                                        content = content.replace(&#34;$PARENT&#34;, arg.parent.name)
+
+                                                content = content.replace(&#34;$PARENT[{}]&#34;.format(node_count), arg.parent.name)
+
+                                        node_count += 1
+                                
+                                elif isinstance(arg, TextIO):
+                                        print_stream = arg
+
+                                if isinstance(arg, LoadedNode) and loaded_node == None:
+                                        loaded_node = arg
+
+
+                        self.format_on(print_stream)
+                        self.print_prefix(print_stream)
+                        print_stream.write(content)
+
+                        if loaded_node != None:
+                                print_stream.write(&#34; (line {0} of {1})&#34;.format(loaded_node.line, loaded_node.file))
+
+                        self.end_message(print_stream)
+
+
+
+        # MARK: Preset Messages
+        FATAL_GENERIC: Final[Logger.DynamicMessage] = DynamicMessage(Severity.FATAL, &#34;A fatal error was encountered. No other information is available.&#34;)
+        &#34;&#34;&#34;Fatal Error: No context&#34;&#34;&#34;
+
+
+        ERROR_GENERIC: Final[Logger.DynamicMessage] = DynamicMessage(Severity.ERROR, &#34;An error was encountered. No other information is available.&#34;)
+        &#34;&#34;&#34;Error: No context&#34;&#34;&#34;
+        ERROR_FILE_DNE: Final[Logger.DynamicMessage] = DynamicMessage(Severity.ERROR, &#34;The file $CONTEXT does not exist or could not be found.&#34;)
+        &#34;&#34;&#34;Error: File does not exist&#34;&#34;&#34;
+
+        ERROR_NODE_PARSE_GENERIC: Final[Logger.DynamicMessage] = DynamicMessage(Severity.ERROR, &#34;There was an error parsing the node $NODE.&#34;)
+        &#34;&#34;&#34;Error: Node failed to parse&#34;&#34;&#34;
+
+        ERROR_BUILDER_MISSING_ARG: Final[Logger.DynamicMessage] = DynamicMessage(Severity.ERROR, &#34;Missing argument for $NODE in $CONTEXT.&#34;)
+        &#34;&#34;&#34;Error: Node missing arg for builder&#34;&#34;&#34;
+        ERROR_BUILDER_MALFORMED_INT: Final[Logger.DynamicMessage] = DynamicMessage(Severity.ERROR, &#34;$NODE argument in $CONTEXT is not a valid integer.&#34;)
+        &#34;&#34;&#34;Error: Node argument not a valid integer&#34;&#34;&#34;
+        ERROR_BUILDER_MALFORMED_REAL: Final[Logger.DynamicMessage] = DynamicMessage(Severity.ERROR, &#34;$NODE argument in $CONTEXT is not a real number.&#34;)
+        &#34;&#34;&#34;Error: Node argument not a valid float&#34;&#34;&#34;
+
+        WARN_NODE_WRITE_ROOT: Final[Logger.DynamicMessage] = DynamicMessage(Severity.WARN, &#34;$NODE is a root node and should not be written.&#34;)
+        &#34;&#34;&#34;Warning: Node is a root node and should not be written&#34;&#34;&#34;
+
+        WARN_BUILDER_NATURAL_OUT_OF_BOUNDS: Final[Logger.DynamicMessage] = DynamicMessage(Severity.WARN, &#34;$NODE argument in $CONTEXT should be a natural number, but is less than 0.&#34;)
+        &#34;&#34;&#34;Warning: Node argument is out of the expected range for a natural number&#34;&#34;&#34;
+        WARN_BUILDER_ROLL_OUT_OF_BOUNDS: Final[Logger.DynamicMessage] = DynamicMessage(Severity.WARN, &#34;$NODE argument in $CONTEXT is either too large or too small to be a valid default random roll.&#34;)
+        &#34;&#34;&#34;Warning: Node argument is out of the expected range for a default random roll&#34;&#34;&#34;
+
+        WARN_BUILDER_POSREAL_OUT_OF_BOUNDS: Final[Logger.DynamicMessage] = DynamicMessage(Severity.WARN, &#34;$NODE argument in $CONTEXT should non-negative, but is less than 0.&#34;)
+        &#34;&#34;&#34;Warning: Node argument is out of the expected range for a positive real number&#34;&#34;&#34;
+        WARN_BUILDER_SMALLREAL_OUT_OF_BOUNDS: Final[Logger.DynamicMessage] = DynamicMessage(Severity.WARN, &#34;$NODE argument in $CONTEXT is outside the expected range of 0 to 1 inclusive.&#34;)
+        &#34;&#34;&#34;Warning: Node argument is out of the expected range 0...1&#34;&#34;&#34;</code></pre>
+</details>
+<div class="desc"><p>A class which handles error logging for this library.</p></div>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>abc.ABC</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="weftspace.logger.Logger.BLACK"><code class="name">var <span class="ident">BLACK</span> : Final[str]</code></dt>
+<dd>
+<div class="desc"><p>Escape sequence for ANSI black text.</p></div>
+</dd>
+<dt id="weftspace.logger.Logger.BLUE"><code class="name">var <span class="ident">BLUE</span> : Final[str]</code></dt>
+<dd>
+<div class="desc"><p>Escape sequence for ANSI blue text.</p></div>
+</dd>
+<dt id="weftspace.logger.Logger.BOLD"><code class="name">var <span class="ident">BOLD</span> : Final[str]</code></dt>
+<dd>
+<div class="desc"><p>Escape sequence for ANSI bold text.</p></div>
+</dd>
+<dt id="weftspace.logger.Logger.CYAN"><code class="name">var <span class="ident">CYAN</span> : Final[str]</code></dt>
+<dd>
+<div class="desc"><p>Escape sequence for ANSI cyan text.</p></div>
+</dd>
+<dt id="weftspace.logger.Logger.DynamicMessage"><code class="name">var <span class="ident">DynamicMessage</span></code></dt>
+<dd>
+<div class="desc"><p>A class that automatically fills in data based on the classes of its arguments.
+This class should be used instead of creating new subclasses of Message if possible.</p></div>
+</dd>
+<dt id="weftspace.logger.Logger.ERROR_BUILDER_MALFORMED_INT"><code class="name">var <span class="ident">ERROR_BUILDER_MALFORMED_INT</span> : Final[<a title="weftspace.logger.Logger.DynamicMessage" href="#weftspace.logger.Logger.DynamicMessage">Logger.DynamicMessage</a>]</code></dt>
+<dd>
+<div class="desc"><p>Error: Node argument not a valid integer</p></div>
+</dd>
+<dt id="weftspace.logger.Logger.ERROR_BUILDER_MALFORMED_REAL"><code class="name">var <span class="ident">ERROR_BUILDER_MALFORMED_REAL</span> : Final[<a title="weftspace.logger.Logger.DynamicMessage" href="#weftspace.logger.Logger.DynamicMessage">Logger.DynamicMessage</a>]</code></dt>
+<dd>
+<div class="desc"><p>Error: Node argument not a valid float</p></div>
+</dd>
+<dt id="weftspace.logger.Logger.ERROR_BUILDER_MISSING_ARG"><code class="name">var <span class="ident">ERROR_BUILDER_MISSING_ARG</span> : Final[<a title="weftspace.logger.Logger.DynamicMessage" href="#weftspace.logger.Logger.DynamicMessage">Logger.DynamicMessage</a>]</code></dt>
+<dd>
+<div class="desc"><p>Error: Node missing arg for builder</p></div>
+</dd>
+<dt id="weftspace.logger.Logger.ERROR_FILE_DNE"><code class="name">var <span class="ident">ERROR_FILE_DNE</span> : Final[<a title="weftspace.logger.Logger.DynamicMessage" href="#weftspace.logger.Logger.DynamicMessage">Logger.DynamicMessage</a>]</code></dt>
+<dd>
+<div class="desc"><p>Error: File does not exist</p></div>
+</dd>
+<dt id="weftspace.logger.Logger.ERROR_GENERIC"><code class="name">var <span class="ident">ERROR_GENERIC</span> : Final[<a title="weftspace.logger.Logger.DynamicMessage" href="#weftspace.logger.Logger.DynamicMessage">Logger.DynamicMessage</a>]</code></dt>
+<dd>
+<div class="desc"><p>Error: No context</p></div>
+</dd>
+<dt id="weftspace.logger.Logger.ERROR_NODE_PARSE_GENERIC"><code class="name">var <span class="ident">ERROR_NODE_PARSE_GENERIC</span> : Final[<a title="weftspace.logger.Logger.DynamicMessage" href="#weftspace.logger.Logger.DynamicMessage">Logger.DynamicMessage</a>]</code></dt>
+<dd>
+<div class="desc"><p>Error: Node failed to parse</p></div>
+</dd>
+<dt id="weftspace.logger.Logger.FATAL_GENERIC"><code class="name">var <span class="ident">FATAL_GENERIC</span> : Final[<a title="weftspace.logger.Logger.DynamicMessage" href="#weftspace.logger.Logger.DynamicMessage">Logger.DynamicMessage</a>]</code></dt>
+<dd>
+<div class="desc"><p>Fatal Error: No context</p></div>
+</dd>
+<dt id="weftspace.logger.Logger.GREEN"><code class="name">var <span class="ident">GREEN</span> : Final[str]</code></dt>
+<dd>
+<div class="desc"><p>Escape sequence for ANSI green text.</p></div>
+</dd>
+<dt id="weftspace.logger.Logger.MAGENTA"><code class="name">var <span class="ident">MAGENTA</span> : Final[str]</code></dt>
+<dd>
+<div class="desc"><p>Escape sequence for ANSI magenta text.</p></div>
+</dd>
+<dt id="weftspace.logger.Logger.Message"><code class="name">var <span class="ident">Message</span></code></dt>
+<dd>
+<div class="desc"><p>Helper class that provides a standard way to create an ABC using
+inheritance.</p></div>
+</dd>
+<dt id="weftspace.logger.Logger.RED"><code class="name">var <span class="ident">RED</span> : Final[str]</code></dt>
+<dd>
+<div class="desc"><p>Escape sequence for ANSI red text.</p></div>
+</dd>
+<dt id="weftspace.logger.Logger.RESET"><code class="name">var <span class="ident">RESET</span> : Final[str]</code></dt>
+<dd>
+<div class="desc"><p>Escape sequence for ANSI formatting reset.</p></div>
+</dd>
+<dt id="weftspace.logger.Logger.Severity"><code class="name">var <span class="ident">Severity</span></code></dt>
+<dd>
+<div class="desc"><p>An enum storing different levels of severity that a message can have.</p></div>
+</dd>
+<dt id="weftspace.logger.Logger.WARN_BUILDER_NATURAL_OUT_OF_BOUNDS"><code class="name">var <span class="ident">WARN_BUILDER_NATURAL_OUT_OF_BOUNDS</span> : Final[<a title="weftspace.logger.Logger.DynamicMessage" href="#weftspace.logger.Logger.DynamicMessage">Logger.DynamicMessage</a>]</code></dt>
+<dd>
+<div class="desc"><p>Warning: Node argument is out of the expected range for a natural number</p></div>
+</dd>
+<dt id="weftspace.logger.Logger.WARN_BUILDER_POSREAL_OUT_OF_BOUNDS"><code class="name">var <span class="ident">WARN_BUILDER_POSREAL_OUT_OF_BOUNDS</span> : Final[<a title="weftspace.logger.Logger.DynamicMessage" href="#weftspace.logger.Logger.DynamicMessage">Logger.DynamicMessage</a>]</code></dt>
+<dd>
+<div class="desc"><p>Warning: Node argument is out of the expected range for a positive real number</p></div>
+</dd>
+<dt id="weftspace.logger.Logger.WARN_BUILDER_ROLL_OUT_OF_BOUNDS"><code class="name">var <span class="ident">WARN_BUILDER_ROLL_OUT_OF_BOUNDS</span> : Final[<a title="weftspace.logger.Logger.DynamicMessage" href="#weftspace.logger.Logger.DynamicMessage">Logger.DynamicMessage</a>]</code></dt>
+<dd>
+<div class="desc"><p>Warning: Node argument is out of the expected range for a default random roll</p></div>
+</dd>
+<dt id="weftspace.logger.Logger.WARN_BUILDER_SMALLREAL_OUT_OF_BOUNDS"><code class="name">var <span class="ident">WARN_BUILDER_SMALLREAL_OUT_OF_BOUNDS</span> : Final[<a title="weftspace.logger.Logger.DynamicMessage" href="#weftspace.logger.Logger.DynamicMessage">Logger.DynamicMessage</a>]</code></dt>
+<dd>
+<div class="desc"><p>Warning: Node argument is out of the expected range 0&hellip;1</p></div>
+</dd>
+<dt id="weftspace.logger.Logger.WARN_NODE_WRITE_ROOT"><code class="name">var <span class="ident">WARN_NODE_WRITE_ROOT</span> : Final[<a title="weftspace.logger.Logger.DynamicMessage" href="#weftspace.logger.Logger.DynamicMessage">Logger.DynamicMessage</a>]</code></dt>
+<dd>
+<div class="desc"><p>Warning: Node is a root node and should not be written</p></div>
+</dd>
+<dt id="weftspace.logger.Logger.WHITE"><code class="name">var <span class="ident">WHITE</span> : Final[str]</code></dt>
+<dd>
+<div class="desc"><p>Escape sequence for ANSI white text.</p></div>
+</dd>
+<dt id="weftspace.logger.Logger.YELLOW"><code class="name">var <span class="ident">YELLOW</span> : Final[str]</code></dt>
+<dd>
+<div class="desc"><p>Escape sequence for ANSI yellow text.</p></div>
+</dd>
+</dl>
+<h3>Static methods</h3>
+<dl>
+<dt id="weftspace.logger.Logger.count_error"><code class="name flex">
+<span>def <span class="ident">count_error</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Increments the error count by 1.</p></div>
+</dd>
+<dt id="weftspace.logger.Logger.get_error_count"><code class="name flex">
+<span>def <span class="ident">get_error_count</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns the number of errors thrown by this program.</p></div>
+</dd>
+<dt id="weftspace.logger.Logger.reset_error_count"><code class="name flex">
+<span>def <span class="ident">reset_error_count</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Resets the error count to 0.</p></div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="weftspace" href="index.html">weftspace</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="weftspace.logger.Logger" href="#weftspace.logger.Logger">Logger</a></code></h4>
+<ul class="">
+<li><code><a title="weftspace.logger.Logger.BLACK" href="#weftspace.logger.Logger.BLACK">BLACK</a></code></li>
+<li><code><a title="weftspace.logger.Logger.BLUE" href="#weftspace.logger.Logger.BLUE">BLUE</a></code></li>
+<li><code><a title="weftspace.logger.Logger.BOLD" href="#weftspace.logger.Logger.BOLD">BOLD</a></code></li>
+<li><code><a title="weftspace.logger.Logger.CYAN" href="#weftspace.logger.Logger.CYAN">CYAN</a></code></li>
+<li><code><a title="weftspace.logger.Logger.DynamicMessage" href="#weftspace.logger.Logger.DynamicMessage">DynamicMessage</a></code></li>
+<li><code><a title="weftspace.logger.Logger.ERROR_BUILDER_MALFORMED_INT" href="#weftspace.logger.Logger.ERROR_BUILDER_MALFORMED_INT">ERROR_BUILDER_MALFORMED_INT</a></code></li>
+<li><code><a title="weftspace.logger.Logger.ERROR_BUILDER_MALFORMED_REAL" href="#weftspace.logger.Logger.ERROR_BUILDER_MALFORMED_REAL">ERROR_BUILDER_MALFORMED_REAL</a></code></li>
+<li><code><a title="weftspace.logger.Logger.ERROR_BUILDER_MISSING_ARG" href="#weftspace.logger.Logger.ERROR_BUILDER_MISSING_ARG">ERROR_BUILDER_MISSING_ARG</a></code></li>
+<li><code><a title="weftspace.logger.Logger.ERROR_FILE_DNE" href="#weftspace.logger.Logger.ERROR_FILE_DNE">ERROR_FILE_DNE</a></code></li>
+<li><code><a title="weftspace.logger.Logger.ERROR_GENERIC" href="#weftspace.logger.Logger.ERROR_GENERIC">ERROR_GENERIC</a></code></li>
+<li><code><a title="weftspace.logger.Logger.ERROR_NODE_PARSE_GENERIC" href="#weftspace.logger.Logger.ERROR_NODE_PARSE_GENERIC">ERROR_NODE_PARSE_GENERIC</a></code></li>
+<li><code><a title="weftspace.logger.Logger.FATAL_GENERIC" href="#weftspace.logger.Logger.FATAL_GENERIC">FATAL_GENERIC</a></code></li>
+<li><code><a title="weftspace.logger.Logger.GREEN" href="#weftspace.logger.Logger.GREEN">GREEN</a></code></li>
+<li><code><a title="weftspace.logger.Logger.MAGENTA" href="#weftspace.logger.Logger.MAGENTA">MAGENTA</a></code></li>
+<li><code><a title="weftspace.logger.Logger.Message" href="#weftspace.logger.Logger.Message">Message</a></code></li>
+<li><code><a title="weftspace.logger.Logger.RED" href="#weftspace.logger.Logger.RED">RED</a></code></li>
+<li><code><a title="weftspace.logger.Logger.RESET" href="#weftspace.logger.Logger.RESET">RESET</a></code></li>
+<li><code><a title="weftspace.logger.Logger.Severity" href="#weftspace.logger.Logger.Severity">Severity</a></code></li>
+<li><code><a title="weftspace.logger.Logger.WARN_BUILDER_NATURAL_OUT_OF_BOUNDS" href="#weftspace.logger.Logger.WARN_BUILDER_NATURAL_OUT_OF_BOUNDS">WARN_BUILDER_NATURAL_OUT_OF_BOUNDS</a></code></li>
+<li><code><a title="weftspace.logger.Logger.WARN_BUILDER_POSREAL_OUT_OF_BOUNDS" href="#weftspace.logger.Logger.WARN_BUILDER_POSREAL_OUT_OF_BOUNDS">WARN_BUILDER_POSREAL_OUT_OF_BOUNDS</a></code></li>
+<li><code><a title="weftspace.logger.Logger.WARN_BUILDER_ROLL_OUT_OF_BOUNDS" href="#weftspace.logger.Logger.WARN_BUILDER_ROLL_OUT_OF_BOUNDS">WARN_BUILDER_ROLL_OUT_OF_BOUNDS</a></code></li>
+<li><code><a title="weftspace.logger.Logger.WARN_BUILDER_SMALLREAL_OUT_OF_BOUNDS" href="#weftspace.logger.Logger.WARN_BUILDER_SMALLREAL_OUT_OF_BOUNDS">WARN_BUILDER_SMALLREAL_OUT_OF_BOUNDS</a></code></li>
+<li><code><a title="weftspace.logger.Logger.WARN_NODE_WRITE_ROOT" href="#weftspace.logger.Logger.WARN_NODE_WRITE_ROOT">WARN_NODE_WRITE_ROOT</a></code></li>
+<li><code><a title="weftspace.logger.Logger.WHITE" href="#weftspace.logger.Logger.WHITE">WHITE</a></code></li>
+<li><code><a title="weftspace.logger.Logger.YELLOW" href="#weftspace.logger.Logger.YELLOW">YELLOW</a></code></li>
+<li><code><a title="weftspace.logger.Logger.count_error" href="#weftspace.logger.Logger.count_error">count_error</a></code></li>
+<li><code><a title="weftspace.logger.Logger.get_error_count" href="#weftspace.logger.Logger.get_error_count">get_error_count</a></code></li>
+<li><code><a title="weftspace.logger.Logger.reset_error_count" href="#weftspace.logger.Logger.reset_error_count">reset_error_count</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.6</a>.</p>
+</footer>
+</body>
+</html>
