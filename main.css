@@ -1,0 +1,45 @@
+html {
+	background-color: silver;
+	font-family: Ubuntu, Roboto, Arial, sans-serif;
+}
+
+h1 {
+	text-align: center;
+}
+
+a {
+	color: blue;
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a.linkbutton {
+	color: white;
+	background-color: black;
+	padding: 10px;
+	margin: 5px;
+	border-radius: 5px;
+}
+
+a.linkbutton:hover {
+	text-decoration: none;
+}
+
+a.javabutton {
+	background-color: #09a;
+}
+
+a.javabutton:hover {
+	background-color: #0bc;
+}
+
+a.pythonbutton {
+	background-color: #a90;
+}
+
+a.pythonbutton:hover {
+	background-color: #cb0;
+}
