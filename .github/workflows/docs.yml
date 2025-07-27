@@ -54,9 +54,9 @@ jobs:
           pip install -e ".[dev]"
         working-directory: ./python
       - name: Remove old content
-        run: |
-          rm -rf ./site/python/main
-          rm -rf ./site/python/tests
+        run: | # Delete everything in the old site, then recreate the parent directory
+          rm -rf ./site/python
+          mkdir ./site/python
       - name: Build main site
         run: pdoc --html weftspace
         working-directory: ./python
