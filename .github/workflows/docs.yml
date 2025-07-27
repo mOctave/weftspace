@@ -27,8 +27,11 @@ jobs:
         working-directory: ./java
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Move files
-        run: mv ./java/target/site ./site/java
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: java
+          path: ./java/target/site
 
   python:
     needs: changed
