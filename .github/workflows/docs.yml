@@ -13,7 +13,7 @@ jobs:
     if: ${{ needs.changed.outputs.java == 'true' || needs.changed.outputs.actions == 'true' }}
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
@@ -41,7 +41,7 @@ jobs:
     if: ${{ needs.changed.outputs.python == 'true' || needs.changed.outputs.actions == 'true' }}
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -53,10 +53,9 @@ jobs:
           pip install -e ".[dev]"
         working-directory: ./python
       - name: Remove old content
-        run: rm -rf ./site/python
-      - name: Prepare
-        run: pip3 install -e .
-        working-directory: ./python
+        run: |
+          rm -rf ./site/python/main
+          rm -rf ./site/python/tests
       - name: Build main site
         run: pdoc --html weftspace
         working-directory: ./python
