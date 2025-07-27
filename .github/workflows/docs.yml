@@ -101,13 +101,9 @@ jobs:
           rm -rf ./site/python
           mkdir ./site/python
       - name: Commit changes
-        uses: iarekylew00t/verified-bot-commit@v1
+        uses: EndBug/add-and-commit@v9
         with:
           message: 'chore: Update site (Java, Python)'
-          files: |
-            site/**/*
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   commit-java:
     needs: [java, python]
@@ -129,13 +125,9 @@ jobs:
         run: |
           rm -rf ./site/java
       - name: Commit changes
-        uses: iarekylew00t/verified-bot-commit@v1
+        uses: EndBug/add-and-commit@v9
         with:
-          message: 'chore: Update site (Java)'
-          files: |
-            site/**/*
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          message: 'chore: Update site (Java, Python)'
 
   commit-python:
     needs: [java, python]
@@ -163,10 +155,6 @@ jobs:
           name: python-tests
           path: ./site/python/tests
       - name: Commit changes
-        uses: iarekylew00t/verified-bot-commit@v1
+        uses: EndBug/add-and-commit@v9
         with:
-          message: 'chore: Update site (Python)'
-          files: |
-            site/**/*
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          message: 'chore: Update site (Java, Python)'
