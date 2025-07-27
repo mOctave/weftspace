@@ -106,6 +106,8 @@ jobs:
           message: 'chore: Update site (Java, Python)'
           files: |
             site/**/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   commit-java:
     needs: [java, python]
@@ -132,6 +134,8 @@ jobs:
           message: 'chore: Update site (Java)'
           files: |
             site/**/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   commit-python:
     needs: [java, python]
@@ -164,3 +168,5 @@ jobs:
           message: 'chore: Update site (Python)'
           files: |
             site/**/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
