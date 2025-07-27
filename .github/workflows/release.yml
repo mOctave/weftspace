@@ -50,15 +50,12 @@ jobs:
       - name: Publish
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
-          repository-url: https://test.pypi.org/legacy/
           packages-dir: python/dist/
 
   docs:
     runs-on: ubuntu-latest
     permissions:
-      contents: read
-      id-token: write
-      pages: write
+      contents: write
     steps:
       - uses: actions/checkout@v4
       - name: Deploy
@@ -66,5 +63,3 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./site
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
