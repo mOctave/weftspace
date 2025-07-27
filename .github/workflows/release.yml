@@ -28,8 +28,8 @@ jobs:
       packages: write
       id-token: write
     environment:
-      name: testpypi
-      url: https://testpypi.org/p/weftspace # Switch to proper PyPI once bugs are ironed out
+      name: pypi
+      url: https://pypi.org/p/weftspace # Switch to proper PyPI once bugs are ironed out
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
