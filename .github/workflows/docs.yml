@@ -94,12 +94,12 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: python
-          path: ./site/python/main
+          path: ./site/python
       - name: Download Python test site
         uses: actions/download-artifact@v4
         with:
           name: python-tests
-          path: ./site/python/tests
+          path: ./site/python
       - name: Commit changes
         uses: EndBug/add-and-commit@v9
         with:
