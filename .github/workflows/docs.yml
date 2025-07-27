@@ -144,6 +144,10 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4
+      - name: Remove old content
+        run: |
+          rm -rf ./site/python
+          mkdir ./site/python
       - name: Download Python site
         uses: actions/download-artifact@v4
         with:
@@ -154,10 +158,6 @@ jobs:
         with:
           name: python-tests
           path: ./site/python/tests
-      - name: Remove old content
-        run: |
-          rm -rf ./site/python
-          mkdir ./site/python
       - name: Commit changes
         uses: iarekylew00t/verified-bot-commit@v1
         with:
