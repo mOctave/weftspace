@@ -14,9 +14,9 @@
 # This package contains the main code for the Python Weftspace library.
 
 # type: ignore
-from src.weftspace.builder import Builder
-from src.weftspace.data_node import DataNode
-from src.weftspace.data_reader import DataReader
-from src.weftspace.data_writer import DataWriter
-from src.weftspace.loaded_node import LoadedNode
-from src.weftspace.logger import Logger
+from .builder import Builder
+from .data_node import DataNode
+from .data_reader import DataReader
+from .data_writer import DataWriter
+from .loaded_node import LoadedNode
+from .logger import Logger

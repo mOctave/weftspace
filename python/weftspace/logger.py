@@ -18,8 +18,8 @@ from os import path
 import sys
 from typing import Any, Final, TextIO
 
-from src.weftspace.data_node import DataNode
-from src.weftspace.loaded_node import LoadedNode
+from .data_node import DataNode
+from .loaded_node import LoadedNode
 
 class Logger(ABC):
 	"""A class which handles error logging for this library."""

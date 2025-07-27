@@ -18,3 +18,8 @@
 # type: ignore
 from tests.test_utils import TestUtils
 from tests.unit_tests import UnitTests
+
+import sys
+import os
+
+sys.path.append(os.path.dirname(os.path.realpath(__file__)) + "/../src")

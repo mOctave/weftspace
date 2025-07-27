@@ -14,8 +14,8 @@
 from abc import ABC
 from enum import Enum
 
-from src.weftspace.data_node import DataNode
-from src.weftspace.logger import Logger
+from .data_node import DataNode
+from .logger import Logger
 
 class Builder(ABC):
 	"""A class of utility methods designed to allow easy conversion from nodes to objects."""

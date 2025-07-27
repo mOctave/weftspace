@@ -14,9 +14,9 @@
 from collections import deque
 from enum import Enum
 
-from src.weftspace.data_node import DataNode
-from src.weftspace.loaded_node import LoadedNode
-from src.weftspace.logger import Logger
+from .data_node import DataNode
+from .loaded_node import LoadedNode
+from .logger import Logger
 
 class DataReader:
 	"""A class which reads data from a file and stores it in a node tree."""

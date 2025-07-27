@@ -13,8 +13,8 @@
 
 from io import TextIOWrapper
 
-from src.weftspace.data_node import DataNode
-from src.weftspace.logger import Logger
+from .data_node import DataNode
+from .logger import Logger
 
 class DataWriter:
 	# MARK: Constructor

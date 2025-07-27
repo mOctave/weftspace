@@ -75,14 +75,12 @@ include = [
 	"/*.json",
 	"/*.lock",
 	"/*.md",
-	"/mypy.ini",
-	"/noxfile.py",
-	"src/*",
+	"weftspace/*",
 	"tests/*",
 ]
 
 [tool.hatch.version]
-path = "src/weftspace/_version.py"
+path = "weftspace/_version.py"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

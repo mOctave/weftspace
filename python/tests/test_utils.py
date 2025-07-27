@@ -13,7 +13,7 @@
 
 from abc import ABC
 
-from src.weftspace import DataNode
+from weftspace import DataNode
 
 class TestUtils(ABC):
 	"""A class containing utility methods to support tests."""

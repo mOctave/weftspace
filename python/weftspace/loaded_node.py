@@ -11,7 +11,7 @@
 # You should have received a copy of the GNU Affero General Public License along with
 # this program. If not, see <https://www.gnu.org/licenses/>.
 
-from src.weftspace.data_node import DataNode
+from .data_node import DataNode
 
 class LoadedNode(DataNode):
 	"""A subclass of a node that is attached to a specific line and file, for use in debugging."""

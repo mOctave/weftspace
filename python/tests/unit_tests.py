@@ -14,7 +14,7 @@
 from pathlib import Path
 import unittest
 
-from src.weftspace import Builder, DataNode, DataReader, DataWriter, Logger
+from weftspace import Builder, DataNode, DataReader, DataWriter, Logger
 
 from tests.test_utils import TestUtils
 
