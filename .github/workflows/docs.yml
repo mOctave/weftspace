@@ -27,11 +27,14 @@ jobs:
         working-directory: ./java
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v4
+      - name: Move files
+        run: mv ./java/target/site ./site/java
+      - name: Commit changes
+        uses: iarekylew00t/verified-bot-commit@v1
         with:
-          name: java
-          path: ./java/target/site
+          message: 'chore: Update site (Java)'
+          files: |
+            site/**/*
 
   python:
     needs: changed
@@ -54,49 +57,19 @@ jobs:
       - name: Prepare
         run: pip3 install -e .
         working-directory: ./python
-      - name: Build site
+      - name: Build main site
         run: pdoc --html weftspace
         working-directory: ./python
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: python
-          path: ./python/html
-      - name: Build tests
+      - name: Build test site
         run: pdoc -o htmltests/ --html tests
         working-directory: ./python
-      - name: Upload test artifacts
-        uses: actions/upload-artifact@v4
-        with:
-          name: python-tests
-          path: ./python/htmltests
-
-  commit:
-    needs: [java, python]
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - uses: actions/checkout@v4
-      - name: Download Java site
-        uses: actions/download-artifact@v4
-        with:
-          name: java
-          path: ./site/java
-      - name: Download Python site
-        uses: actions/download-artifact@v4
-        with:
-          name: python
-          path: ./site/python/main
-      - name: Download Python test site
-        uses: actions/download-artifact@v4
-        with:
-          name: python-tests
-          path: ./site/python/tests
-
+      - name: Move main files
+        run: mv ./python/html ./site/python/main
+      - name: Move test files
+        run: mv ./python/htmltests ./site/python/tests
       - name: Commit changes
         uses: iarekylew00t/verified-bot-commit@v1
         with:
-          message: 'chore: Update site'
+          message: 'chore: Update site (Python)'
           files: |
             site/**/*
