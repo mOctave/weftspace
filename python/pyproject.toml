@@ -43,7 +43,7 @@ classifiers = [
 readme = "README.md"
 
 [project.urls]
-Homepage = "https://github.com/mOctave/weftspace"
+Homepage = "https://moctave.github.io/weftspace/"
 Repository = "https://github.com/mOctave/weftspace"
 
 [project.optional-dependencies]

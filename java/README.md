@@ -7,8 +7,8 @@
 # Weftspace
 Weftspace was originally written in Java, and the Java library continues to provide the maximum possible level of support for Endless Sky datafile syntax. As well as providing read/write functionality through the DataReader and DataWriter classes, it provides support for handling the data nodes themselves.
 
-## Installation and Usage
-The Weftspace Java library is best used with Maven. To use it, add both a repository and a dependency to your `pom.xml` file. Something along the following lines should work:
+## Installation
+The Weftspace Java library is best installed with Maven. To use it, add both a repository and a dependency to your `pom.xml` file. Something along the following lines should work:
 
 ```xml
   <repositories>

@@ -7,7 +7,7 @@
 # Weftspace
 Weftspace was originally written in Java, but it is now also available in Python. The Python library is slightly smaller than the Java one, but it provides all the same functionalities.
 
-## Installation and Usage
+## Installation
 The Weftspace Python library can be installed using pip:
 
 ```
