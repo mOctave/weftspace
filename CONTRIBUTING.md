@@ -46,3 +46,27 @@ For that reason:
 - Asking AI simple questions and using it to provide feedback on your work or link to external sources is acceptable (eg "Is this proper grammar?" or "Help me debug this code:")
 - Using an AI like Grammarly to spot-check grammar is acceptable
 - Using AI to generate, in whole or in part, code, documentation, or any other text or images for this project is **forbidden**
+
+## Making Releases
+
+*This section of the file is intended for contributors with write access to the repo who are making releases. If you do not have write access—which you probably don't—you can ignore this section for now.*
+
+Before you publish a release, please check all the following:
+- Changelog has been updated to reflect all changes and give appropriate credit
+- Version number has been bumped in `java/pom.xml`, `python/weftspace/_version.py`, and `site/index.html`
+- Release description mentions all contributors to the release
+- All major or breaking changes are properly outlined in the release description
+- The release is correctly categorized as a Stable, Unstable, Beta, or Test Release
+- All checks are passing on the main branch
+
+### Release Categories
+
+**Stable:** Used to indicate a release that should almost definitely be bug-free. These releases should mostly consist of minor bugfixes, and any major changes should have been thoroughly tested first.
+
+**Unstable:** Used to indicate a normal release. It still *shouldn't* have bugs in it, but some minor ones are probably going to show up anyways. Any release that contains lots of new features will probably be unstable.
+
+**Beta:** Used to indicate old releases of the ESDF Manager public beta. It should not be used anymore. Mark releases as unstable instead.
+
+**Test:** Used to indicate that a release is entirely for testing GitHub actions and deployment to various platforms and should not be used for production. Do not create discussions for test releases, and mark them as a pre-release. Be sure to uncheck the "mark as latest release" box.
+
+If a release is marked as a test release, it is liable to be deleted from GitHub releases and yanked from PyPI without warning. Once everything is working, be sure to do so.
