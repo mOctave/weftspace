@@ -141,7 +141,7 @@ class DataNode:
 		Multiple distinct nodes may have the same hash code, as
 		(1) the mechanics for hash() are not controlled,
 		(2) parents are not taken into account in this method, and
-		(3) nodes which have themself as a child will not have their childen considered.
+		(3) nodes which have themself as a child will not have their children considered.
 		"""
 		prime: int = 31
 		hash_code: int = 1
