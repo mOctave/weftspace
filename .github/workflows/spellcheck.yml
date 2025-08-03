@@ -17,4 +17,4 @@ jobs:
         show-progress: false
     - uses: codespell-project/actions-codespell@master
       with:
-        exclude_file: site/java/testapidocs/script-dir/jquery-3.5.1.min.js,site/java/apidocs/script-dir/jquery-3.5.1.min.js
+        exclude_file: site/java/testapidocs/script-dir/jquery-3.5.1.min.js,site/java/apidocs/script-dir/jquery-3.5.1.min.js,site/java/apidocs/legal/COPYRIGHT,site/java/testapidocs/legal/COPYRIGHT
