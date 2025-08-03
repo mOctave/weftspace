@@ -17,6 +17,4 @@ jobs:
         show-progress: false
     - uses: codespell-project/actions-codespell@master
       with:
-        builtin: clear
-        ignore-words-list: ue
-        skip: site/java/apidocs/legal/COPYRIGHT
+        builtin: dictionary
