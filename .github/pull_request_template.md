@@ -13,7 +13,7 @@ This PR addresses the issue/bug described in issue #{{issue number}}.
 
 ## Checklist
 
-- [ ] I have read and understand the [Contributing Guidelines](https://github.com/mOctave/weftspace/CONTRIBUTING.md)
+- [ ] I have read and understand the [Contributing Guidelines](https://github.com/mOctave/weftspace/blob/main/CONTRIBUTING.md)
 - [ ] I accept the terms of the AGPL-3-or-later license of this project, and recognize that, if and when this pull request is merged, I relinquish individual ownership of my work.
 - [ ] I did not use generative AI to write any code or create any other part of this PR
 
