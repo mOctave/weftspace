@@ -17,4 +17,4 @@ jobs:
         show-progress: false
     - uses: codespell-project/actions-codespell@master
       with:
-        builtin: clear
+        builtin: dictionary_code
