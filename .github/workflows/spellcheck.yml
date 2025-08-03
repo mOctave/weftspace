@@ -17,4 +17,4 @@ jobs:
         show-progress: false
     - uses: codespell-project/actions-codespell@master
       with:
-        exclude_file: site/*
+        exclude_file: site/**
