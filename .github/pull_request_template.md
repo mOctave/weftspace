@@ -13,14 +13,14 @@ This PR addresses the issue/bug described in issue #{{issue number}}.
 
 ## Checklist
 
-- [ ] I have read and understand the [Contributing Guidelines](https://github.com/mOctave/weftspace/blob/main/CONTRIBUTING.md)
+- [ ] I have read and understand the [Contributing Guidelines](https://github.com/mOctave/weftspace/blob/main/CONTRIBUTING.md).
 - [ ] I accept the terms of the AGPL-3-or-later license of this project, and recognize that, if and when this pull request is merged, I relinquish individual ownership of my work.
-- [ ] I did not use generative AI to write any code or create any other part of this PR
+- [ ] I did not use generative AI to write any code or create any other part of this PR.
 
 For code PRs only:
-- [ ] I have tested any code I've added, and added unit tests where needed
-- [ ] I have added Javadoc comments to all my new code
-- [ ] I have updated the copyright header of all files I've made significant changes to, or do not wish to have my name attached to this wretched piece of work
+- [ ] I have tested any code I've added, and added unit tests where needed.
+- [ ] I have added Javadoc comments / Python docstrings to all my new code.
+- [ ] I have either updated the copyright header of all files I've made significant changes to, or waive my copyright.
 
 ## Summary
 
