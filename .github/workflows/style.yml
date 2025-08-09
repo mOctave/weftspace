@@ -1,0 +1,25 @@
+name: Style
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  spellcheck:
+    name: Spelling
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        ref: ${{ github.event.pull_request.head.sha }}
+        show-progress: false
+    - uses: codespell-project/actions-codespell@master
+      with:
+        exclude_file: site/java/testapidocs/script-dir/jquery-3.5.1.min.js,site/java/apidocs/script-dir/jquery-3.5.1.min.js

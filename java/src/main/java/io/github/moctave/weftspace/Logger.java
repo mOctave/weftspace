@@ -194,7 +194,7 @@ public abstract class Logger {
 
 
 		/**
-		 * Ends the message, reseting formating. If this message is a fatal error, calling
+		 * Ends the message, resetting formatting. If this message is a fatal error, calling
 		 * this method will also exit the program with an error code of 1.
 		 */
 		public void endMessage(PrintStream stream) {
