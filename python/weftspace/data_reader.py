@@ -13,6 +13,7 @@
 
 from collections import deque
 from enum import Enum
+from warnings import deprecated
 
 from .data_node import DataNode
 from .loaded_node import LoadedNode
@@ -95,10 +96,8 @@ class DataReader:
 
 					if (expected_indent_string == None and len(indent_substring) > 0):
 						expected_indent_string = indent_substring
-						if (
-							" " in expected_indent_string
-							and "\t" in expected_indent_string):
-								Logger.WARN_MIXED_WHITESPACE.log(f)
+						if (" " in expected_indent_string and "\t" in expected_indent_string):
+							Logger.WARN_MIXED_WHITESPACE.log(f)
 
 
 					if indent > indent_depths[-1] and current_node != None:
@@ -211,14 +210,22 @@ class DataReader:
 	@classmethod
 	def count_leading_whitespace(cls, line: str) -> int:
 		"""Counts the number of leading tab or space characters on a line."""
-		#!!!
-		return 0
+		i: int = 0
+		while (i < len(line) and (line[i] == "\t" or line[i] == " ")):
+			i += 1
+		
+		return i
 
 
 
 	@classmethod
+	@deprecated("Use count_leading_whitespace() instead")
 	def count_leading_tabs(cls, line: str) -> int:
-		"""Counts the number of leading tabs on a line."""
+		"""
+		Deprecated method included to support programs written expecting legacy
+		whitespace handling. Calls count_leading_whitespace(), see that
+		method for documentation.
+		"""
 		i: int = 0
 		while (i < len(line) and line[i] == "\t"):
 			i += 1

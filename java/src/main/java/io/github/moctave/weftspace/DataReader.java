@@ -257,7 +257,7 @@ public class DataReader {
 
 
 	/**
-	 * Deprecated method introduced to support programs written expecting legacy
+	 * Deprecated method included to support programs written expecting legacy
 	 * whitespace handling. Calls {@link #countLeadingWhitespace(String)}, see that
 	 * method for documentation.
 	 */

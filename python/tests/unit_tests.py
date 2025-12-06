@@ -45,17 +45,14 @@ class UnitTests(unittest.TestCase):
 		# Read test data from the file
 		reader: DataReader = DataReader("test.txt", DataNode.create_root_node())
 		reader.parse()
-		print(reader.root)
-		for child in reader.root.children:
-			print(child)
 		loaded_node: DataNode = reader.root.children[0]
 
 		# Do clean-up
 		Path.unlink(Path("test.txt"))
 
 		# Check to make sure there were no issues
-		self.assertEqual(Logger.get_error_count, 0)
-		self.assertEqual(Logger.get_warning_count, 0)
+		self.assertEqual(Logger.get_error_count(), 0)
+		self.assertEqual(Logger.get_warning_count(), 0)
 		self.assertEqual(TestUtils.get_test_node(), loaded_node)
 
 
@@ -87,8 +84,8 @@ class UnitTests(unittest.TestCase):
 					pass
 		
 		# Check to make sure there were no issues
-		self.assertEqual(Logger.get_error_count, 0)
-		self.assertEqual(Logger.get_warning_count, 0)
+		self.assertEqual(Logger.get_error_count(), 0)
+		self.assertEqual(Logger.get_warning_count(), 0)
 		self.assertTrue(
 			name == "Much Confused Wardragon"
 			and mass == 35
@@ -115,8 +112,8 @@ class UnitTests(unittest.TestCase):
 		loaded_node: DataNode = root_node.children[0]
 
 		# Check to make sure there were no issues
-		self.assertEqual(Logger.get_error_count, 0)
-		self.assertEqual(Logger.get_warning_count, 0)
+		self.assertEqual(Logger.get_error_count(), 0)
+		self.assertEqual(Logger.get_warning_count(), 0)
 		self.assertEqual(TestUtils.get_test_node(), loaded_node)
 
 
@@ -134,8 +131,8 @@ class UnitTests(unittest.TestCase):
 		loaded_node: DataNode = root_node.children[0]
 
 		# Check to make sure there were no issues
-		self.assertEqual(Logger.get_error_count, 0)
-		self.assertEqual(Logger.get_warning_count, 0)
+		self.assertEqual(Logger.get_error_count(), 0)
+		self.assertEqual(Logger.get_warning_count(), 0)
 		self.assertEqual(TestUtils.get_test_node(), loaded_node)
 	
 
@@ -156,8 +153,8 @@ class UnitTests(unittest.TestCase):
 		loaded_node: DataNode = root_node.children[0]
 
 		# Check to make sure there were no issues
-		self.assertEqual(Logger.get_error_count, 0)
-		self.assertEqual(Logger.get_warning_count, 2)
+		self.assertEqual(Logger.get_error_count(), 0)
+		self.assertEqual(Logger.get_warning_count(), 0)
 		self.assertEqual(TestUtils.get_test_node(), loaded_node)
 
 
