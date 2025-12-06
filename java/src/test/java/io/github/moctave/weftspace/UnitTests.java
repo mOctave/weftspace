@@ -13,12 +13,12 @@
 
 package io.github.moctave.weftspace;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.util.ArrayList;
-
-import org.junit.jupiter.api.Test;
 
 /**
  * A class containing all the unit tests to be run on this library.
@@ -81,8 +81,8 @@ public class UnitTests {
 	 */
 	@Test
 	public void testIO() {
-		// Start the error counter
-		Logger.resetErrorCount();
+		// Start the error counters
+		Logger.resetAlertCounts();
 
 
 		// Write test data to a file
@@ -102,8 +102,12 @@ public class UnitTests {
 		file.delete();
 
 		// Check to make sure there were no issues
-		assertTrue(Logger.getErrorCount() == 0 && getTestNode().equals(loadedNode));
+		assertEquals(0, Logger.getErrorCount());
+		assertEquals(0, Logger.getWarningCount());
+		assertTrue(getTestNode().equals(loadedNode));
 	}
+
+
 
 	/**
 	 * This test takes data from the test node, builds it, and makes sure it's
@@ -111,8 +115,8 @@ public class UnitTests {
 	 */
 	@Test
 	public void testBuilder() {
-		// Start the error counter
-		Logger.resetErrorCount();
+		// Start the error counters
+		Logger.resetAlertCounts();
 
 		// Build the node
 		DataNode node = getTestNode();
@@ -131,9 +135,10 @@ public class UnitTests {
 		}
 
 		// Check to make sure there were no issues
+		assertEquals(0, Logger.getErrorCount());
+		assertEquals(0, Logger.getWarningCount());
 		assertTrue(
-			Logger.getErrorCount() == 0
-			&& name.equals("Much Confused Wardragon")
+			name.equals("Much Confused Wardragon")
 			&& mass == 35
 			&& drag == 0.3
 			&& description.equals("This Wardragon bears no resemblance to any actual ship in the game Endless Sky. It has no material existence, despite having mass and possibly explaining the existence of the dark matter in our universe.")
@@ -148,8 +153,8 @@ public class UnitTests {
 	 */
 	@Test
 	public void testHumanReadableNodes() {
-		// Start the error counter
-		Logger.resetErrorCount();
+		// Start the error counters
+		Logger.resetAlertCounts();
 
 		// Open and parse the test data
 		File testData = new File("../testdata/humanreadable.txt");
@@ -160,6 +165,56 @@ public class UnitTests {
 		DataNode loadedNode = rootNode.getChild(0);
 
 		// Check to make sure there were no issues
-		assertTrue(Logger.getErrorCount() == 0 && getTestNode().equals(loadedNode));
+
+		assertEquals(0, Logger.getErrorCount());
+		assertEquals(0, Logger.getWarningCount());
+		assertTrue(getTestNode().equals(loadedNode));
+	}
+
+
+	/**
+	 * This test checks to make sure that space-based indentation is parsed properly.
+	 */
+	@Test
+	public void testSpaceIndentation() {
+		// Start the error counters
+		Logger.resetAlertCounts();
+
+		// Open and parse the test data
+		File testData = new File("../testdata/spaceindented.txt");
+		DataNode rootNode = new DataNode();
+		DataReader reader = new DataReader(testData, rootNode);
+		reader.parse();
+
+		DataNode loadedNode = rootNode.getChild(0);
+
+		// Check to make sure there were no issues
+		assertEquals(0, Logger.getErrorCount());
+		assertEquals(0, Logger.getWarningCount());
+		assertTrue(getTestNode().equals(loadedNode));
+	}
+
+
+	/**
+	 * This test checks to make sure that even the worst indentation can still be parsed,
+	 * but that the proper warnings are thrown when you attempt to do so.
+	 */
+	@Test
+	public void testTerribleIndentation() {
+		// Start the error counters
+		Logger.resetAlertCounts();
+
+		// Open and parse the test data
+		File testData = new File("../testdata/terriblyindented.txt");
+		DataNode rootNode = new DataNode();
+		DataReader reader = new DataReader(testData, rootNode);
+		reader.parse();
+
+		DataNode loadedNode = rootNode.getChild(0);
+
+		// Check to make sure there were no issues
+		assertEquals(0, Logger.getErrorCount());
+		assertEquals(2, Logger.getWarningCount());
+		assertTrue(getTestNode().equals(loadedNode));
 	}
 }

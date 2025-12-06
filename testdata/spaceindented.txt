@@ -14,13 +14,12 @@
 # This file should parse properly.
 
 ship "Much Confused Wardragon"
-	"mass" 35
-	"drag" 0.3 # Yes, I know drag in space makes no sense
-	 
-	weapon # Activated that the ship explodes
-		"hit force" 308
-		"hull damage" 6100
-		# I like shield damage!
-		"shield damage" 42
+    "mass" 35
+    "drag" 0.3
+      # Poor spacing should be ignored because there's no node on this line
+    weapon
+        "hit force" 308
+        "hull damage" 6100
+        "shield damage" 42
 
-	description `This Wardragon bears no resemblance to any actual ship in the game Endless Sky. It has no material existence, despite having mass and possibly explaining the existence of the dark matter in our universe.`
+    description `This Wardragon bears no resemblance to any actual ship in the game Endless Sky. It has no material existence, despite having mass and possibly explaining the existence of the dark matter in our universe.`

@@ -11,16 +11,15 @@
 # You should have received a copy of the GNU Affero General Public License along with
 # this program. If not, see <https://www.gnu.org/licenses/>.
 
-# This file should parse properly.
+# This file should parse properly but throw warnings.
 
 ship "Much Confused Wardragon"
-	"mass" 35
-	"drag" 0.3 # Yes, I know drag in space makes no sense
-	 
-	weapon # Activated that the ship explodes
-		"hit force" 308
-		"hull damage" 6100
-		# I like shield damage!
-		"shield damage" 42
+  	"mass" 35
+  	"drag" 0.3
 
-	description `This Wardragon bears no resemblance to any actual ship in the game Endless Sky. It has no material existence, despite having mass and possibly explaining the existence of the dark matter in our universe.`
+  	weapon
+  		 "hit force" 308
+  		 "hull damage" 6100
+  		 "shield damage" 42
+
+  	description `This Wardragon bears no resemblance to any actual ship in the game Endless Sky. It has no material existence, despite having mass and possibly explaining the existence of the dark matter in our universe.`

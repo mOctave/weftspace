@@ -76,6 +76,9 @@ public abstract class Logger {
 	/** Error: Node argument not a valid double */
 	public static final DynamicMessage ERROR_BUILDER_MALFORMED_REAL = new DynamicMessage(Severity.ERROR, "$NODE argument in $CONTEXT is not a real number.");
 
+	/** Warning: File is using mixed whitespace for indentation */
+	public static final DynamicMessage WARN_MIXED_WHITESPACE = new DynamicMessage(Severity.WARN, "Mixed or unevenly-sized whitespace found in indents when parsing $FILENAME.");
+
 	/** Warning: Node is a root node and should not be written */
 	public static final DynamicMessage WARN_NODE_WRITE_ROOT = new DynamicMessage(Severity.WARN, "$NODE is a root node and should not be written.");
 
@@ -94,6 +97,14 @@ public abstract class Logger {
 
 
 	// MARK: Error Count
+	/**
+	 * Helper method to reset both error and warning counts.
+	 */
+	public static void resetAlertCounts() {
+		resetErrorCount();
+		resetWarningCount();
+	}
+
 	private static int errorCount = 0;
 	
 	/**
@@ -117,6 +128,33 @@ public abstract class Logger {
 	 */
 	public static int getErrorCount() {
 		return errorCount;
+	}
+	
+
+
+	private static int warningCount = 0;
+
+	/**
+	 * Mutator method to reset the warning count to 0.
+	 */
+	public static void resetWarningCount() {
+		warningCount = 0;
+	}
+	
+	/**
+	 * Mutator method to increment the warning count by 1.
+	 */
+	public static void countWarning() {
+		warningCount++;
+	}
+
+
+	/**
+	 * Getter: Returns the number of warnings currently tracked.
+	 * @return {@link #warningCount}
+	 */
+	public static int getWarningCount() {
+		return warningCount;
 	}
 
 
@@ -163,6 +201,7 @@ public abstract class Logger {
 					break;
 				case WARN:
 					stream.print(Logger.YELLOW);
+					countWarning();
 					break;
 				case SUCCESS:
 					stream.print(Logger.GREEN);

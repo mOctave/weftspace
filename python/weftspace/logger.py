@@ -79,6 +79,12 @@ class Logger(ABC):
 
 
 	# MARK: Error Count
+	@classmethod
+	def reset_alert_counts(cls):
+		"""Helper method to reset both error and warning counts."""
+		Logger.reset_alert_counts()
+
+
 	_error_count: int = 0
 
 	@classmethod
@@ -95,6 +101,23 @@ class Logger(ABC):
 	def count_error(cls):
 		"""Increments the error count by 1."""
 		cls._error_count += 1
+
+	_warning_count: int = 0
+
+	@classmethod
+	def get_warning_count(cls):
+		"""Returns the number of warnings thrown by this program."""
+		return cls._warning_count
+	
+	@classmethod
+	def reset_warning_count(cls):
+		"""Resets the warning count to 0."""
+		cls._warning_count = 0
+	
+	@classmethod
+	def count_warning(cls):
+		"""Increments the warning count by 1."""
+		cls._warning_count += 1
 
 
 
@@ -143,6 +166,7 @@ class Logger(ABC):
 					Logger.count_error()
 				case Logger.Severity.WARN:
 					stream.write(Logger.YELLOW)
+					Logger.count_warning()
 				case Logger.Severity.SUCCESS:
 					stream.write(Logger.GREEN)
 				case _:
@@ -257,6 +281,9 @@ class Logger(ABC):
 	"""Error: Node argument not a valid integer"""
 	ERROR_BUILDER_MALFORMED_REAL: Final[Logger.DynamicMessage] = DynamicMessage(Severity.ERROR, "$NODE argument in $CONTEXT is not a real number.")
 	"""Error: Node argument not a valid float"""
+
+	WARN_MIXED_WHITESPACE: Final[Logger.DynamicMessage] = DynamicMessage(Severity.WARN, "Mixed or unevenly-sized whitespace found in indents when parsing $FILENAME.")
+	"""Warning: File is using mixed whitespace for indentation"""
 
 	WARN_NODE_WRITE_ROOT: Final[Logger.DynamicMessage] = DynamicMessage(Severity.WARN, "$NODE is a root node and should not be written.")
 	"""Warning: Node is a root node and should not be written"""

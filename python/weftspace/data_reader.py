@@ -65,15 +65,19 @@ class DataReader:
 
 
 	# MARK: Methods
-	def parse(self, *args: Option):
+	def parse(self, *args: Option) -> None:
 		"""Parses the file associated with this object, and stores all nodes in the tree."""
 		ignore_node_flags: bool = DataReader.Option.IGNORE_NODE_FLAGS in args
 		try:
 			line_number: int = 0
 			node_stack: deque[DataNode] = deque()
-			tabs: int = 0
-			last_tabs: int = 0
 			current_node: DataNode | None = None
+
+			indent: int = 0
+			indent_depths: deque[int] = deque()
+			expected_indent_string: str | None = None
+
+			indent_depths.append(0)
 
 			with open(self.file, "r") as f:
 				for line in f:
@@ -86,12 +90,27 @@ class DataReader:
 						if tl.isspace() or not tl:
 							continue
 				
-					tabs = DataReader.count_leading_tabs(line)
-					if tabs > last_tabs and current_node != None:
+					indent = DataReader.count_leading_whitespace(line)
+					indent_substring: str = DataReader.get_indent_substring(line, indent_depths[-1])
+
+					if (expected_indent_string == None and len(indent_substring) > 0):
+						expected_indent_string = indent_substring
+						if (
+							" " in expected_indent_string
+							and "\t" in expected_indent_string):
+								Logger.WARN_MIXED_WHITESPACE.log(f)
+
+
+					if indent > indent_depths[-1] and current_node != None:
+						if expected_indent_string != indent_substring:
+							Logger.WARN_MIXED_WHITESPACE.log(f)
+
 						node_stack.append(current_node)
+						indent_depths.append(indent)
 					else:
-						while len(node_stack) > tabs:
+						while indent_depths[-1] > indent:
 							node_stack.pop()
+							indent_depths.pop()
 					
 					current_node = self.make_node(line, line_number, not ignore_node_flags)
 
@@ -102,8 +121,6 @@ class DataReader:
 						parent: DataNode = node_stack[-1]
 						parent.children.append(current_node)
 						current_node.parent = parent
-					
-					last_tabs = tabs
 				
 				f.close()
 
@@ -112,7 +129,7 @@ class DataReader:
 
 
 
-	def make_node(self, line: str, number: int, check_for_flags: bool):
+	def make_node(self, line: str, number: int, check_for_flags: bool) -> LoadedNode | None:
 		"""Parses a single line and converts it to a node."""
 		stripped_line: str = line.strip()
 		data: list[str] = []
@@ -176,7 +193,31 @@ class DataReader:
 
 
 	@classmethod
-	def count_leading_tabs(cls, line: str):
+	def get_indent_substring(cls, line: str, depth: int) -> str:
+		"""
+		Gets the substring which appears to be used for indentation, starting
+		with the character at a given depth.
+		"""
+		i: int = depth
+		s: str = ""
+		while (i < len(line) and (line[i] == "\t" or line[i] == " ")):
+			s += line[i]
+			i += 1
+		
+		return s
+
+
+
+	@classmethod
+	def count_leading_whitespace(cls, line: str) -> int:
+		"""Counts the number of leading tab or space characters on a line."""
+		#!!!
+		return 0
+
+
+
+	@classmethod
+	def count_leading_tabs(cls, line: str) -> int:
 		"""Counts the number of leading tabs on a line."""
 		i: int = 0
 		while (i < len(line) and line[i] == "\t"):

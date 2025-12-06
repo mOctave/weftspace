@@ -67,14 +67,18 @@ public class DataReader {
 			int lineNumber = 0;
 
 			Deque<DataNode> nodeStack = new ArrayDeque<>();
-
-			int tabs = 0;
-			int lastTabs = 0;
 			DataNode currentNode = null;
+
+			int indent = 0;
+			Deque<Integer> indentDepths = new ArrayDeque<>();
+			String expectedIndentString = null;
+
+			indentDepths.push(0);
 
 			while (s.hasNextLine()) {
 				lineNumber ++;
 				String line = s.nextLine();
+
 				if (line.split("#").length == 0) {
 					if (line.isBlank())
 						continue;
@@ -83,12 +87,28 @@ public class DataReader {
 						continue;
 				}
 
-				tabs = countLeadingTabs(line);
-				if (tabs > lastTabs && currentNode != null) {
+				indent = countLeadingWhitespace(line);
+				String indentSubstring = getIndentSubstring(line, indentDepths.peek());
+				if (expectedIndentString == null && indentSubstring.length() > 0) {
+					expectedIndentString = indentSubstring;
+					if (
+						expectedIndentString.contains(" ")
+						&& expectedIndentString.contains("\t")
+					) {
+						Logger.WARN_MIXED_WHITESPACE.log(file);
+					}
+				}
+
+				if (indent > indentDepths.peek() && currentNode != null) {
+					if (!expectedIndentString.equals(indentSubstring)) {
+						Logger.WARN_MIXED_WHITESPACE.log(file);
+					}
 					nodeStack.push(currentNode);
+					indentDepths.push(indent);
 				} else {
-					while (nodeStack.size() > tabs) {
+					while (indentDepths.peek() > indent) {
 						nodeStack.pop();
+						indentDepths.pop();
 					}
 				}
 				currentNode = makeNode(line, lineNumber, !ignoreNodeFlags);
@@ -101,8 +121,6 @@ public class DataReader {
 					parent.addChild(currentNode);
 					currentNode.setParent(parent);
 				}
-
-				lastTabs = tabs;
 			}
 
 			s.close();
@@ -194,6 +212,24 @@ public class DataReader {
 
 
 	/**
+	 * Gets the substring which appears to be being used for indentation.
+	 * @param line The line to find the indent of.
+	 * @param depth The base depth from which the line is being indented.
+	 * @return The substring used for indentation.
+	 */
+	public static String getIndentSubstring(String line, int depth) {
+		int i = depth;
+		String s = "";
+		while (i < line.length() && (line.charAt(i) == '\t' || line.charAt(i) == ' ')) {
+			s += line.charAt(i);
+			i++;
+		}
+		return s;
+	}
+
+
+
+	/**
 	 * Trims comments from a line of text, removing everything after the first {@code #} character.
 	 * @param line The line to trim.
 	 * @return The uncommented line.
@@ -205,16 +241,29 @@ public class DataReader {
 
 
 	/**
-	 * Counts the number of leading tabs on a line.
+	 * Counts the number of leading tab or space characters on a line.
 	 * @param line The line to count.
-	 * @return The number of tabs that come before the first non-tab character on the line.
+	 * @return The number of tabs or spaces that come before the first
+	 * non-whitespace character on the line.
 	 */
-	public static int countLeadingTabs(String line) {
+	public static int countLeadingWhitespace(String line) {
 		int i = 0;
-		while (i < line.length() && line.charAt(i) == '\t') {
+		while (i < line.length() && (line.charAt(i) == '\t' || line.charAt(i) == ' ')) {
 			i++;
 		}
 		return i;
+	}
+
+
+
+	/**
+	 * Deprecated method introduced to support programs written expecting legacy
+	 * whitespace handling. Calls {@link #countLeadingWhitespace(String)}, see that
+	 * method for documentation.
+	 */
+	@Deprecated
+	public static int countLeadingTabs(String line) {
+		return countLeadingWhitespace(line);
 	}
 
 

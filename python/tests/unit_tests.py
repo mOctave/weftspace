@@ -33,8 +33,8 @@ class UnitTests(unittest.TestCase):
 		reads it using DataReader, and compares it against the original node.
 		"""
 
-		# Start the error counter
-		Logger.reset_error_count()
+		# Start the error counters
+		Logger.reset_alert_counts()
 
 		# Write test data to a file
 		writer: DataWriter = DataWriter("test.txt")
@@ -54,15 +54,9 @@ class UnitTests(unittest.TestCase):
 		Path.unlink(Path("test.txt"))
 
 		# Check to make sure there were no issues
-		print("TEST RESULTS:")
-		print(TestUtils.get_test_node())
-		print(loaded_node)
-		print("Errors:", Logger.get_error_count())
-		print("---")
-		self.assertTrue(
-			Logger.get_error_count() == 0
-			and TestUtils.get_test_node() == loaded_node
-		)
+		self.assertEqual(Logger.get_error_count, 0)
+		self.assertEqual(Logger.get_warning_count, 0)
+		self.assertEqual(TestUtils.get_test_node(), loaded_node)
 
 
 
@@ -72,8 +66,8 @@ class UnitTests(unittest.TestCase):
 		working properly.
 		"""
 
-		# Start the error counter
-		Logger.reset_error_count()
+		# Start the error counters
+		Logger.reset_alert_counts()
 
 		# Build the node
 		node: DataNode = TestUtils.get_test_node()
@@ -93,9 +87,10 @@ class UnitTests(unittest.TestCase):
 					pass
 		
 		# Check to make sure there were no issues
+		self.assertEqual(Logger.get_error_count, 0)
+		self.assertEqual(Logger.get_warning_count, 0)
 		self.assertTrue(
-			Logger.get_error_count() == 0
-			and name == "Much Confused Wardragon"
+			name == "Much Confused Wardragon"
 			and mass == 35
 			and drag == 0.3
 			and description == "This Wardragon bears no resemblance to any actual ship in the game Endless Sky. It has no material existence, despite having mass and possibly explaining the existence of the dark matter in our universe."
@@ -106,11 +101,11 @@ class UnitTests(unittest.TestCase):
 	def test_human_readable_nodes(self):
 		"""
 		This test checks to make sure that nodes with extra empty lines in the
-		iddle of their definitions still parse properly.
+		middle of their definitions still parse properly.
 		"""
 
-		# Start the error counter
-		Logger.reset_error_count()
+		# Start the error counters
+		Logger.reset_alert_counts()
 
 		# Open and parse the test data
 		root_node: DataNode = DataNode.create_root_node()
@@ -120,7 +115,52 @@ class UnitTests(unittest.TestCase):
 		loaded_node: DataNode = root_node.children[0]
 
 		# Check to make sure there were no issues
-		self.assertTrue(Logger.get_error_count() == 0 and TestUtils.get_test_node() == loaded_node)
+		self.assertEqual(Logger.get_error_count, 0)
+		self.assertEqual(Logger.get_warning_count, 0)
+		self.assertEqual(TestUtils.get_test_node(), loaded_node)
+
+
+
+	def test_space_indentation(self):
+		"""This test checks to make sure that space-based indentation is parsed properly."""
+		# Start the error counters
+		Logger.reset_alert_counts()
+
+		# Open and parse the test data
+		root_node: DataNode = DataNode.create_root_node()
+		reader: DataReader = DataReader("../testdata/spaceindented.txt", root_node)
+		reader.parse()
+
+		loaded_node: DataNode = root_node.children[0]
+
+		# Check to make sure there were no issues
+		self.assertEqual(Logger.get_error_count, 0)
+		self.assertEqual(Logger.get_warning_count, 0)
+		self.assertEqual(TestUtils.get_test_node(), loaded_node)
+	
+
+
+	def test_terrible_indentation(self):
+		"""
+		This test checks to make sure that even the worst indentation can still be parsed,
+		but that the proper warnings are thrown when you attempt to do so.
+		"""
+		# Start the error counters
+		Logger.reset_alert_counts()
+
+		# Open and parse the test data
+		root_node: DataNode = DataNode.create_root_node()
+		reader: DataReader = DataReader("../testdata/spaceindented.txt", root_node)
+		reader.parse()
+
+		loaded_node: DataNode = root_node.children[0]
+
+		# Check to make sure there were no issues
+		self.assertEqual(Logger.get_error_count, 0)
+		self.assertEqual(Logger.get_warning_count, 2)
+		self.assertEqual(TestUtils.get_test_node(), loaded_node)
+
+
 
 if __name__ == "__main__":
 	unittest.main()
