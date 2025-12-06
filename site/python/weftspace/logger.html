@@ -112,6 +112,13 @@ el.replaceWith(d);
 
 
         # MARK: Error Count
+        @classmethod
+        def reset_alert_counts(cls):
+                &#34;&#34;&#34;Helper method to reset both error and warning counts.&#34;&#34;&#34;
+                Logger.reset_error_count()
+                Logger.reset_warning_count()
+
+
         _error_count: int = 0
 
         @classmethod
@@ -128,6 +135,23 @@ el.replaceWith(d);
         def count_error(cls):
                 &#34;&#34;&#34;Increments the error count by 1.&#34;&#34;&#34;
                 cls._error_count += 1
+
+        _warning_count: int = 0
+
+        @classmethod
+        def get_warning_count(cls):
+                &#34;&#34;&#34;Returns the number of warnings thrown by this program.&#34;&#34;&#34;
+                return cls._warning_count
+        
+        @classmethod
+        def reset_warning_count(cls):
+                &#34;&#34;&#34;Resets the warning count to 0.&#34;&#34;&#34;
+                cls._warning_count = 0
+        
+        @classmethod
+        def count_warning(cls):
+                &#34;&#34;&#34;Increments the warning count by 1.&#34;&#34;&#34;
+                cls._warning_count += 1
 
 
 
@@ -176,6 +200,7 @@ el.replaceWith(d);
                                         Logger.count_error()
                                 case Logger.Severity.WARN:
                                         stream.write(Logger.YELLOW)
+                                        Logger.count_warning()
                                 case Logger.Severity.SUCCESS:
                                         stream.write(Logger.GREEN)
                                 case _:
@@ -291,6 +316,9 @@ el.replaceWith(d);
         ERROR_BUILDER_MALFORMED_REAL: Final[Logger.DynamicMessage] = DynamicMessage(Severity.ERROR, &#34;$NODE argument in $CONTEXT is not a real number.&#34;)
         &#34;&#34;&#34;Error: Node argument not a valid float&#34;&#34;&#34;
 
+        WARN_MIXED_WHITESPACE: Final[Logger.DynamicMessage] = DynamicMessage(Severity.WARN, &#34;Mixed or unevenly-sized whitespace found in indents when parsing $FILENAME.&#34;)
+        &#34;&#34;&#34;Warning: File is using mixed whitespace for indentation&#34;&#34;&#34;
+
         WARN_NODE_WRITE_ROOT: Final[Logger.DynamicMessage] = DynamicMessage(Severity.WARN, &#34;$NODE is a root node and should not be written.&#34;)
         &#34;&#34;&#34;Warning: Node is a root node and should not be written&#34;&#34;&#34;
 
@@ -401,6 +429,10 @@ inheritance.</p></div>
 <dd>
 <div class="desc"><p>Warning: Node argument is out of the expected range 0&hellip;1</p></div>
 </dd>
+<dt id="weftspace.logger.Logger.WARN_MIXED_WHITESPACE"><code class="name">var <span class="ident">WARN_MIXED_WHITESPACE</span> : Final[<a title="weftspace.logger.Logger.DynamicMessage" href="#weftspace.logger.Logger.DynamicMessage">Logger.DynamicMessage</a>]</code></dt>
+<dd>
+<div class="desc"><p>Warning: File is using mixed whitespace for indentation</p></div>
+</dd>
 <dt id="weftspace.logger.Logger.WARN_NODE_WRITE_ROOT"><code class="name">var <span class="ident">WARN_NODE_WRITE_ROOT</span> : Final[<a title="weftspace.logger.Logger.DynamicMessage" href="#weftspace.logger.Logger.DynamicMessage">Logger.DynamicMessage</a>]</code></dt>
 <dd>
 <div class="desc"><p>Warning: Node is a root node and should not be written</p></div>
@@ -422,17 +454,41 @@ inheritance.</p></div>
 <dd>
 <div class="desc"><p>Increments the error count by 1.</p></div>
 </dd>
+<dt id="weftspace.logger.Logger.count_warning"><code class="name flex">
+<span>def <span class="ident">count_warning</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Increments the warning count by 1.</p></div>
+</dd>
 <dt id="weftspace.logger.Logger.get_error_count"><code class="name flex">
 <span>def <span class="ident">get_error_count</span></span>(<span>)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Returns the number of errors thrown by this program.</p></div>
 </dd>
+<dt id="weftspace.logger.Logger.get_warning_count"><code class="name flex">
+<span>def <span class="ident">get_warning_count</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Returns the number of warnings thrown by this program.</p></div>
+</dd>
+<dt id="weftspace.logger.Logger.reset_alert_counts"><code class="name flex">
+<span>def <span class="ident">reset_alert_counts</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Helper method to reset both error and warning counts.</p></div>
+</dd>
 <dt id="weftspace.logger.Logger.reset_error_count"><code class="name flex">
 <span>def <span class="ident">reset_error_count</span></span>(<span>)</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Resets the error count to 0.</p></div>
+</dd>
+<dt id="weftspace.logger.Logger.reset_warning_count"><code class="name flex">
+<span>def <span class="ident">reset_warning_count</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Resets the warning count to 0.</p></div>
 </dd>
 </dl>
 </dd>
@@ -476,12 +532,17 @@ inheritance.</p></div>
 <li><code><a title="weftspace.logger.Logger.WARN_BUILDER_POSREAL_OUT_OF_BOUNDS" href="#weftspace.logger.Logger.WARN_BUILDER_POSREAL_OUT_OF_BOUNDS">WARN_BUILDER_POSREAL_OUT_OF_BOUNDS</a></code></li>
 <li><code><a title="weftspace.logger.Logger.WARN_BUILDER_ROLL_OUT_OF_BOUNDS" href="#weftspace.logger.Logger.WARN_BUILDER_ROLL_OUT_OF_BOUNDS">WARN_BUILDER_ROLL_OUT_OF_BOUNDS</a></code></li>
 <li><code><a title="weftspace.logger.Logger.WARN_BUILDER_SMALLREAL_OUT_OF_BOUNDS" href="#weftspace.logger.Logger.WARN_BUILDER_SMALLREAL_OUT_OF_BOUNDS">WARN_BUILDER_SMALLREAL_OUT_OF_BOUNDS</a></code></li>
+<li><code><a title="weftspace.logger.Logger.WARN_MIXED_WHITESPACE" href="#weftspace.logger.Logger.WARN_MIXED_WHITESPACE">WARN_MIXED_WHITESPACE</a></code></li>
 <li><code><a title="weftspace.logger.Logger.WARN_NODE_WRITE_ROOT" href="#weftspace.logger.Logger.WARN_NODE_WRITE_ROOT">WARN_NODE_WRITE_ROOT</a></code></li>
 <li><code><a title="weftspace.logger.Logger.WHITE" href="#weftspace.logger.Logger.WHITE">WHITE</a></code></li>
 <li><code><a title="weftspace.logger.Logger.YELLOW" href="#weftspace.logger.Logger.YELLOW">YELLOW</a></code></li>
 <li><code><a title="weftspace.logger.Logger.count_error" href="#weftspace.logger.Logger.count_error">count_error</a></code></li>
+<li><code><a title="weftspace.logger.Logger.count_warning" href="#weftspace.logger.Logger.count_warning">count_warning</a></code></li>
 <li><code><a title="weftspace.logger.Logger.get_error_count" href="#weftspace.logger.Logger.get_error_count">get_error_count</a></code></li>
+<li><code><a title="weftspace.logger.Logger.get_warning_count" href="#weftspace.logger.Logger.get_warning_count">get_warning_count</a></code></li>
+<li><code><a title="weftspace.logger.Logger.reset_alert_counts" href="#weftspace.logger.Logger.reset_alert_counts">reset_alert_counts</a></code></li>
 <li><code><a title="weftspace.logger.Logger.reset_error_count" href="#weftspace.logger.Logger.reset_error_count">reset_error_count</a></code></li>
+<li><code><a title="weftspace.logger.Logger.reset_warning_count" href="#weftspace.logger.Logger.reset_warning_count">reset_warning_count</a></code></li>
 </ul>
 </li>
 </ul>
