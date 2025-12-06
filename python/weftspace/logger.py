@@ -82,7 +82,8 @@ class Logger(ABC):
 	@classmethod
 	def reset_alert_counts(cls):
 		"""Helper method to reset both error and warning counts."""
-		Logger.reset_alert_counts()
+		Logger.reset_error_count()
+		Logger.reset_warning_count()
 
 
 	_error_count: int = 0
