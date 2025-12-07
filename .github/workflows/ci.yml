@@ -48,5 +48,5 @@ jobs:
           pip install -e ".[dev]"
         working-directory: ./python
       - name: Test
-        run: pytest tests/__init__.py
+        run: pytest tests
         working-directory: ./python

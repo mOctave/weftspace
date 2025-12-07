@@ -21,9 +21,9 @@ import java.io.File;
 import java.util.ArrayList;
 
 /**
- * A class containing all the unit tests to be run on this library.
+ * The integrations tests for this library.
  */
-public class UnitTests {
+public class TestIntegration {
 	/**
 	 * A method which constructs a sample data node that can be used across multiple tests.
 	 * @return The node to use for testing.

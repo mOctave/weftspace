@@ -18,8 +18,8 @@ from weftspace import Builder, DataNode, DataReader, DataWriter, Logger
 
 from tests.test_utils import TestUtils
 
-class UnitTests(unittest.TestCase):
-	"""The actual unit tests being run on the code."""
+class TestIntegration(unittest.TestCase):
+	"""The integration tests for this library."""
 
 	def test_node_equality(self):
 		"""A test to make sure identical data nodes are being treated as equal."""
