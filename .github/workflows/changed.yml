@@ -11,6 +11,8 @@ on:
         value: ${{ jobs.changed.outputs.actions }}
       testdata:
         value: ${{ jobs.changed.outputs.testdata }}
+      siteindex:
+        value: ${{ jobs.changed.outputs.siteindex }}
 
 jobs:
   changed:
@@ -20,6 +22,7 @@ jobs:
       python: ${{ steps.filter.outputs.python }}
       actions: ${{ steps.filter.outputs.actions }}
       testdata: ${{ steps.filter.outputs.testdata }}
+      siteindex: ${{ steps.filter.outputs.siteindex }}
     steps:
     - uses: actions/checkout@v4
       with:

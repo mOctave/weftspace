@@ -10,3 +10,6 @@ actions:
 
 testdata:
   - 'testdata/**/*'
+
+siteindex:
+  - 'site/index.html'

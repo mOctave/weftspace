@@ -11,7 +11,7 @@ jobs:
 
   java:
     needs: changed
-    if: ${{ needs.changed.outputs.java == 'true' || needs.changed.outputs.actions == 'true' }}
+    if: ${{ needs.changed.outputs.java == 'true' || needs.changed.outputs.actions == 'true' || needs.changed.outputs.siteindex == 'true' }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
