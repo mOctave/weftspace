@@ -1,1 +1,1 @@
-typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"io.github.moctave.weftspace","l":"UnitTests"}];updateSearchResults();
+typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"io.github.moctave.weftspace","l":"TestDataReader"},{"p":"io.github.moctave.weftspace","l":"TestIntegration"}];updateSearchResults();
