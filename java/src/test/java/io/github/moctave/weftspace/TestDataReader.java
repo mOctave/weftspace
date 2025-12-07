@@ -19,7 +19,7 @@ import org.junit.jupiter.api.Test;
 /** Unit tests for DataReader */
 public class TestDataReader {
 
-	/** Tests for {@link DataReader#getIndentSubstring()}. */
+	/** Tests for {@link DataReader#getIndentSubstring(String, int)}. */
 	@Test
 	public void getIndentSubstring() {
 		assertEquals("", DataReader.getIndentSubstring("", 0));
@@ -33,7 +33,7 @@ public class TestDataReader {
 
 
 
-	/** Tests for {@link DataReader#trimComments()}. */
+	/** Tests for {@link DataReader#trimComments(String)}. */
 	@Test
 	public void trimComments() {
 		assertEquals("", DataReader.trimComments(""));
