@@ -132,10 +132,8 @@ el.replaceWith(d);
 
                                         if (expected_indent_string == None and len(indent_substring) &gt; 0):
                                                 expected_indent_string = indent_substring
-                                                if (
-                                                        &#34; &#34; in expected_indent_string
-                                                        and &#34;\t&#34; in expected_indent_string):
-                                                                Logger.WARN_MIXED_WHITESPACE.log(f)
+                                                if (&#34; &#34; in expected_indent_string and &#34;\t&#34; in expected_indent_string):
+                                                        Logger.WARN_MIXED_WHITESPACE.log(f)
 
 
                                         if indent &gt; indent_depths[-1] and current_node != None:
@@ -248,14 +246,22 @@ el.replaceWith(d);
         @classmethod
         def count_leading_whitespace(cls, line: str) -&gt; int:
                 &#34;&#34;&#34;Counts the number of leading tab or space characters on a line.&#34;&#34;&#34;
-                #!!!
-                return 0
+                i: int = 0
+                while (i &lt; len(line) and (line[i] == &#34;\t&#34; or line[i] == &#34; &#34;)):
+                        i += 1
+                
+                return i
 
 
 
         @classmethod
+        @deprecated(&#34;Use count_leading_whitespace() instead&#34;)
         def count_leading_tabs(cls, line: str) -&gt; int:
-                &#34;&#34;&#34;Counts the number of leading tabs on a line.&#34;&#34;&#34;
+                &#34;&#34;&#34;
+                Deprecated method included to support programs written expecting legacy
+                whitespace handling. Calls count_leading_whitespace(), see that
+                method for documentation.
+                &#34;&#34;&#34;
                 i: int = 0
                 while (i &lt; len(line) and line[i] == &#34;\t&#34;):
                         i += 1
@@ -273,10 +279,30 @@ el.replaceWith(d);
 <h3>Static methods</h3>
 <dl>
 <dt id="weftspace.data_reader.DataReader.count_leading_tabs"><code class="name flex">
-<span>def <span class="ident">count_leading_tabs</span></span>(<span>line: str) ‑> int</span>
+<span>def <span class="ident">count_leading_tabs</span></span>(<span>cls, line: str) ‑> int</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Counts the number of leading tabs on a line.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">@classmethod
+@deprecated(&#34;Use count_leading_whitespace() instead&#34;)
+def count_leading_tabs(cls, line: str) -&gt; int:
+        &#34;&#34;&#34;
+        Deprecated method included to support programs written expecting legacy
+        whitespace handling. Calls count_leading_whitespace(), see that
+        method for documentation.
+        &#34;&#34;&#34;
+        i: int = 0
+        while (i &lt; len(line) and line[i] == &#34;\t&#34;):
+                i += 1
+        
+        return i</code></pre>
+</details>
+<div class="desc"><p>Deprecated method included to support programs written expecting legacy
+whitespace handling. Calls count_leading_whitespace(), see that
+method for documentation.</p></div>
 </dd>
 <dt id="weftspace.data_reader.DataReader.count_leading_whitespace"><code class="name flex">
 <span>def <span class="ident">count_leading_whitespace</span></span>(<span>line: str) ‑> int</span>
@@ -432,10 +458,8 @@ def root(self):
 
                                 if (expected_indent_string == None and len(indent_substring) &gt; 0):
                                         expected_indent_string = indent_substring
-                                        if (
-                                                &#34; &#34; in expected_indent_string
-                                                and &#34;\t&#34; in expected_indent_string):
-                                                        Logger.WARN_MIXED_WHITESPACE.log(f)
+                                        if (&#34; &#34; in expected_indent_string and &#34;\t&#34; in expected_indent_string):
+                                                Logger.WARN_MIXED_WHITESPACE.log(f)
 
 
                                 if indent &gt; indent_depths[-1] and current_node != None:

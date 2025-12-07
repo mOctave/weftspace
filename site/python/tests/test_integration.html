@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
 <meta name="generator" content="pdoc3 0.11.6">
-<title>tests.unit_tests API documentation</title>
+<title>tests.test_integration API documentation</title>
 <meta name="description" content="">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
@@ -33,7 +33,7 @@ el.replaceWith(d);
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>tests.unit_tests</code></h1>
+<h1 class="title">Module <code>tests.test_integration</code></h1>
 </header>
 <section id="section-intro">
 </section>
@@ -46,8 +46,8 @@ el.replaceWith(d);
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="tests.unit_tests.UnitTests"><code class="flex name class">
-<span>class <span class="ident">UnitTests</span></span>
+<dt id="tests.test_integration.TestIntegration"><code class="flex name class">
+<span>class <span class="ident">TestIntegration</span></span>
 <span>(</span><span>methodName='runTest')</span>
 </code></dt>
 <dd>
@@ -55,8 +55,8 @@ el.replaceWith(d);
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class UnitTests(unittest.TestCase):
-        &#34;&#34;&#34;The actual unit tests being run on the code.&#34;&#34;&#34;
+<pre><code class="python">class TestIntegration(unittest.TestCase):
+        &#34;&#34;&#34;The integration tests for this library.&#34;&#34;&#34;
 
         def test_node_equality(self):
                 &#34;&#34;&#34;A test to make sure identical data nodes are being treated as equal.&#34;&#34;&#34;
@@ -82,17 +82,14 @@ el.replaceWith(d);
                 # Read test data from the file
                 reader: DataReader = DataReader(&#34;test.txt&#34;, DataNode.create_root_node())
                 reader.parse()
-                print(reader.root)
-                for child in reader.root.children:
-                        print(child)
                 loaded_node: DataNode = reader.root.children[0]
 
                 # Do clean-up
                 Path.unlink(Path(&#34;test.txt&#34;))
 
                 # Check to make sure there were no issues
-                self.assertEqual(Logger.get_error_count, 0)
-                self.assertEqual(Logger.get_warning_count, 0)
+                self.assertEqual(Logger.get_error_count(), 0)
+                self.assertEqual(Logger.get_warning_count(), 0)
                 self.assertEqual(TestUtils.get_test_node(), loaded_node)
 
 
@@ -124,8 +121,8 @@ el.replaceWith(d);
                                         pass
                 
                 # Check to make sure there were no issues
-                self.assertEqual(Logger.get_error_count, 0)
-                self.assertEqual(Logger.get_warning_count, 0)
+                self.assertEqual(Logger.get_error_count(), 0)
+                self.assertEqual(Logger.get_warning_count(), 0)
                 self.assertTrue(
                         name == &#34;Much Confused Wardragon&#34;
                         and mass == 35
@@ -152,8 +149,8 @@ el.replaceWith(d);
                 loaded_node: DataNode = root_node.children[0]
 
                 # Check to make sure there were no issues
-                self.assertEqual(Logger.get_error_count, 0)
-                self.assertEqual(Logger.get_warning_count, 0)
+                self.assertEqual(Logger.get_error_count(), 0)
+                self.assertEqual(Logger.get_warning_count(), 0)
                 self.assertEqual(TestUtils.get_test_node(), loaded_node)
 
 
@@ -171,8 +168,8 @@ el.replaceWith(d);
                 loaded_node: DataNode = root_node.children[0]
 
                 # Check to make sure there were no issues
-                self.assertEqual(Logger.get_error_count, 0)
-                self.assertEqual(Logger.get_warning_count, 0)
+                self.assertEqual(Logger.get_error_count(), 0)
+                self.assertEqual(Logger.get_warning_count(), 0)
                 self.assertEqual(TestUtils.get_test_node(), loaded_node)
         
 
@@ -193,11 +190,11 @@ el.replaceWith(d);
                 loaded_node: DataNode = root_node.children[0]
 
                 # Check to make sure there were no issues
-                self.assertEqual(Logger.get_error_count, 0)
-                self.assertEqual(Logger.get_warning_count, 2)
+                self.assertEqual(Logger.get_error_count(), 0)
+                self.assertEqual(Logger.get_warning_count(), 0)
                 self.assertEqual(TestUtils.get_test_node(), loaded_node)</code></pre>
 </details>
-<div class="desc"><p>The actual unit tests being run on the code.</p>
+<div class="desc"><p>The integration tests for this library.</p>
 <p>Create an instance of the class that will use the named test
 method when executed. Raises a ValueError if the instance does
 not have a method with the specified name.</p></div>
@@ -207,7 +204,7 @@ not have a method with the specified name.</p></div>
 </ul>
 <h3>Methods</h3>
 <dl>
-<dt id="tests.unit_tests.UnitTests.test_builder"><code class="name flex">
+<dt id="tests.test_integration.TestIntegration.test_builder"><code class="name flex">
 <span>def <span class="ident">test_builder</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -242,8 +239,8 @@ not have a method with the specified name.</p></div>
                                 pass
         
         # Check to make sure there were no issues
-        self.assertEqual(Logger.get_error_count, 0)
-        self.assertEqual(Logger.get_warning_count, 0)
+        self.assertEqual(Logger.get_error_count(), 0)
+        self.assertEqual(Logger.get_warning_count(), 0)
         self.assertTrue(
                 name == &#34;Much Confused Wardragon&#34;
                 and mass == 35
@@ -254,7 +251,7 @@ not have a method with the specified name.</p></div>
 <div class="desc"><p>This test takes data from the test node, builds it, and makes sure it's
 working properly.</p></div>
 </dd>
-<dt id="tests.unit_tests.UnitTests.test_human_readable_nodes"><code class="name flex">
+<dt id="tests.test_integration.TestIntegration.test_human_readable_nodes"><code class="name flex">
 <span>def <span class="ident">test_human_readable_nodes</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -279,14 +276,14 @@ working properly.</p></div>
         loaded_node: DataNode = root_node.children[0]
 
         # Check to make sure there were no issues
-        self.assertEqual(Logger.get_error_count, 0)
-        self.assertEqual(Logger.get_warning_count, 0)
+        self.assertEqual(Logger.get_error_count(), 0)
+        self.assertEqual(Logger.get_warning_count(), 0)
         self.assertEqual(TestUtils.get_test_node(), loaded_node)</code></pre>
 </details>
 <div class="desc"><p>This test checks to make sure that nodes with extra empty lines in the
 middle of their definitions still parse properly.</p></div>
 </dd>
-<dt id="tests.unit_tests.UnitTests.test_io"><code class="name flex">
+<dt id="tests.test_integration.TestIntegration.test_io"><code class="name flex">
 <span>def <span class="ident">test_io</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -312,23 +309,20 @@ middle of their definitions still parse properly.</p></div>
         # Read test data from the file
         reader: DataReader = DataReader(&#34;test.txt&#34;, DataNode.create_root_node())
         reader.parse()
-        print(reader.root)
-        for child in reader.root.children:
-                print(child)
         loaded_node: DataNode = reader.root.children[0]
 
         # Do clean-up
         Path.unlink(Path(&#34;test.txt&#34;))
 
         # Check to make sure there were no issues
-        self.assertEqual(Logger.get_error_count, 0)
-        self.assertEqual(Logger.get_warning_count, 0)
+        self.assertEqual(Logger.get_error_count(), 0)
+        self.assertEqual(Logger.get_warning_count(), 0)
         self.assertEqual(TestUtils.get_test_node(), loaded_node)</code></pre>
 </details>
 <div class="desc"><p>This test creates a new DataNode, writes it to a file using DataWriter,
 reads it using DataReader, and compares it against the original node.</p></div>
 </dd>
-<dt id="tests.unit_tests.UnitTests.test_node_equality"><code class="name flex">
+<dt id="tests.test_integration.TestIntegration.test_node_equality"><code class="name flex">
 <span>def <span class="ident">test_node_equality</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -342,7 +336,7 @@ reads it using DataReader, and compares it against the original node.</p></div>
 </details>
 <div class="desc"><p>A test to make sure identical data nodes are being treated as equal.</p></div>
 </dd>
-<dt id="tests.unit_tests.UnitTests.test_space_indentation"><code class="name flex">
+<dt id="tests.test_integration.TestIntegration.test_space_indentation"><code class="name flex">
 <span>def <span class="ident">test_space_indentation</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -363,13 +357,13 @@ reads it using DataReader, and compares it against the original node.</p></div>
         loaded_node: DataNode = root_node.children[0]
 
         # Check to make sure there were no issues
-        self.assertEqual(Logger.get_error_count, 0)
-        self.assertEqual(Logger.get_warning_count, 0)
+        self.assertEqual(Logger.get_error_count(), 0)
+        self.assertEqual(Logger.get_warning_count(), 0)
         self.assertEqual(TestUtils.get_test_node(), loaded_node)</code></pre>
 </details>
 <div class="desc"><p>This test checks to make sure that space-based indentation is parsed properly.</p></div>
 </dd>
-<dt id="tests.unit_tests.UnitTests.test_terrible_indentation"><code class="name flex">
+<dt id="tests.test_integration.TestIntegration.test_terrible_indentation"><code class="name flex">
 <span>def <span class="ident">test_terrible_indentation</span></span>(<span>self)</span>
 </code></dt>
 <dd>
@@ -393,8 +387,8 @@ reads it using DataReader, and compares it against the original node.</p></div>
         loaded_node: DataNode = root_node.children[0]
 
         # Check to make sure there were no issues
-        self.assertEqual(Logger.get_error_count, 0)
-        self.assertEqual(Logger.get_warning_count, 2)
+        self.assertEqual(Logger.get_error_count(), 0)
+        self.assertEqual(Logger.get_warning_count(), 0)
         self.assertEqual(TestUtils.get_test_node(), loaded_node)</code></pre>
 </details>
 <div class="desc"><p>This test checks to make sure that even the worst indentation can still be parsed,
@@ -418,14 +412,14 @@ but that the proper warnings are thrown when you attempt to do so.</p></div>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="tests.unit_tests.UnitTests" href="#tests.unit_tests.UnitTests">UnitTests</a></code></h4>
+<h4><code><a title="tests.test_integration.TestIntegration" href="#tests.test_integration.TestIntegration">TestIntegration</a></code></h4>
 <ul class="">
-<li><code><a title="tests.unit_tests.UnitTests.test_builder" href="#tests.unit_tests.UnitTests.test_builder">test_builder</a></code></li>
-<li><code><a title="tests.unit_tests.UnitTests.test_human_readable_nodes" href="#tests.unit_tests.UnitTests.test_human_readable_nodes">test_human_readable_nodes</a></code></li>
-<li><code><a title="tests.unit_tests.UnitTests.test_io" href="#tests.unit_tests.UnitTests.test_io">test_io</a></code></li>
-<li><code><a title="tests.unit_tests.UnitTests.test_node_equality" href="#tests.unit_tests.UnitTests.test_node_equality">test_node_equality</a></code></li>
-<li><code><a title="tests.unit_tests.UnitTests.test_space_indentation" href="#tests.unit_tests.UnitTests.test_space_indentation">test_space_indentation</a></code></li>
-<li><code><a title="tests.unit_tests.UnitTests.test_terrible_indentation" href="#tests.unit_tests.UnitTests.test_terrible_indentation">test_terrible_indentation</a></code></li>
+<li><code><a title="tests.test_integration.TestIntegration.test_builder" href="#tests.test_integration.TestIntegration.test_builder">test_builder</a></code></li>
+<li><code><a title="tests.test_integration.TestIntegration.test_human_readable_nodes" href="#tests.test_integration.TestIntegration.test_human_readable_nodes">test_human_readable_nodes</a></code></li>
+<li><code><a title="tests.test_integration.TestIntegration.test_io" href="#tests.test_integration.TestIntegration.test_io">test_io</a></code></li>
+<li><code><a title="tests.test_integration.TestIntegration.test_node_equality" href="#tests.test_integration.TestIntegration.test_node_equality">test_node_equality</a></code></li>
+<li><code><a title="tests.test_integration.TestIntegration.test_space_indentation" href="#tests.test_integration.TestIntegration.test_space_indentation">test_space_indentation</a></code></li>
+<li><code><a title="tests.test_integration.TestIntegration.test_terrible_indentation" href="#tests.test_integration.TestIntegration.test_terrible_indentation">test_terrible_indentation</a></code></li>
 </ul>
 </li>
 </ul>
