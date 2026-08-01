@@ -16,13 +16,23 @@ package io.github.moctave.weftspace;
 import java.io.File;
 import java.util.List;
 
+import org.jspecify.annotations.*;
+
 /** A subclass of a node that is attached to a specific line and file, for use in debugging. */
 public class LoadedNode extends DataNode {
+	// MARK: Fields
+	/** The line this node was parsed from. */
+	private int line;
+
+	/** The file this node was parsed from. */
+	private @NonNull File file;
+
+
+
 	// MARK: Constructor
 	/**
 	 * Sole constructor.
 	 * @param name The name of this node, typically the first phrase present on its line.
-	 * @param flag A flag indicating how this node should be treated during instantiation.
 	 * @param parent This node's parent node (or {@code null} if it should be the root of its tree).
 	 * @param args A list of arguments attached to this node.
 	 * @param children A list of nodes which are children of this node.
@@ -30,28 +40,18 @@ public class LoadedNode extends DataNode {
 	 * @param file The file this node was loaded from.
 	 */
 	public LoadedNode(
-		String name,
-		Flag flag,
-		DataNode parent,
-		List<String> args,
-		List<DataNode> children,
+		@NonNull String name,
+		@Nullable DataNode parent,
+		@NonNull List<String> args,
+		@NonNull List<DataNode> children,
 		int line,
-		File file
+		@NonNull File file
 	) {
-		super(name, flag, parent, args, children);
+		super(name, parent, args, children);
 
 		setLine(line);
 		setFile(file);
 	}
-
-
-
-	// MARK: Fields
-	/** The line this node was parsed from. */
-	private int line;
-
-	/** The file this node was parsed from. */
-	private File file;
 
 
 
@@ -76,7 +76,7 @@ public class LoadedNode extends DataNode {
 	 * Getter: Returns the file this node was parsed from.
 	 * @return {@link #file}
 	 */
-	public File getFile() {
+	public @NonNull File getFile() {
 		return file;
 	}
 
@@ -84,7 +84,7 @@ public class LoadedNode extends DataNode {
 	 * Setter: Changes the file associated with this node.
 	 * @param file The new value for {@link #file}.
 	 */
-	public void setFile(File file) {
+	public void setFile(@NonNull File file) {
 		this.file = file;
 	}
 }

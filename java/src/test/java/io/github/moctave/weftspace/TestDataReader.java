@@ -13,15 +13,18 @@
 
 package io.github.moctave.weftspace;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.junit.jupiter.api.Test;
 
 /** Unit tests for DataReader */
 public class TestDataReader {
 
-	/** Tests for {@link DataReader#getIndentSubstring(String, int)}. */
+	/**
+	 * Tests for {@link DataReader#getIndentSubstring(String, int)}.
+	 */
 	@Test
-	public void getIndentSubstring() {
+	public void testGetIndentSubstring() {
 		assertEquals("", DataReader.getIndentSubstring("", 0));
 		assertEquals("\t", DataReader.getIndentSubstring("\tHello World", 0));
 		assertEquals("\t\t", DataReader.getIndentSubstring("\t\tHello World", 0));
@@ -33,9 +36,11 @@ public class TestDataReader {
 
 
 
-	/** Tests for {@link DataReader#trimComments(String)}. */
+	/** 
+	 * Tests for {@link DataReader#trimComments(String)}.
+	 */
 	@Test
-	public void trimComments() {
+	public void testTrimComments() {
 		assertEquals("", DataReader.trimComments(""));
 		assertEquals(" ", DataReader.trimComments(" "));
 		assertEquals("", DataReader.trimComments("#only comment"));
@@ -45,9 +50,11 @@ public class TestDataReader {
 	}
 
 
-	/** Tests for {@link DataReader#countLeadingWhitespace(String)}. */
+	/** 
+	 * Tests for {@link DataReader#countLeadingWhitespace(String)}.
+	 */
 	@Test
-	public void countLeadingWhitespace() {
+	public void testCountLeadingWhitespace() {
 		assertEquals(0, DataReader.countLeadingWhitespace(""));
 		assertEquals(1, DataReader.countLeadingWhitespace(" "));
 		assertEquals(2, DataReader.countLeadingWhitespace("\t\t"));
@@ -57,9 +64,11 @@ public class TestDataReader {
 	}
 
 
-	/** Tests for {@link DataReader#containsOnlyWhitespace(String)} */
+	/**
+	 * Tests for {@link DataReader#containsOnlyWhitespace(String)}
+	 */
 	@Test
-	public void containsOnlyWhitespace() {
+	public void testContainsOnlyWhitespace() {
 		assertEquals(true, DataReader.containsOnlyWhitespace(""));
 		assertEquals(false, DataReader.containsOnlyWhitespace("foo"));
 		assertEquals(true, DataReader.containsOnlyWhitespace("    "));

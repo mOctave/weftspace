@@ -18,18 +18,22 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Deque;
 
+import org.jspecify.annotations.*;
+
+import io.github.moctave.weftspace.exceptions.ReaderException;
+
 /** A class which reads data from a file and stores it in a node tree. */
 public class DataReader {
-	// MARK: Constants
-	/** Special flags that can be used when parsing */
-	public enum Option {
-		/** Do not apply node flags. */
-		IGNORE_NODE_FLAGS
-	}
+	// MARK: Fields
+	// The file to be parsed.
+	private @NonNull File file;
+
+	/** The root node of the tree that nodes are stored in. */
+	private @NonNull DataNode root;
+
 
 
 	// MARK: Constructor
@@ -38,31 +42,20 @@ public class DataReader {
 	 * @param file The file to be parsed.
 	 * @param root The root node of the tree that nodes are stored in.
 	 */
-	public DataReader(File file, DataNode root) {
+	public DataReader(@NonNull File file, @NonNull DataNode root) {
 		this.file = file;
 		this.root = root;
 	}
 
 
 
-	// MARK: Fields
-	// The file to be parsed.
-	private File file;
-
-	/** The root node of the tree that nodes are stored in. */
-	private DataNode root;
-
-
-
 	// MARK: Methods
 	/**
 	 * Parses the file associated with this object, and stores all nodes in the tree.
-	 * @param options Any {@link Option}s you wish to apply to the parse.
 	 */
-	public void parse(Option... options) {
-		List<Option> optionList = Arrays.asList(options);
-		boolean ignoreNodeFlags = optionList.contains(Option.IGNORE_NODE_FLAGS);
+	public void parse() throws ReaderException {
 		try {
+			boolean mixedWhitespace = false;
 			Scanner s = new Scanner(file);
 			int lineNumber = 0;
 
@@ -95,13 +88,13 @@ public class DataReader {
 						expectedIndentString.contains(" ")
 						&& expectedIndentString.contains("\t")
 					) {
-						Logger.WARN_MIXED_WHITESPACE.log(file);
+						mixedWhitespace = true;
 					}
 				}
 
 				if (indent > indentDepths.peek() && currentNode != null) {
 					if (!expectedIndentString.equals(indentSubstring)) {
-						Logger.WARN_MIXED_WHITESPACE.log(file);
+						mixedWhitespace = true;
 					}
 					nodeStack.push(currentNode);
 					indentDepths.push(indent);
@@ -111,7 +104,7 @@ public class DataReader {
 						indentDepths.pop();
 					}
 				}
-				currentNode = makeNode(line, lineNumber, !ignoreNodeFlags);
+				currentNode = makeNode(line, lineNumber);
 
 				if (nodeStack.isEmpty() && currentNode != null) {
 					root.addChild(currentNode);
@@ -124,8 +117,12 @@ public class DataReader {
 			}
 
 			s.close();
+
+			if (mixedWhitespace) {
+				throw new ReaderException(String.format("Warning - mixed whitespace in file %s (parsing completed with issue)", file.getPath()));
+			}
 		} catch (FileNotFoundException e) {
-			Logger.ERROR_FILE_DNE.log(file);
+			throw new ReaderException(String.format("No such file as %s", file.getPath()));
 		}
 	}
 
@@ -135,10 +132,9 @@ public class DataReader {
 	 * Parses a single line and converts it to a node.
 	 * @param line The line to parse.
 	 * @param number The number of the line being parsed, for debugging purposes.
-	 * @param checkForFlags Whether or not node flags should be considered and applied.
 	 * @return The node created from the line.
 	 */
-	public DataNode makeNode(String line, int number, boolean checkForFlags) {
+	public @Nullable DataNode makeNode(@NonNull String line, int number) {
 		String trimmedLine = line.trim();
 		List<String> data = new ArrayList<>();
 		char splitOn = ' ';
@@ -190,23 +186,7 @@ public class DataReader {
 		String nodeName = data.get(0);
 		data.remove(0);
 
-		DataNode.Flag flag = DataNode.Flag.NORMAL;
-
-		// Check for flags
-		if (checkForFlags) {
-			if (nodeName.equals("add")) {
-				flag = DataNode.Flag.ADD;
-				nodeName = data.get(0);
-				data.remove(0);
-			} else if (nodeName.equals("remove")) {
-				flag = DataNode.Flag.REMOVE;
-				nodeName = data.get(0);
-				data.remove(0);
-			}
-		}
-
-
-		return new LoadedNode(nodeName, flag, null, data, new ArrayList<>(), number, file);
+		return new LoadedNode(nodeName, null, data, new ArrayList<>(), number, file);
 	}
 
 
@@ -217,7 +197,7 @@ public class DataReader {
 	 * @param depth The base depth from which the line is being indented.
 	 * @return The substring used for indentation.
 	 */
-	public static String getIndentSubstring(String line, int depth) {
+	public static @NonNull String getIndentSubstring(@NonNull String line, int depth) {
 		int i = depth;
 		String s = "";
 		while (i < line.length() && (line.charAt(i) == '\t' || line.charAt(i) == ' ')) {
@@ -234,7 +214,7 @@ public class DataReader {
 	 * @param line The line to trim.
 	 * @return The uncommented line.
 	 */
-	public static String trimComments(String line) {
+	public static @NonNull String trimComments(@NonNull String line) {
 		return line.split("#")[0];
 	}
 
@@ -246,7 +226,7 @@ public class DataReader {
 	 * @return The number of tabs or spaces that come before the first
 	 * non-whitespace character on the line.
 	 */
-	public static int countLeadingWhitespace(String line) {
+	public static int countLeadingWhitespace(@NonNull String line) {
 		int i = 0;
 		while (i < line.length() && (line.charAt(i) == '\t' || line.charAt(i) == ' ')) {
 			i++;
@@ -257,23 +237,11 @@ public class DataReader {
 
 
 	/**
-	 * Deprecated method included to support programs written expecting legacy
-	 * whitespace handling. Calls {@link #countLeadingWhitespace(String)}, see that
-	 * method for documentation.
-	 */
-	@Deprecated
-	public static int countLeadingTabs(String line) {
-		return countLeadingWhitespace(line);
-	}
-
-
-
-	/**
 	 * Checks if a line contains only whitespace, as defined by {@link Character#isWhitespace(char)}.
 	 * @param line The line to check.
 	 * @return {@code true} if the line is empty or contains only whitespace, or {@code false} if it contains other characters as well.
 	 */
-	public static boolean containsOnlyWhitespace(String line) {
+	public static boolean containsOnlyWhitespace(@NonNull String line) {
 		// If the line is empty, for our purposes it's all whitespace.
 		if (line == null || line.isEmpty())
 			return true;
@@ -294,7 +262,7 @@ public class DataReader {
 	 * Getter: Returns the file this reader is parsing.
 	 * @return {@link #file}
 	 */
-	public File getFile() {
+	public @NonNull File getFile() {
 		return file;
 	}
 
@@ -302,7 +270,7 @@ public class DataReader {
 	 * Setter: Changes the file this reader is parsing.
 	 * @param file The new value for {@link #file}.
 	 */
-	public void setFile(File file) {
+	public void setFile(@NonNull File file) {
 		this.file = file;
 	}
 
@@ -311,7 +279,7 @@ public class DataReader {
 	 * Getter: Returns the root node of the tree this reader is writing to.
 	 * @return {@link #root}
 	 */
-	public DataNode getRoot() {
+	public @NonNull DataNode getRoot() {
 		return root;
 	}
 
@@ -319,7 +287,7 @@ public class DataReader {
 	 * Setter: Changes the root node this reader adds children to.
 	 * @param root The new value for {@link #root}.
 	 */
-	public void setRoot(DataNode root) {
+	public void setRoot(@NonNull DataNode root) {
 		this.root = root;
 	}
 }

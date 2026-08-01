@@ -13,11 +13,14 @@
 
 package io.github.moctave.weftspace;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
+
 import org.junit.jupiter.api.Test;
 
+import io.github.moctave.weftspace.exceptions.*;
+
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -29,33 +32,33 @@ public class TestIntegration {
 	 * @return The node to use for testing.
 	 */
 	public static DataNode getTestNode() {
-		DataNode testNode = new DataNode("ship", DataNode.Flag.NORMAL, null, new ArrayList<>(), new ArrayList<>());
+		DataNode testNode = new DataNode("ship", null, new ArrayList<>(), new ArrayList<>());
 		testNode.addArg("Much Confused Wardragon");
 
-		DataNode childNode = new DataNode("mass", DataNode.Flag.NORMAL, testNode, new ArrayList<>(), new ArrayList<>());
+		DataNode childNode = new DataNode("mass", testNode, new ArrayList<>(), new ArrayList<>());
 		childNode.addArg("35");
 		testNode.addChild(childNode);
 
-		childNode = new DataNode("drag", DataNode.Flag.NORMAL, testNode, new ArrayList<>(), new ArrayList<>());
+		childNode = new DataNode("drag", testNode, new ArrayList<>(), new ArrayList<>());
 		childNode.addArg("0.3");
 		testNode.addChild(childNode);
 
-		childNode = new DataNode("weapon", DataNode.Flag.NORMAL, testNode, new ArrayList<>(), new ArrayList<>());
+		childNode = new DataNode("weapon", testNode, new ArrayList<>(), new ArrayList<>());
 		testNode.addChild(childNode);
 
-		DataNode grandNode = new DataNode("hit force", DataNode.Flag.NORMAL, childNode, new ArrayList<>(), new ArrayList<>());
+		DataNode grandNode = new DataNode("hit force", childNode, new ArrayList<>(), new ArrayList<>());
 		grandNode.addArg("308");
 		childNode.addChild(grandNode);
 
-		grandNode = new DataNode("hull damage", DataNode.Flag.NORMAL, childNode, new ArrayList<>(), new ArrayList<>());
+		grandNode = new DataNode("hull damage", childNode, new ArrayList<>(), new ArrayList<>());
 		grandNode.addArg("6100");
 		childNode.addChild(grandNode);
 
-		grandNode = new DataNode("shield damage", DataNode.Flag.NORMAL, childNode, new ArrayList<>(), new ArrayList<>());
+		grandNode = new DataNode("shield damage", childNode, new ArrayList<>(), new ArrayList<>());
 		grandNode.addArg("42");
 		childNode.addChild(grandNode);
 
-		childNode = new DataNode("description", DataNode.Flag.NORMAL, testNode, new ArrayList<>(), new ArrayList<>());
+		childNode = new DataNode("description", testNode, new ArrayList<>(), new ArrayList<>());
 		childNode.addArg("This Wardragon bears no resemblance to any actual ship in the game Endless Sky. It has no material existence, despite having mass and possibly explaining the existence of the dark matter in our universe.");
 		testNode.addChild(childNode);
 
@@ -81,29 +84,31 @@ public class TestIntegration {
 	 */
 	@Test
 	public void testIO() {
-		// Start the error counters
-		Logger.resetAlertCounts();
-
-
 		// Write test data to a file
 		File file = new File("test.txt");
 		DataWriter writer = new DataWriter(file);
-		writer.open();
+		try {
+			writer.open();
+		} catch (IOException e) {
+			fail();
+		}
 		writer.write(getTestNode());
 		writer.close();
 
 
 		// Read test data from the file
 		DataReader reader = new DataReader(file, new DataNode());
-		reader.parse();
+		try {
+			reader.parse();
+		} catch (ReaderException e) {
+			fail();
+		}
 		DataNode loadedNode = reader.getRoot().getChild(0);
 
 		// Do clean-up
 		file.delete();
 
 		// Check to make sure there were no issues
-		assertEquals(0, Logger.getErrorCount());
-		assertEquals(0, Logger.getWarningCount());
 		assertTrue(getTestNode().equals(loadedNode));
 	}
 
@@ -115,34 +120,33 @@ public class TestIntegration {
 	 */
 	@Test
 	public void testBuilder() {
-		// Start the error counters
-		Logger.resetAlertCounts();
-
-		// Build the node
-		DataNode node = getTestNode();
-		String name = Builder.buildString(node, 0, "ship");
-		int mass = 0;
-		double drag = 0.;
-		String description = "";
-		for (DataNode child : node.getChildren()) {
-			if (child.getName().equals("mass")) {
-				mass = Builder.buildInt(child, 0, "ship");
-			} else if (child.getName().equals("drag")) {
-				drag = Builder.buildDouble(child, 0, "ship");
-			}  else if (child.getName().equals("description")) {
-				description += Builder.buildString(child, 0, "ship");
+		try {
+			// Build the node
+			DataNode node = getTestNode();
+			String name = Builder.buildString(node, 0);
+			int mass = 0;
+			double drag = 0.;
+			String description = "";
+			for (DataNode child : node.getChildren()) {
+				if (child.getName().equals("mass")) {
+					mass = Builder.buildInt(child, 0);
+				} else if (child.getName().equals("drag")) {
+					drag = Builder.buildDouble(child, 0);
+				}  else if (child.getName().equals("description")) {
+					description += Builder.buildString(child, 0);
+				}
 			}
-		}
 
-		// Check to make sure there were no issues
-		assertEquals(0, Logger.getErrorCount());
-		assertEquals(0, Logger.getWarningCount());
-		assertTrue(
-			name.equals("Much Confused Wardragon")
-			&& mass == 35
-			&& drag == 0.3
-			&& description.equals("This Wardragon bears no resemblance to any actual ship in the game Endless Sky. It has no material existence, despite having mass and possibly explaining the existence of the dark matter in our universe.")
-		);
+			// Check to make sure there were no issues
+			assertTrue(
+				name.equals("Much Confused Wardragon")
+				&& mass == 35
+				&& drag == 0.3
+				&& description.equals("This Wardragon bears no resemblance to any actual ship in the game Endless Sky. It has no material existence, despite having mass and possibly explaining the existence of the dark matter in our universe.")
+			);
+		} catch (BuilderException e) {
+			fail("Unexpected builder exception");
+		}
 	}
 
 
@@ -153,21 +157,20 @@ public class TestIntegration {
 	 */
 	@Test
 	public void testHumanReadableNodes() {
-		// Start the error counters
-		Logger.resetAlertCounts();
-
 		// Open and parse the test data
 		File testData = new File("../testdata/humanreadable.txt");
 		DataNode rootNode = new DataNode();
 		DataReader reader = new DataReader(testData, rootNode);
-		reader.parse();
+
+		try {
+			reader.parse();
+		} catch (ReaderException e) {
+			fail();
+		}
 
 		DataNode loadedNode = rootNode.getChild(0);
 
 		// Check to make sure there were no issues
-
-		assertEquals(0, Logger.getErrorCount());
-		assertEquals(0, Logger.getWarningCount());
 		assertTrue(getTestNode().equals(loadedNode));
 	}
 
@@ -177,20 +180,20 @@ public class TestIntegration {
 	 */
 	@Test
 	public void testSpaceIndentation() {
-		// Start the error counters
-		Logger.resetAlertCounts();
 
 		// Open and parse the test data
 		File testData = new File("../testdata/spaceindented.txt");
 		DataNode rootNode = new DataNode();
 		DataReader reader = new DataReader(testData, rootNode);
-		reader.parse();
+
+		try {
+			reader.parse();
+		} catch (ReaderException e) {
+			fail();
+		}
 
 		DataNode loadedNode = rootNode.getChild(0);
 
-		// Check to make sure there were no issues
-		assertEquals(0, Logger.getErrorCount());
-		assertEquals(0, Logger.getWarningCount());
 		assertTrue(getTestNode().equals(loadedNode));
 	}
 
@@ -201,20 +204,21 @@ public class TestIntegration {
 	 */
 	@Test
 	public void testTerribleIndentation() {
-		// Start the error counters
-		Logger.resetAlertCounts();
 
 		// Open and parse the test data
 		File testData = new File("../testdata/terriblyindented.txt");
 		DataNode rootNode = new DataNode();
 		DataReader reader = new DataReader(testData, rootNode);
-		reader.parse();
+
+		try {
+			reader.parse();
+			fail();
+		} catch (ReaderException e) {
+			assertTrue(e.getMessage().startsWith("Warning - mixed whitespace"));
+		}
 
 		DataNode loadedNode = rootNode.getChild(0);
 
-		// Check to make sure there were no issues
-		assertEquals(0, Logger.getErrorCount());
-		assertEquals(2, Logger.getWarningCount());
 		assertTrue(getTestNode().equals(loadedNode));
 	}
 }

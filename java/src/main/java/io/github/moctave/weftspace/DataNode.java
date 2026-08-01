@@ -16,22 +16,22 @@ package io.github.moctave.weftspace;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.jspecify.annotations.*;
+
 /** A class representing a node in the data tree. */
 public class DataNode {
-	// MARK: Constants
-	/**
-	 * The flag attached to this node, influencing how it should be treated during instantiation.
-	 */
-	public static enum Flag {
-		/** This node should be treated normally, with no special consideration. */
-		NORMAL,
-		/** This node should always result in the addition of an object, even if it would usually overwrite one instead. */
-		ADD,
-		/** This node should result in the removal of its associated object. */
-		REMOVE,
-		/** This node is a root node, and should not be parsed or written. */
-		ROOT
-	}
+	// MARK: Fields
+	/** The name of this node. */
+	private @Nullable String name;
+
+	/** The parent of this node. */
+	private @Nullable DataNode parent;
+
+	/** This node's arguments. */
+	private @NonNull List<String> args;
+
+	/** This node's children. */
+	private @NonNull List<DataNode> children;
 
 
 
@@ -40,20 +40,18 @@ public class DataNode {
 	 * Primary constructor. Takes all the standard arguments, except
 	 * those defined by {@link LoadedNode}.
 	 * @param name The name of this node, typically the first phrase present on its line.
-	 * @param flag A flag indicating how this node should be treated during instantiation.
 	 * @param parent This node's parent node (or {@code null} if it should be the root of its tree).
 	 * @param args A list of arguments attached to this node.
 	 * @param children A list of nodes which are children of this node.
 	 */
 	public DataNode(
-		String name,
-		Flag flag,
-		DataNode parent,
-		List<String> args,
-		List<DataNode> children
+		@NonNull String name,
+		@Nullable DataNode parent,
+		@NonNull List<String> args,
+		@NonNull List<DataNode> children
 	) {
 		setName(name);
-		this.flag = flag;
+		this.parent = parent;
 		this.args = args;
 		this.children = children;
 	}
@@ -65,29 +63,10 @@ public class DataNode {
 	 */
 	public DataNode() {
 		setName("--ROOT--");
-		this.flag = Flag.ROOT;
 		this.parent = null;
 		this.args = new ArrayList<>();
 		this.children = new ArrayList<>();
 	}
-
-
-
-	// MARK: Fields
-	/** The name of this node. */
-	private String name;
-
-	/** The flag attached to this node. */
-	private Flag flag;
-
-	/** The parent of this node. */
-	private DataNode parent;
-
-	/** This node's arguments. */
-	private List<String> args;
-
-	/** This node's children. */
-	private List<DataNode> children;
 
 
 
@@ -97,7 +76,7 @@ public class DataNode {
 	 * have the same hash code.
 	 * 
 	 * Multiple distinct nodes may have the same hash code, as
-	 * (1) the mechanics for name.hashCode() and flag.hashCode() are not controlled,
+	 * (1) the mechanics for name.hashCode() are not controlled,
 	 * (2) parents are not taken into account in this method, and
 	 * (3) nodes which have themself as a child will not have their children considered.
 	 * @return A hash code value for this node.
@@ -107,7 +86,6 @@ public class DataNode {
 		final int prime = 31;
 		int hash = 1;
 		hash = prime * hash + (name == null ? 0 : name.hashCode());
-		hash = prime * hash + (flag == null ? 0 : flag.hashCode());
 		hash = prime * hash + (args == null ? 0 : args.hashCode());
 		hash = prime * hash + ((children == null || children.contains(this)) ? 0 : children.hashCode());
 		return hash;
@@ -116,7 +94,7 @@ public class DataNode {
 
 
 	/**
-	 * Indicates whether an object is equal to this node, comparing the names, flags,
+	 * Indicates whether an object is equal to this node, comparing the names,
 	 * arguments, and children of the two nodes.
 	 * 
 	 * NOTE: Parents are NOT considered by this method, to reduce complexity. If you
@@ -126,7 +104,7 @@ public class DataNode {
 	 * @return {@code true} if this node is equal to {@code obj}, {@code false} otherwise.
 	 */
 	@Override
-	public boolean equals(Object obj) {
+	public boolean equals(@Nullable Object obj) {
 		// The object is a reference for this node!
 		if (obj == this) return true;
 
@@ -138,7 +116,6 @@ public class DataNode {
 		
 		// Check if the two nodes have a different parameter
 		if (!node.getName().equals(name)) return false;
-		if (!node.getFlag().equals(flag)) return false;
 
 		// Check if the arguments and children are equal
 		if (!node.getArgs().equals(args)) return false;
@@ -157,9 +134,12 @@ public class DataNode {
 	 * @return {@code true} if this node has the same parent as the other node,
 	 * {@code false} otherwise.
 	 */
-	public boolean sameParent(DataNode node) {
+	public boolean sameParent(@NonNull DataNode node) {
 		if (node.hasParent()) {
-			return (node.getParent().equals(this));
+			if (!this.hasParent())
+				return false;
+
+			return (node.getParent().equals(this.getParent()));
 		} else {
 			return !(this.hasParent());
 		}
@@ -173,7 +153,7 @@ public class DataNode {
 	 * @return A string representation of this node.
 	 */
 	@Override
-	public String toString() {
+	public @NonNull String toString() {
 		return String.format(
 			"Node{name: %s, args: %s, children: %d}",
 			name,
@@ -187,7 +167,7 @@ public class DataNode {
 	 * Mutator method to add an argument to this node's argument list.
 	 * @param arg The argument to add.
 	 */
-	public void addArg(String arg) {
+	public void addArg(@NonNull String arg) {
 		args.add(arg);
 	}
 
@@ -198,7 +178,7 @@ public class DataNode {
 	 * @param i The index of the argument to get.
 	 * @return The selected argument.
 	 */
-	public String getArg(int i) {
+	public @NonNull String getArg(int i) {
 		return args.get(i);
 	}
 
@@ -217,7 +197,7 @@ public class DataNode {
 	 * Mutator method to add a node to the tree as a child of this node.
 	 * @param child The node to add.
 	 */
-	public void addChild(DataNode child) {
+	public void addChild(@NonNull DataNode child) {
 		children.add(child);
 	}
 
@@ -228,7 +208,7 @@ public class DataNode {
 	 * @param i The index of the child to get.
 	 * @return The selected child.
 	 */
-	public DataNode getChild(int i) {
+	public @NonNull DataNode getChild(int i) {
 		return children.get(i);
 	}
 
@@ -259,7 +239,7 @@ public class DataNode {
 	 * Getter: Returns the name of this node.
 	 * @return {@link #name}
 	 */
-	public String getName() {
+	public @NonNull String getName() {
 		return name;
 	}
 
@@ -267,25 +247,8 @@ public class DataNode {
 	 * Setter: Changes the name of this node.
 	 * @param name The new value for {@link #name}.
 	 */
-	public void setName(String name) {
+	public void setName(@NonNull String name) {
 		this.name = name;
-	}
-
-
-	/**
-	 * Getter: Returns the flag attached to this node.
-	 * @return {@link #flag}
-	 */
-	public Flag getFlag() {
-		return flag;
-	}
-
-	/**
-	 * Setter: Changes the flag attached to this node.
-	 * @param flag The new value for {@link #flag}.
-	 */
-	public void setFlag(Flag flag) {
-		this.flag = flag;
 	}
 
 
@@ -293,7 +256,7 @@ public class DataNode {
 	 * Getter: Returns the parent of this node.
 	 * @return {@link #parent}
 	 */
-	public DataNode getParent() {
+	public @Nullable DataNode getParent() {
 		return parent;
 	}
 
@@ -303,7 +266,7 @@ public class DataNode {
 	 * damage the structure of the node tree.
 	 * @param parent This node's new {@link #parent}.
 	 */
-	public void setParent(DataNode parent) {
+	public void setParent(@Nullable DataNode parent) {
 		this.parent = parent;
 	}
 
@@ -312,7 +275,7 @@ public class DataNode {
 	 * Getter: Returns the full argument list of this node.
 	 * @return {@link #args}
 	 */
-	public List<String> getArgs() {
+	public @NonNull List<String> getArgs() {
 		return args;
 	}
 
@@ -320,7 +283,7 @@ public class DataNode {
 	 * Setter: Entirely overwrites the arguments of this node.
 	 * @param args The new value for {@link #args}.
 	 */
-	public void setArgs(List<String> args) {
+	public void setArgs(@NonNull List<String> args) {
 		this.args = args;
 	}
 
@@ -329,7 +292,7 @@ public class DataNode {
 	 * Getter: Returns the full list of children of this node.
 	 * @return {@link #children}
 	 */
-	public List<DataNode> getChildren() {
+	public @NonNull List<DataNode> getChildren() {
 		return children;
 	}
 
@@ -339,7 +302,7 @@ public class DataNode {
 	 * damage the structure of the node tree.
 	 * @param children The new value for {@link #children}.
 	 */
-	public void setChildren(List<DataNode> children) {
+	public void setChildren(@NonNull List<DataNode> children) {
 		this.children = children;
 	}
 

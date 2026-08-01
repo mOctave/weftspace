@@ -13,227 +13,95 @@
 
 package io.github.moctave.weftspace;
 
+import org.jspecify.annotations.*;
+
+import io.github.moctave.weftspace.exceptions.BuilderException;
+
 /** A class of utility methods designed to allow easy conversion from nodes to objects. */
 public abstract class Builder {
 	/**
-	 * Takes an argument from a node and returns it as a string, handling any
-	 * exceptions that occur.
+	 * Takes an argument from a node and returns it as a string, throwing a
+	 * BuilderException if there is an error that prevents parsing.
 	 * @param node The node to access.
 	 * @param arg The index of the argument to convert.
-	 * @param context The name of the object being made from the node.
 	 * @return The argument, as a string.
 	 */
-	public static String buildString(DataNode node, int arg, String context) {
+	public static @NonNull String buildString(@NonNull DataNode node, int arg) throws BuilderException {
 		try {
 			return node.getArg(arg);
 		} catch (IndexOutOfBoundsException e) {
-			Logger.ERROR_BUILDER_MISSING_ARG.log(node, context);
+			throw new BuilderException(String.format("No argument at position %d.", arg), node);
 		}
-
-		return null;
 	};
 
 
 
 	/**
-	 * Takes an argument from a node and returns it as an integer, handling any
-	 * exceptions that occur.
+	 * Takes an argument from a node and returns it as an integer, throwing a
+	 * BuilderException if there is an error that prevents parsing.
 	 * @param node The node to access.
 	 * @param arg The index of the argument to convert.
-	 * @param context The name of the object being made from the node.
 	 * @return The argument, as a integer.
 	 */
-	public static int buildInt(DataNode node, int arg, String context) {
+	public static int buildInt(@NonNull DataNode node, int arg) throws BuilderException {
 		try {
 			return Integer.parseInt(node.getArg(arg));
 		} catch (IndexOutOfBoundsException e) {
-			Logger.ERROR_BUILDER_MISSING_ARG.log(node, context);
+			throw new BuilderException(String.format("No argument at position %d.", arg), node);
 		} catch (NumberFormatException e) {
-			Logger.ERROR_BUILDER_MALFORMED_INT.log(node, context);
+			throw new BuilderException(String.format("The string \"%s\" could not be parsed to an integer.", node.getArg(arg)), node);
 		}
-
-		return 0;
 	};
 
 
 
 	/**
-	 * An enum storing a list of potential integer types, for use in
-	 * {@link #buildInt(DataNode, int, String, IntType)}.
-	 */
-	public static enum IntType {
-		/**
-		 * A default integer, between {@code Integer.MIN_VALUE} and
-		 * {@code Integer.MAX_VALUE} inclusive.
-		 */
-		STANDARD,
-		/** A non-negative integer, between {@code 0} and {@code Integer.MAX_VALUE} inclusive. */
-		NATURAL,
-		/**
-		 * An integer in the range that could be rolled using Endless Sky's default
-		 * {@code random} function, between {@code 0} and {@code 99} inclusive.
-		 */
-		POSSIBLE_ROLL,
-		/**
-		 * An integer in the valid range for traditional Endless Sky swizzles, between
-		 * {@code 0} and {@code 28} inclusive.
-		 * 
-		 * Deprecated since v1.0.0 as swizzles are now named rather than numbered.
-		 */
-		@Deprecated
-		SWIZZLE,
-	}
-
-
-	/**
-	 * Takes an argument from a node and returns it as an integer. The special type of the value
-	 * may be defined; this will have no impact on the value returned by this method, but it will
-	 * cause a warning to be thrown if the final value does not conform to the intended pattern.
+	 * Takes an argument from a node and returns it as a double, throwing a
+	 * BuilderException if there is an error that prevents parsing.
 	 * @param node The node to access.
 	 * @param arg The index of the argument to convert.
-	 * @param context The name of the object being made from the node.
-	 * @param type The intended type of value to be returned. If the final value does not match, a
-	 * warning will be thrown.
-	 * @return The argument, as a integer.
-	 */
-	public static int buildInt(DataNode node, int arg, String context, IntType type) {
-		try {
-			int value = Integer.parseInt(node.getArg(arg));
-			switch (type) {
-				case NATURAL:
-					if (value < 0)
-						Logger.WARN_BUILDER_NATURAL_OUT_OF_BOUNDS.log(node, context);
-					break;
-				case POSSIBLE_ROLL:
-					if (value < 0 || value > 99)
-						Logger.WARN_BUILDER_ROLL_OUT_OF_BOUNDS.log(node, context);
-					break;
-				case SWIZZLE:
-					if (value < 0 || value > 28)
-						Logger.WARN_BUILDER_SWIZZLE_OUT_OF_BOUNDS.log(node, context);
-					break;
-				default:
-					break;
-			}
-			return value;
-		} catch (IndexOutOfBoundsException e) {
-			Logger.ERROR_BUILDER_MISSING_ARG.log(node, context);
-		} catch (NumberFormatException e) {
-			Logger.ERROR_BUILDER_MALFORMED_INT.log(node, context);
-		}
-
-		return 0;
-	};
-
-
-
-	/**
-	 * Takes an argument from a node and returns it as a double, handling any
-	 * exceptions that occur.
-	 * @param node The node to access.
-	 * @param arg The index of the argument to convert.
-	 * @param context The name of the object being made from the node.
 	 * @return The argument, as a double.
 	 */
-	public static double buildDouble(DataNode node, int arg, String context) {
+	public static double buildDouble(@NonNull DataNode node, int arg) throws BuilderException {
 		try {
 			return Double.parseDouble(node.getArg(arg));
 		} catch (IndexOutOfBoundsException e) {
-			Logger.ERROR_BUILDER_MISSING_ARG.log(node, context);
+			throw new BuilderException(String.format("No argument at position %d.", arg), node);
 		} catch (NumberFormatException e) {
-			Logger.ERROR_BUILDER_MALFORMED_REAL.log(node, context);
-		}
+			throw new BuilderException(String.format("The string \"%s\" could not be parsed to a double.", node.getArg(arg)), node);
 
-		return 0.;
+		}
 	};
 
 
 
 	/**
-	 * An enum storing a list of potential double types, for use in
-	 * {@link #buildDouble(DataNode, int, String, DoubleType)}.
-	 */
-	public static enum DoubleType {
-		/** A default double. */
-		STANDARD,
-		/** A non-negative double n such that {@code n ≥ 0.}. */
-		POSREAL,
-		/**
-		 * A double in the range {@code 0.} to {@code 1.} inclusive, as used in colour definitions.
-		 */
-		SMALLREAL,
-	}
-
-
-	/**
-	 * Takes an argument from a node and returns it as an double. The special type of the value
-	 * may be defined; this will have no impact on the value returned by this method, but it will
-	 * cause a warning to be thrown if the final value does not conform to the intended pattern.
+	 * Takes an argument from a node and returns it as a long int, throwing a
+	 * BuilderException if there is an error that prevents parsing.
 	 * @param node The node to access.
 	 * @param arg The index of the argument to convert.
-	 * @param context The name of the object being made from the node.
-	 * @param type The intended type of value to be returned. If the final value does not match, a
-	 * warning will be thrown.
-	 * @return The argument, as a double.
-	 */
-	public static double buildDouble(DataNode node, int arg, String context, DoubleType type) {
-		try {
-			double value = Double.parseDouble(node.getArg(arg));
-			switch (type) {
-				case POSREAL:
-					if (value < 0.)
-						Logger.WARN_BUILDER_POSREAL_OUT_OF_BOUNDS.log(node, context);
-					break;
-				case SMALLREAL:
-					if (value < 0. || value > 1.)
-						Logger.WARN_BUILDER_SMALLREAL_OUT_OF_BOUNDS.log(node, context);
-					break;
-				default:
-					break;
-			}
-			return value;
-		} catch (IndexOutOfBoundsException e) {
-			Logger.ERROR_BUILDER_MISSING_ARG.log(node, context);
-		} catch (NumberFormatException e) {
-			Logger.ERROR_BUILDER_MALFORMED_INT.log(node, context);
-		}
-
-		return 0.;
-	};
-
-
-
-	/**
-	 * Takes an argument from a node and returns it as a long int, handling any
-	 * exceptions that occur.
-	 * @param node The node to access.
-	 * @param arg The index of the argument to convert.
-	 * @param context The name of the object being made from the node.
 	 * @return The argument, as a long int.
 	 */
-	public static long buildlong(DataNode node, int arg, String context) {
+	public static long buildLong(@NonNull DataNode node, int arg) throws BuilderException {
 		try {
 			return Long.parseLong(node.getArg(arg));
 		} catch (IndexOutOfBoundsException e) {
-			Logger.ERROR_BUILDER_MISSING_ARG.log(node, context);
+			throw new BuilderException(String.format("No argument at position %d.", arg), node);
 		} catch (NumberFormatException e) {
-			Logger.ERROR_BUILDER_MALFORMED_LONG.log(node, context);
+			throw new BuilderException(String.format("The string \"%s\" could not be parsed to a long int.", node.getArg(arg)), node);
 		}
-
-		return 0l;
 	};
 
 
 
 	/**
 	 * Takes a node and uses it as a key to search the scope for a node
-	 * with a matching name and first argument, handling any exceptions that occur.
+	 * with a matching name and first argument.
 	 * @param node The node to use as a search key.
 	 * @param scope The node whose children should be searched.
-	 * @param context The name of the object being made from the node.
 	 * @return The node with the same name, or {@code null} if none exist.
 	 */
-	public static DataNode search(DataNode node, DataNode scope, String context) {
+	public static @Nullable DataNode search(@NonNull DataNode node, @NonNull DataNode scope) {
 		try {
 			for (DataNode child : scope.getChildren()) {
 				if (

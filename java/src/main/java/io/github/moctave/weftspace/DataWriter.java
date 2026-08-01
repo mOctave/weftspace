@@ -18,38 +18,36 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import org.jspecify.annotations.*;
+
 /** A class which writes data from a node into a file. */
 public class DataWriter {
+	// MARK: Fields
+	/** The file to write to. */
+	private final @NonNull File file;
+
+	/** A PrintWriter used to handle the writing. */
+	private @Nullable PrintWriter writer;
+
+
+
 	// MARK: Constructor
 	/**
 	 * Sole constructor.
 	 * @param file The file to write to.
 	 */
-	public DataWriter(File file) {
+	public DataWriter(@NonNull File file) {
 		this.file = file;
 	}
 
 
 
-	// MARK: Fields
-	/** The file to write to. */
-	private File file;
-
-	/** A PrintWriter used to handle the writing. */
-	private PrintWriter writer;
-
-
-
 	// MARK: Methods
 	/**
-	 * Creates and opens a PrintWriter for the given file, handling exceptions.
+	 * Creates and opens a PrintWriter for the given file, throwing an exception if it occurs.
 	 */
-	public void open() {
-		try {
-			writer = new PrintWriter(new FileWriter(file, true));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	public void open() throws IOException {
+		writer = new PrintWriter(new FileWriter(file, true));
 	}
 
 
@@ -63,11 +61,11 @@ public class DataWriter {
 
 
 
-	/*
+	/**
 	 * Writes a node to a file with no indent.
 	 * @param node The node to write.
 	 */
-	public void write(DataNode node) {
+	public void write(@NonNull DataNode node) {
 		write(node, 0);
 	}
 
@@ -78,7 +76,7 @@ public class DataWriter {
 	 * @param node The node to write.
 	 * @param indentLevel How many tabs should be inserted before the node.
 	 */
-	public void write(DataNode node, int indentLevel) {
+	public void write(@NonNull DataNode node, int indentLevel) {
 		for (int i = 0; i < indentLevel; i++) {
 			writer.append("\t");
 		}
@@ -100,18 +98,8 @@ public class DataWriter {
 	 * @param node The node to convert.
 	 * @return A single-line representation of the node, excluding its children.
 	 */
-	public static String nodeToLine(DataNode node) {
-		if (node.getFlag() == DataNode.Flag.ROOT)
-			Logger.WARN_NODE_WRITE_ROOT.log(node);
-
-		String s = "";
-
-		if (node.getFlag() == DataNode.Flag.ADD)
-			s += "add ";
-		else if (node.getFlag() == DataNode.Flag.REMOVE)
-			s += "remove ";
-
-		s += quoteWord(node.getName()) + " ";
+	public static @NonNull String nodeToLine(@NonNull DataNode node) {
+		String s = quoteWord(node.getName()) + " ";
 
 		for (String arg : node.getArgs()) {
 			s += quoteWord(arg) + " ";
@@ -129,7 +117,7 @@ public class DataWriter {
 	 * @param word The text to quote.
 	 * @return The text in a format that will be interpreted as a single token by a parser.
 	 */
-	public static String quoteWord(String word) {
+	public static @NonNull String quoteWord(@NonNull String word) {
 		if (word.contains(" ")) {
 			if (word.contains("\"")) {
 				return "`" + word + "`";
@@ -148,23 +136,17 @@ public class DataWriter {
 	 * Getter: Returns the file being written to.
 	 * @return {@link #file}
 	 */
-	public File getFile() {
+	public @NonNull File getFile() {
 		return file;
 	}
 
-	/**
-	 * Setter: Changes the file being written to.
-	 * @param file The new value for {@link #file}.
-	 */
-	public void setFile(File file) {
-		this.file = file;
-	}
+	// There is no setter for the file. The file is final.
 
 	/**
 	 * Getter: Returns the PrintWriter for this writer.
 	 * @return {@link #writer}
 	 */
-	public PrintWriter getWriter() {
+	public @NonNull PrintWriter getWriter() {
 		return writer;
 	}
 
