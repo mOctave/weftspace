@@ -1,4 +1,4 @@
-# Copyright (c) 2025 by mOctave
+# Copyright (c) 2026 by mOctave
 #
 # This program is free software: you can redistribute it and/or modify it under the
 # terms of the GNU Affero General Public License as published by the Free Software
@@ -11,13 +11,28 @@
 # You should have received a copy of the GNU Affero General Public License along with
 # this program. If not, see <https://www.gnu.org/licenses/>.
 
-# This package contains the main code for the Python Weftspace library.
+from __future__ import annotations
 
-# type: ignore
-from .builder import Builder
-from .builder_error import BuilderError
-from .data_node import DataNode
-from .data_reader import DataReader
-from .data_writer import DataWriter
-from .loaded_node import LoadedNode
-from .reader_error import ReaderError
+class ReaderError(Exception):
+	"""An exception thrown by the data reader."""
+
+	# MARK: Properties
+	_message: str
+
+	@property
+	def message(self):
+		"""The error message for this error."""
+		return self._message
+	
+	@message.setter
+	def message(self, message: str):
+		"""Changes the error message associated with this error."""
+		self._message = message
+
+
+
+	# MARK: Constructor
+	def __init__(self, message: str):
+		"""Sole constructor. Takes a message."""
+		super().__init__(message)
+		self._message = message

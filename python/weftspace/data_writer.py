@@ -14,13 +14,9 @@
 from io import TextIOWrapper
 
 from .data_node import DataNode
-from .logger import Logger
 
 class DataWriter:
-	# MARK: Constructor
-	def __init__(self, file: str):
-		"""Sole constructor."""
-		self.file = file
+	"""A class which writes a node to a file."""
 
 	# MARK: Properties
 	_file: str
@@ -45,6 +41,13 @@ class DataWriter:
 		return self._io_wrapper
 	
 	# io_wrapper has no setter, and should be created with open()
+
+
+
+	# MARK: Constructor
+	def __init__(self, file: str):
+		"""Sole constructor."""
+		self.file = file
 
 	
 
@@ -91,15 +94,8 @@ class DataWriter:
 		Represents a node as a line to be saved to a file.
 		Not to be confused with DataNode.__str__
 		"""
-		if node.flag == DataNode.Flag.ROOT:
-			Logger.WARN_NODE_WRITE_ROOT.log(node)
 		
 		s: str = ""
-
-		if (node.flag == DataNode.Flag.ADD):
-			s += "add "
-		elif (node.flag == DataNode.Flag.REMOVE):
-			s += "remove "
 		
 		s += DataWriter.quote_word(node.name) + " "
 

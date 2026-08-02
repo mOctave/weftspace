@@ -12,53 +12,9 @@
 # this program. If not, see <https://www.gnu.org/licenses/>.
 
 from __future__ import annotations
-from enum import Enum
 
 class DataNode:
 	"""A class representing a node on the data tree."""
-
-	# MARK: Constants
-	class Flag(Enum):
-		"""The flag attached to this node, influencing how it should be treated during instantiation."""
-
-		NORMAL = 1
-		"""This node should be treated normally, with no special consideration."""
-
-		ADD = 2
-		"""
-		This node should always result in the addition of an object,
-		even if it would usually overwrite one instead.
-		"""
-
-		REMOVE = 3
-		"""This node should result in the removal of its associated object."""
-
-		ROOT = 4
-		"""This node is a root node, and should not be parsed or written."""
-
-
-
-	# MARK: Constructors
-	def __init__(self, name: str, flag: Flag, parent: DataNode | None, args: list[str], children: list[DataNode]):
-		"""
-		Primary constructor. Takes all the standard arguments, except those defined by
-		LoadedNode.
-		"""
-		self.name = name
-		self.flag = flag
-		self.parent = parent
-		self.args = args
-		self.children = children
-
-
-	@staticmethod
-	def create_root_node():
-		"""
-		Builds and returns an empty node intended to be used as a root node for the DataReader.
-		"""
-		return DataNode("--ROOT--", DataNode.Flag.ROOT, None, [], [])
-
-
 
 	# MARK: Properties
 	_name: str
@@ -72,19 +28,7 @@ class DataNode:
 	def name(self, name: str):
 		"""Changes the name of this node."""
 		self._name = name
-	
 
-	_flag: Flag
-
-	@property
-	def flag(self):
-		"""The flag attached to this node."""
-		return self._flag
-	
-	@flag.setter
-	def flag(self, flag: Flag):
-		"""Changes the flag attached to this node."""
-		self._flag = flag
 
 
 	_parent: DataNode | None
@@ -132,6 +76,30 @@ class DataNode:
 		"""
 		self._children = children
 
+
+
+	# MARK: Constructors
+	def __init__(self, name: str, parent: DataNode | None, args: list[str], children: list[DataNode]):
+		"""
+		Primary constructor. Takes all the standard arguments, except those defined by
+		LoadedNode.
+		"""
+		self.name = name
+		self.parent = parent
+		self.args = args
+		self.children = children
+
+
+	@staticmethod
+	def create_root_node():
+		"""
+		Builds and returns an empty node intended to be used as a root node for the DataReader.
+		"""
+		return DataNode("--ROOT--", None, [], [])
+
+
+
+
 	# MARK: Methods
 	def __hash__(self):
 		"""
@@ -146,7 +114,6 @@ class DataNode:
 		prime: int = 31
 		hash_code: int = 1
 		hash_code = prime * hash_code + hash(self.name)
-		hash_code = prime * hash_code + hash(self.flag)
 		hash_code = prime * hash_code + hash(self.args)
 		hash_code = prime * hash_code + 0 if self in self.children else hash(self.children)
 
@@ -173,8 +140,6 @@ class DataNode:
 		
 		# Check if the two nodes have a different property
 		if other.name != self.name:
-			return False
-		if other.flag != self.flag:
 			return False
 		if other.args != self.args:
 			return False

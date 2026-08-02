@@ -20,7 +20,6 @@ class LoadedNode(DataNode):
 	def __init__(
 		self,
 		name: str,
-		flag: DataNode.Flag,
 		parent: DataNode | None,
 		args: list[str],
 		children: list[DataNode],
@@ -30,7 +29,7 @@ class LoadedNode(DataNode):
 		"""
 		Sole constructor.
 		"""
-		super().__init__(name, flag, parent, args, children)
+		super().__init__(name, parent, args, children)
 		self.line = line
 		self.file = file
 

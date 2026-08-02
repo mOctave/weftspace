@@ -12,16 +12,15 @@
 # this program. If not, see <https://www.gnu.org/licenses/>.
 
 from abc import ABC
-from enum import Enum
 
+from .builder_error import BuilderError
 from .data_node import DataNode
-from .logger import Logger
 
 class Builder(ABC):
 	"""A class of utility methods designed to allow easy conversion from nodes to objects."""
 
 	@classmethod
-	def build_string(cls, node: DataNode, arg: int, context: str):
+	def build_string(cls, node: DataNode, arg: int) -> str:
 		"""
 		Takes an argument from a node and returns it as a string, handling any
 		exceptions that occur.
@@ -29,14 +28,12 @@ class Builder(ABC):
 		try:
 			return node.args[arg]
 		except IndexError:
-			Logger.ERROR_BUILDER_MISSING_ARG.log(node, context)
-		
-		return None
+			raise BuilderError("No argument at position %d." % (arg), node)
 
 
 
 	@classmethod
-	def build_int(cls, node: DataNode, arg: int, context: str):
+	def build_int(cls, node: DataNode, arg: int) -> int:
 		"""
 		Takes an argument from a node and returns it as an integer, handling any
 		exceptions that occur.
@@ -44,62 +41,14 @@ class Builder(ABC):
 		try:
 			return int(node.args[arg])
 		except ValueError:
-			Logger.ERROR_BUILDER_MALFORMED_INT.log(node, context)
+			raise BuilderError("The string \"%s\" could not be parsed to an integer." % (node.args[arg]), node)
 		except IndexError:
-			Logger.ERROR_BUILDER_MISSING_ARG.log(node, context)
-		
-		return 0
-
-
-
-	class IntType(Enum):
-		"""An enum storing a list of potential integer types, for use in build_spec_int()"""
-		
-		STANDARD = 0
-		"""A default unbounded integer."""
-
-		NATURAL = 1
-		"""A non-negative integer with no upper bound."""
-
-		POSSIBLE_ROLL = 2
-		"""
-		An integer in the range that could be rolled using Endless Sky's default
-		random function, between 0 and 99 inclusive.
-		"""
+			raise BuilderError("No argument at position %d." % (arg), node)
 
 
 
 	@classmethod
-	def build_spec_int(cls, node: DataNode, arg: int, context: str, type: IntType):
-		"""
-		Takes an argument from a node and returns it as an integer. The special type of the value
-		may be defined; this will have no impact on the value returned by this method, but it will
-		cause a warning to be thrown if the final value does not conform to the intended pattern.
-		"""
-		try:
-			value: int = int(node.args[arg])
-			match (type):
-				case Builder.IntType.NATURAL:
-					if value < 0:
-						Logger.WARN_BUILDER_NATURAL_OUT_OF_BOUNDS.log(node, context)
-				case Builder.IntType.POSSIBLE_ROLL:
-					if value < 0 or value > 99:
-						Logger.WARN_BUILDER_ROLL_OUT_OF_BOUNDS.log(node, context)
-				case _:
-					pass
-			
-			return value
-		except ValueError:
-			Logger.ERROR_BUILDER_MALFORMED_INT.log(node, context)
-		except IndexError:
-			Logger.ERROR_BUILDER_MISSING_ARG.log(node, context)
-		
-		return 0
-
-
-
-	@classmethod
-	def build_float(cls, node: DataNode, arg: int, context: str):
+	def build_float(cls, node: DataNode, arg: int) -> float:
 		"""
 		Takes an argument from a node and returns it as a float, handling any
 		exceptions that occur.
@@ -107,61 +56,15 @@ class Builder(ABC):
 		try:
 			return float(node.args[arg])
 		except ValueError:
-			Logger.ERROR_BUILDER_MALFORMED_REAL.log(node, context)
+			raise BuilderError("The string \"%s\" could not be parsed to a float." % (node.args[arg]), node)
 		except IndexError:
-			Logger.ERROR_BUILDER_MISSING_ARG.log(node, context)
-		
-		return 0.
+			raise BuilderError("No argument at position %d." % (arg), node)
 
-
-
-	class FloatType(Enum):
-		"""An enum storing a list of potential integer types, for use in build_spec_int()"""
-		
-		STANDARD = 0
-		"""A default unbounded float."""
-
-		POS_REAL = 1
-		"""A non-negative float with no upper bound."""
-
-		SMALL_REAL = 2
-		"""
-		A float in the range 0. to 1. inclusive, as used in colour definitions.
-		"""
-
-
-
-	@classmethod
-	def build_spec_float(cls, node: DataNode, arg: int, context: str, type: FloatType):
-		"""
-		Takes an argument from a node and returns it as a float. The special type of the value
-		may be defined; this will have no impact on the value returned by this method, but it will
-		cause a warning to be thrown if the final value does not conform to the intended pattern.
-		"""
-		try:
-			value: float = float(node.args[arg])
-			match (type):
-				case Builder.FloatType.POS_REAL:
-					if value < 0:
-						Logger.WARN_BUILDER_POSREAL_OUT_OF_BOUNDS.log(node, context)
-				case Builder.FloatType.SMALL_REAL:
-					if value < 0. or value > 1.:
-						Logger.WARN_BUILDER_SMALLREAL_OUT_OF_BOUNDS.log(node, context)
-				case _:
-					pass
-			
-			return value
-		except ValueError:
-			Logger.ERROR_BUILDER_MALFORMED_REAL.log(node, context)
-		except IndexError:
-			Logger.ERROR_BUILDER_MISSING_ARG.log(node, context)
-		
-		return 0
 	
 
 
 	@classmethod
-	def search(cls, node: DataNode, scope: DataNode, context: str):
+	def search(cls, node: DataNode, scope: DataNode) -> DataNode | None:
 		"""
 		Takes a node and uses it as a key to search the scope for a node
 		with a matching name and first argument, handling any exceptions that occur.

@@ -12,31 +12,13 @@
 # this program. If not, see <https://www.gnu.org/licenses/>.
 
 from collections import deque
-from enum import Enum
-from warnings import deprecated
 
 from .data_node import DataNode
 from .loaded_node import LoadedNode
-from .logger import Logger
+from .reader_error import ReaderError
 
 class DataReader:
 	"""A class which reads data from a file and stores it in a node tree."""
-
-	# MARK: Constants
-	class Option(Enum):
-		"""Special flags that can be used when parsing."""
-
-		IGNORE_NODE_FLAGS = 1
-		"""Do not apply node flags."""
-
-
-
-	# MARK: Constructor
-	def __init__(self, file: str, root: DataNode):
-		self.file = file
-		self.root = root
-
-
 
 	# MARK: Properties
 	_file: str
@@ -65,11 +47,18 @@ class DataReader:
 
 
 
+	# MARK: Constructor
+	def __init__(self, file: str, root: DataNode):
+		self.file = file
+		self.root = root
+
+
+
 	# MARK: Methods
-	def parse(self, *args: Option) -> None:
+	def parse(self) -> None:
 		"""Parses the file associated with this object, and stores all nodes in the tree."""
-		ignore_node_flags: bool = DataReader.Option.IGNORE_NODE_FLAGS in args
 		try:
+			mixed_whitespace: bool = False
 			line_number: int = 0
 			node_stack: deque[DataNode] = deque()
 			current_node: DataNode | None = None
@@ -97,12 +86,12 @@ class DataReader:
 					if (expected_indent_string == None and len(indent_substring) > 0):
 						expected_indent_string = indent_substring
 						if (" " in expected_indent_string and "\t" in expected_indent_string):
-							Logger.WARN_MIXED_WHITESPACE.log(f)
+							mixed_whitespace = True
 
 
 					if indent > indent_depths[-1] and current_node != None:
 						if expected_indent_string != indent_substring:
-							Logger.WARN_MIXED_WHITESPACE.log(f)
+							mixed_whitespace = True
 
 						node_stack.append(current_node)
 						indent_depths.append(indent)
@@ -111,7 +100,7 @@ class DataReader:
 							node_stack.pop()
 							indent_depths.pop()
 					
-					current_node = self.make_node(line, line_number, not ignore_node_flags)
+					current_node = self.make_node(line, line_number)
 
 					if len(node_stack) == 0 and current_node != None:
 						self.root.children.append(current_node)
@@ -123,12 +112,14 @@ class DataReader:
 				
 				f.close()
 
+				if mixed_whitespace:
+					raise ReaderError("Warning - mixed whitespace in file %s (parsing completed with issue)" % (self.file))
 		except FileNotFoundError:
-			Logger.ERROR_FILE_DNE.log(self.file)
+			raise ReaderError("No such file as %s" % (self.file))
 
 
 
-	def make_node(self, line: str, number: int, check_for_flags: bool) -> LoadedNode | None:
+	def make_node(self, line: str, number: int) -> LoadedNode | None:
 		"""Parses a single line and converts it to a node."""
 		stripped_line: str = line.strip()
 		data: list[str] = []
@@ -176,18 +167,7 @@ class DataReader:
 		# Treat the first entry as the node name, and everything else as args.
 		node_name: str = data.pop(0)
 
-		flag: DataNode.Flag = DataNode.Flag.NORMAL
-
-		# Check for flags
-		if check_for_flags:
-			if node_name == "add":
-				flag = DataNode.Flag.ADD
-				node_name = data.pop(0)
-			elif node_name == "remove":
-				flag = DataNode.Flag.REMOVE
-				node_name = data.pop(0)
-		
-		return LoadedNode(node_name, flag, None, data, [], number, self.file)
+		return LoadedNode(node_name, None, data, [], number, self.file)
 
 
 
@@ -212,22 +192,6 @@ class DataReader:
 		"""Counts the number of leading tab or space characters on a line."""
 		i: int = 0
 		while (i < len(line) and (line[i] == "\t" or line[i] == " ")):
-			i += 1
-		
-		return i
-
-
-
-	@classmethod
-	@deprecated("Use count_leading_whitespace() instead")
-	def count_leading_tabs(cls, line: str) -> int:
-		"""
-		Deprecated method included to support programs written expecting legacy
-		whitespace handling. Calls count_leading_whitespace(), see that
-		method for documentation.
-		"""
-		i: int = 0
-		while (i < len(line) and line[i] == "\t"):
 			i += 1
 		
 		return i
