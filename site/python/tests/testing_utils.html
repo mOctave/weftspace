@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
 <meta name="generator" content="pdoc3 0.11.6">
-<title>weftspace.builder_error API documentation</title>
+<title>tests.testing_utils API documentation</title>
 <meta name="description" content="">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
@@ -33,7 +33,7 @@ el.replaceWith(d);
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>weftspace.builder_error</code></h1>
+<h1 class="title">Module <code>tests.testing_utils</code></h1>
 </header>
 <section id="section-intro">
 </section>
@@ -46,147 +46,54 @@ el.replaceWith(d);
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="weftspace.builder_error.BuilderError"><code class="flex name class">
-<span>class <span class="ident">BuilderError</span></span>
-<span>(</span><span>message: str, node: DataNode)</span>
+<dt id="tests.testing_utils.TestingUtils"><code class="flex name class">
+<span>class <span class="ident">TestingUtils</span></span>
 </code></dt>
 <dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class BuilderError(Exception):
-        &#34;&#34;&#34;An exception thrown by the builder.&#34;&#34;&#34;
+<pre><code class="python">class TestingUtils(ABC):
+        &#34;&#34;&#34;A class containing utility methods to support tests.&#34;&#34;&#34;
 
-        # MARK: Properties
-        _message: str
+        @classmethod
+        def get_test_node(cls):
+                &#34;&#34;&#34;A method which constructs a sample data node that can be used across multiple tests.&#34;&#34;&#34;
+                test_node: DataNode = DataNode(&#34;ship&#34;, None, [&#34;Much Confused Wardragon&#34;], [])
 
-        @property
-        def message(self):
-                &#34;&#34;&#34;The error message for this error.&#34;&#34;&#34;
-                return self._message
-        
-        @message.setter
-        def message(self, message: str):
-                &#34;&#34;&#34;Changes the error message associated with this error.&#34;&#34;&#34;
-                self._message = message
+                child_node: DataNode = DataNode(&#34;mass&#34;, test_node, [&#34;35&#34;], [])
+                test_node.children.append(child_node)
 
+                child_node: DataNode = DataNode(&#34;drag&#34;, test_node, [&#34;0.3&#34;], [])
+                test_node.children.append(child_node)
 
+                child_node: DataNode = DataNode(&#34;weapon&#34;, test_node, [], [])
+                grand_node: DataNode = DataNode(&#34;hit force&#34;, child_node, [&#34;308&#34;], [])
+                child_node.children.append(grand_node)
+                grand_node: DataNode = DataNode(&#34;hull damage&#34;, child_node, [&#34;6100&#34;], [])
+                child_node.children.append(grand_node)
+                grand_node: DataNode = DataNode(&#34;shield damage&#34;, child_node, [&#34;42&#34;], [])
+                child_node.children.append(grand_node)
+                test_node.children.append(child_node)
 
-        _node: DataNode
+                child_node: DataNode = DataNode(&#34;description&#34;, test_node, [&#34;This Wardragon bears no resemblance to any actual ship in the game Endless Sky. It has no material existence, despite having mass and possibly explaining the existence of the dark matter in our universe.&#34;], [])
+                test_node.children.append(child_node)
 
-        @property
-        def node(self):
-                &#34;&#34;&#34;The node that caused this error.&#34;&#34;&#34;
-                return self._node
-
-        @node.setter
-        def node(self, node: DataNode):
-                &#34;&#34;&#34;Changes the node associated with this error.&#34;&#34;&#34;
-                self._node = node
-
-
-        # MARK: Constructor
-        def __init__(self, message: str, node: DataNode):
-                &#34;&#34;&#34;Sole constructor. Takes a message and the data node that caused the error.&#34;&#34;&#34;
-                super().__init__(message)
-                self._message = message
-                self._node = node
-
-
-        # MARK: Methods
-        def represent(self):
-                &#34;&#34;&#34;
-                Represents this exception as a long-form error message with a trace of
-                the node that caused it.
-                &#34;&#34;&#34;
-                node_descriptions: list[str] = []
-                current_node: DataNode | None = self.node
-                while (current_node != None):
-                        node_descriptions.insert(0, DataWriter.node_to_line(current_node))
-                        current_node = current_node.parent
-
-                representation: str = &#34;Builder Exception: &#34; + self.message
-                i: int = 0
-                for desc in node_descriptions:
-                        representation += os.linesep
-                        for _ in range(i):
-                                representation += &#34;\t&#34;
-                        representation += desc
-                        i += 1
-
-                return representation</code></pre>
+                return test_node</code></pre>
 </details>
-<div class="desc"><p>An exception thrown by the builder.</p>
-<p>Sole constructor. Takes a message and the data node that caused the error.</p></div>
+<div class="desc"><p>A class containing utility methods to support tests.</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
-<li>builtins.Exception</li>
-<li>builtins.BaseException</li>
+<li>abc.ABC</li>
 </ul>
-<h3>Instance variables</h3>
+<h3>Static methods</h3>
 <dl>
-<dt id="weftspace.builder_error.BuilderError.message"><code class="name">prop <span class="ident">message</span></code></dt>
-<dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@property
-def message(self):
-        &#34;&#34;&#34;The error message for this error.&#34;&#34;&#34;
-        return self._message</code></pre>
-</details>
-<div class="desc"><p>The error message for this error.</p></div>
-</dd>
-<dt id="weftspace.builder_error.BuilderError.node"><code class="name">prop <span class="ident">node</span></code></dt>
-<dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@property
-def node(self):
-        &#34;&#34;&#34;The node that caused this error.&#34;&#34;&#34;
-        return self._node</code></pre>
-</details>
-<div class="desc"><p>The node that caused this error.</p></div>
-</dd>
-</dl>
-<h3>Methods</h3>
-<dl>
-<dt id="weftspace.builder_error.BuilderError.represent"><code class="name flex">
-<span>def <span class="ident">represent</span></span>(<span>self)</span>
+<dt id="tests.testing_utils.TestingUtils.get_test_node"><code class="name flex">
+<span>def <span class="ident">get_test_node</span></span>(<span>)</span>
 </code></dt>
 <dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">def represent(self):
-        &#34;&#34;&#34;
-        Represents this exception as a long-form error message with a trace of
-        the node that caused it.
-        &#34;&#34;&#34;
-        node_descriptions: list[str] = []
-        current_node: DataNode | None = self.node
-        while (current_node != None):
-                node_descriptions.insert(0, DataWriter.node_to_line(current_node))
-                current_node = current_node.parent
-
-        representation: str = &#34;Builder Exception: &#34; + self.message
-        i: int = 0
-        for desc in node_descriptions:
-                representation += os.linesep
-                for _ in range(i):
-                        representation += &#34;\t&#34;
-                representation += desc
-                i += 1
-
-        return representation</code></pre>
-</details>
-<div class="desc"><p>Represents this exception as a long-form error message with a trace of
-the node that caused it.</p></div>
+<div class="desc"><p>A method which constructs a sample data node that can be used across multiple tests.</p></div>
 </dd>
 </dl>
 </dd>
@@ -200,17 +107,15 @@ the node that caused it.</p></div>
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="weftspace" href="index.html">weftspace</a></code></li>
+<li><code><a title="tests" href="index.html">tests</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="weftspace.builder_error.BuilderError" href="#weftspace.builder_error.BuilderError">BuilderError</a></code></h4>
+<h4><code><a title="tests.testing_utils.TestingUtils" href="#tests.testing_utils.TestingUtils">TestingUtils</a></code></h4>
 <ul class="">
-<li><code><a title="weftspace.builder_error.BuilderError.message" href="#weftspace.builder_error.BuilderError.message">message</a></code></li>
-<li><code><a title="weftspace.builder_error.BuilderError.node" href="#weftspace.builder_error.BuilderError.node">node</a></code></li>
-<li><code><a title="weftspace.builder_error.BuilderError.represent" href="#weftspace.builder_error.BuilderError.represent">represent</a></code></li>
+<li><code><a title="tests.testing_utils.TestingUtils.get_test_node" href="#tests.testing_utils.TestingUtils.get_test_node">get_test_node</a></code></li>
 </ul>
 </li>
 </ul>

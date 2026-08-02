@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
 <meta name="generator" content="pdoc3 0.11.6">
-<title>weftspace.builder_error API documentation</title>
+<title>tests.test_builder_exception API documentation</title>
 <meta name="description" content="">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
@@ -33,7 +33,7 @@ el.replaceWith(d);
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>weftspace.builder_error</code></h1>
+<h1 class="title">Module <code>tests.test_builder_exception</code></h1>
 </header>
 <section id="section-intro">
 </section>
@@ -46,147 +46,67 @@ el.replaceWith(d);
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="weftspace.builder_error.BuilderError"><code class="flex name class">
-<span>class <span class="ident">BuilderError</span></span>
-<span>(</span><span>message: str, node: DataNode)</span>
+<dt id="tests.test_builder_exception.TestBuilderError"><code class="flex name class">
+<span>class <span class="ident">TestBuilderError</span></span>
+<span>(</span><span>methodName='runTest')</span>
 </code></dt>
 <dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class BuilderError(Exception):
-        &#34;&#34;&#34;An exception thrown by the builder.&#34;&#34;&#34;
+<pre><code class="python">class TestBuilderError(unittest.TestCase):
+        &#34;&#34;&#34;Tests that BuilderError.represent() works properly&#34;&#34;&#34;
 
-        # MARK: Properties
-        _message: str
+        def test_represent(self) -&gt; None:
+                empty_child: DataNode = DataNode(&#34;Empty Child&#34;, None, [], [])
+                bad_child: DataNode = DataNode(&#34;Bad Child&#34;, None, [&#34;quid&#34;, &#34;pro&#34;, &#34;quo&#34;], [empty_child])
+                other_child: DataNode = DataNode(&#34;Other Child&#34;, None, [&#34;quid&#34;, &#34;pro&#34;, &#34;quo&#34;], [])
+                parent: DataNode = DataNode(&#34;Parent&#34;, None, [&#34;foo&#34;, &#34;bar&#34;], [bad_child, other_child])
 
-        @property
-        def message(self):
-                &#34;&#34;&#34;The error message for this error.&#34;&#34;&#34;
-                return self._message
-        
-        @message.setter
-        def message(self, message: str):
-                &#34;&#34;&#34;Changes the error message associated with this error.&#34;&#34;&#34;
-                self._message = message
+                empty_child.parent = bad_child
+                bad_child.parent = parent
+                other_child.parent = parent
 
-
-
-        _node: DataNode
-
-        @property
-        def node(self):
-                &#34;&#34;&#34;The node that caused this error.&#34;&#34;&#34;
-                return self._node
-
-        @node.setter
-        def node(self, node: DataNode):
-                &#34;&#34;&#34;Changes the node associated with this error.&#34;&#34;&#34;
-                self._node = node
-
-
-        # MARK: Constructor
-        def __init__(self, message: str, node: DataNode):
-                &#34;&#34;&#34;Sole constructor. Takes a message and the data node that caused the error.&#34;&#34;&#34;
-                super().__init__(message)
-                self._message = message
-                self._node = node
-
-
-        # MARK: Methods
-        def represent(self):
-                &#34;&#34;&#34;
-                Represents this exception as a long-form error message with a trace of
-                the node that caused it.
-                &#34;&#34;&#34;
-                node_descriptions: list[str] = []
-                current_node: DataNode | None = self.node
-                while (current_node != None):
-                        node_descriptions.insert(0, DataWriter.node_to_line(current_node))
-                        current_node = current_node.parent
-
-                representation: str = &#34;Builder Exception: &#34; + self.message
-                i: int = 0
-                for desc in node_descriptions:
-                        representation += os.linesep
-                        for _ in range(i):
-                                representation += &#34;\t&#34;
-                        representation += desc
-                        i += 1
-
-                return representation</code></pre>
+                self.assertEqual(
+                        &#34;Builder Exception: Message\nParent foo bar\n\t\&#34;Bad Child\&#34; quid pro quo&#34;,
+                        BuilderError(&#34;Message&#34;, bad_child).represent()
+                )</code></pre>
 </details>
-<div class="desc"><p>An exception thrown by the builder.</p>
-<p>Sole constructor. Takes a message and the data node that caused the error.</p></div>
+<div class="desc"><p>Tests that BuilderError.represent() works properly</p>
+<p>Create an instance of the class that will use the named test
+method when executed. Raises a ValueError if the instance does
+not have a method with the specified name.</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
-<li>builtins.Exception</li>
-<li>builtins.BaseException</li>
+<li>unittest.case.TestCase</li>
 </ul>
-<h3>Instance variables</h3>
-<dl>
-<dt id="weftspace.builder_error.BuilderError.message"><code class="name">prop <span class="ident">message</span></code></dt>
-<dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@property
-def message(self):
-        &#34;&#34;&#34;The error message for this error.&#34;&#34;&#34;
-        return self._message</code></pre>
-</details>
-<div class="desc"><p>The error message for this error.</p></div>
-</dd>
-<dt id="weftspace.builder_error.BuilderError.node"><code class="name">prop <span class="ident">node</span></code></dt>
-<dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@property
-def node(self):
-        &#34;&#34;&#34;The node that caused this error.&#34;&#34;&#34;
-        return self._node</code></pre>
-</details>
-<div class="desc"><p>The node that caused this error.</p></div>
-</dd>
-</dl>
 <h3>Methods</h3>
 <dl>
-<dt id="weftspace.builder_error.BuilderError.represent"><code class="name flex">
-<span>def <span class="ident">represent</span></span>(<span>self)</span>
+<dt id="tests.test_builder_exception.TestBuilderError.test_represent"><code class="name flex">
+<span>def <span class="ident">test_represent</span></span>(<span>self) ‑> None</span>
 </code></dt>
 <dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def represent(self):
-        &#34;&#34;&#34;
-        Represents this exception as a long-form error message with a trace of
-        the node that caused it.
-        &#34;&#34;&#34;
-        node_descriptions: list[str] = []
-        current_node: DataNode | None = self.node
-        while (current_node != None):
-                node_descriptions.insert(0, DataWriter.node_to_line(current_node))
-                current_node = current_node.parent
+<pre><code class="python">def test_represent(self) -&gt; None:
+        empty_child: DataNode = DataNode(&#34;Empty Child&#34;, None, [], [])
+        bad_child: DataNode = DataNode(&#34;Bad Child&#34;, None, [&#34;quid&#34;, &#34;pro&#34;, &#34;quo&#34;], [empty_child])
+        other_child: DataNode = DataNode(&#34;Other Child&#34;, None, [&#34;quid&#34;, &#34;pro&#34;, &#34;quo&#34;], [])
+        parent: DataNode = DataNode(&#34;Parent&#34;, None, [&#34;foo&#34;, &#34;bar&#34;], [bad_child, other_child])
 
-        representation: str = &#34;Builder Exception: &#34; + self.message
-        i: int = 0
-        for desc in node_descriptions:
-                representation += os.linesep
-                for _ in range(i):
-                        representation += &#34;\t&#34;
-                representation += desc
-                i += 1
+        empty_child.parent = bad_child
+        bad_child.parent = parent
+        other_child.parent = parent
 
-        return representation</code></pre>
+        self.assertEqual(
+                &#34;Builder Exception: Message\nParent foo bar\n\t\&#34;Bad Child\&#34; quid pro quo&#34;,
+                BuilderError(&#34;Message&#34;, bad_child).represent()
+        )</code></pre>
 </details>
-<div class="desc"><p>Represents this exception as a long-form error message with a trace of
-the node that caused it.</p></div>
+<div class="desc"></div>
 </dd>
 </dl>
 </dd>
@@ -200,17 +120,15 @@ the node that caused it.</p></div>
 <ul id="index">
 <li><h3>Super-module</h3>
 <ul>
-<li><code><a title="weftspace" href="index.html">weftspace</a></code></li>
+<li><code><a title="tests" href="index.html">tests</a></code></li>
 </ul>
 </li>
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="weftspace.builder_error.BuilderError" href="#weftspace.builder_error.BuilderError">BuilderError</a></code></h4>
+<h4><code><a title="tests.test_builder_exception.TestBuilderError" href="#tests.test_builder_exception.TestBuilderError">TestBuilderError</a></code></h4>
 <ul class="">
-<li><code><a title="weftspace.builder_error.BuilderError.message" href="#weftspace.builder_error.BuilderError.message">message</a></code></li>
-<li><code><a title="weftspace.builder_error.BuilderError.node" href="#weftspace.builder_error.BuilderError.node">node</a></code></li>
-<li><code><a title="weftspace.builder_error.BuilderError.represent" href="#weftspace.builder_error.BuilderError.represent">represent</a></code></li>
+<li><code><a title="tests.test_builder_exception.TestBuilderError.test_represent" href="#tests.test_builder_exception.TestBuilderError.test_represent">test_represent</a></code></li>
 </ul>
 </li>
 </ul>
