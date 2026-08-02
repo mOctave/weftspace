@@ -48,7 +48,7 @@ el.replaceWith(d);
 <dl>
 <dt id="weftspace.loaded_node.LoadedNode"><code class="flex name class">
 <span>class <span class="ident">LoadedNode</span></span>
-<span>(</span><span>name: str,<br>flag: <a title="weftspace.data_node.DataNode.Flag" href="data_node.html#weftspace.data_node.DataNode.Flag">DataNode.Flag</a>,<br>parent: <a title="weftspace.data_node.DataNode" href="data_node.html#weftspace.data_node.DataNode">DataNode</a> | None,<br>args: list[str],<br>children: list[<a title="weftspace.data_node.DataNode" href="data_node.html#weftspace.data_node.DataNode">DataNode</a>],<br>line: int,<br>file: str)</span>
+<span>(</span><span>name: str,<br>parent: <a title="weftspace.data_node.DataNode" href="data_node.html#weftspace.data_node.DataNode">DataNode</a> | None,<br>args: list[str],<br>children: list[<a title="weftspace.data_node.DataNode" href="data_node.html#weftspace.data_node.DataNode">DataNode</a>],<br>line: int,<br>file: str)</span>
 </code></dt>
 <dd>
 <details class="source">
@@ -62,7 +62,6 @@ el.replaceWith(d);
         def __init__(
                 self,
                 name: str,
-                flag: DataNode.Flag,
                 parent: DataNode | None,
                 args: list[str],
                 children: list[DataNode],
@@ -72,7 +71,7 @@ el.replaceWith(d);
                 &#34;&#34;&#34;
                 Sole constructor.
                 &#34;&#34;&#34;
-                super().__init__(name, flag, parent, args, children)
+                super().__init__(name, parent, args, children)
                 self.line = line
                 self.file = file
 
@@ -143,11 +142,9 @@ def line(self):
 <ul class="hlist">
 <li><code><b><a title="weftspace.data_node.DataNode" href="data_node.html#weftspace.data_node.DataNode">DataNode</a></b></code>:
 <ul class="hlist">
-<li><code><a title="weftspace.data_node.DataNode.Flag" href="data_node.html#weftspace.data_node.DataNode.Flag">Flag</a></code></li>
 <li><code><a title="weftspace.data_node.DataNode.args" href="data_node.html#weftspace.data_node.DataNode.args">args</a></code></li>
 <li><code><a title="weftspace.data_node.DataNode.children" href="data_node.html#weftspace.data_node.DataNode.children">children</a></code></li>
 <li><code><a title="weftspace.data_node.DataNode.create_root_node" href="data_node.html#weftspace.data_node.DataNode.create_root_node">create_root_node</a></code></li>
-<li><code><a title="weftspace.data_node.DataNode.flag" href="data_node.html#weftspace.data_node.DataNode.flag">flag</a></code></li>
 <li><code><a title="weftspace.data_node.DataNode.name" href="data_node.html#weftspace.data_node.DataNode.name">name</a></code></li>
 <li><code><a title="weftspace.data_node.DataNode.parent" href="data_node.html#weftspace.data_node.DataNode.parent">parent</a></code></li>
 </ul>

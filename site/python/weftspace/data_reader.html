@@ -58,22 +58,6 @@ el.replaceWith(d);
 <pre><code class="python">class DataReader:
         &#34;&#34;&#34;A class which reads data from a file and stores it in a node tree.&#34;&#34;&#34;
 
-        # MARK: Constants
-        class Option(Enum):
-                &#34;&#34;&#34;Special flags that can be used when parsing.&#34;&#34;&#34;
-
-                IGNORE_NODE_FLAGS = 1
-                &#34;&#34;&#34;Do not apply node flags.&#34;&#34;&#34;
-
-
-
-        # MARK: Constructor
-        def __init__(self, file: str, root: DataNode):
-                self.file = file
-                self.root = root
-
-
-
         # MARK: Properties
         _file: str
 
@@ -101,11 +85,18 @@ el.replaceWith(d);
 
 
 
+        # MARK: Constructor
+        def __init__(self, file: str, root: DataNode):
+                self.file = file
+                self.root = root
+
+
+
         # MARK: Methods
-        def parse(self, *args: Option) -&gt; None:
+        def parse(self) -&gt; None:
                 &#34;&#34;&#34;Parses the file associated with this object, and stores all nodes in the tree.&#34;&#34;&#34;
-                ignore_node_flags: bool = DataReader.Option.IGNORE_NODE_FLAGS in args
                 try:
+                        mixed_whitespace: bool = False
                         line_number: int = 0
                         node_stack: deque[DataNode] = deque()
                         current_node: DataNode | None = None
@@ -133,12 +124,12 @@ el.replaceWith(d);
                                         if (expected_indent_string == None and len(indent_substring) &gt; 0):
                                                 expected_indent_string = indent_substring
                                                 if (&#34; &#34; in expected_indent_string and &#34;\t&#34; in expected_indent_string):
-                                                        Logger.WARN_MIXED_WHITESPACE.log(f)
+                                                        mixed_whitespace = True
 
 
                                         if indent &gt; indent_depths[-1] and current_node != None:
                                                 if expected_indent_string != indent_substring:
-                                                        Logger.WARN_MIXED_WHITESPACE.log(f)
+                                                        mixed_whitespace = True
 
                                                 node_stack.append(current_node)
                                                 indent_depths.append(indent)
@@ -147,7 +138,7 @@ el.replaceWith(d);
                                                         node_stack.pop()
                                                         indent_depths.pop()
                                         
-                                        current_node = self.make_node(line, line_number, not ignore_node_flags)
+                                        current_node = self.make_node(line, line_number)
 
                                         if len(node_stack) == 0 and current_node != None:
                                                 self.root.children.append(current_node)
@@ -159,12 +150,14 @@ el.replaceWith(d);
                                 
                                 f.close()
 
+                                if mixed_whitespace:
+                                        raise ReaderError(&#34;Warning - mixed whitespace in file %s (parsing completed with issue)&#34; % (self.file))
                 except FileNotFoundError:
-                        Logger.ERROR_FILE_DNE.log(self.file)
+                        raise ReaderError(&#34;No such file as %s&#34; % (self.file))
 
 
 
-        def make_node(self, line: str, number: int, check_for_flags: bool) -&gt; LoadedNode | None:
+        def make_node(self, line: str, number: int) -&gt; LoadedNode | None:
                 &#34;&#34;&#34;Parses a single line and converts it to a node.&#34;&#34;&#34;
                 stripped_line: str = line.strip()
                 data: list[str] = []
@@ -212,18 +205,7 @@ el.replaceWith(d);
                 # Treat the first entry as the node name, and everything else as args.
                 node_name: str = data.pop(0)
 
-                flag: DataNode.Flag = DataNode.Flag.NORMAL
-
-                # Check for flags
-                if check_for_flags:
-                        if node_name == &#34;add&#34;:
-                                flag = DataNode.Flag.ADD
-                                node_name = data.pop(0)
-                        elif node_name == &#34;remove&#34;:
-                                flag = DataNode.Flag.REMOVE
-                                node_name = data.pop(0)
-                
-                return LoadedNode(node_name, flag, None, data, [], number, self.file)
+                return LoadedNode(node_name, None, data, [], number, self.file)
 
 
 
@@ -250,60 +232,11 @@ el.replaceWith(d);
                 while (i &lt; len(line) and (line[i] == &#34;\t&#34; or line[i] == &#34; &#34;)):
                         i += 1
                 
-                return i
-
-
-
-        @classmethod
-        @deprecated(&#34;Use count_leading_whitespace() instead&#34;)
-        def count_leading_tabs(cls, line: str) -&gt; int:
-                &#34;&#34;&#34;
-                Deprecated method included to support programs written expecting legacy
-                whitespace handling. Calls count_leading_whitespace(), see that
-                method for documentation.
-                &#34;&#34;&#34;
-                i: int = 0
-                while (i &lt; len(line) and line[i] == &#34;\t&#34;):
-                        i += 1
-                
                 return i</code></pre>
 </details>
 <div class="desc"><p>A class which reads data from a file and stores it in a node tree.</p></div>
-<h3>Class variables</h3>
-<dl>
-<dt id="weftspace.data_reader.DataReader.Option"><code class="name">var <span class="ident">Option</span></code></dt>
-<dd>
-<div class="desc"><p>Special flags that can be used when parsing.</p></div>
-</dd>
-</dl>
 <h3>Static methods</h3>
 <dl>
-<dt id="weftspace.data_reader.DataReader.count_leading_tabs"><code class="name flex">
-<span>def <span class="ident">count_leading_tabs</span></span>(<span>cls, line: str) ‑> int</span>
-</code></dt>
-<dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@classmethod
-@deprecated(&#34;Use count_leading_whitespace() instead&#34;)
-def count_leading_tabs(cls, line: str) -&gt; int:
-        &#34;&#34;&#34;
-        Deprecated method included to support programs written expecting legacy
-        whitespace handling. Calls count_leading_whitespace(), see that
-        method for documentation.
-        &#34;&#34;&#34;
-        i: int = 0
-        while (i &lt; len(line) and line[i] == &#34;\t&#34;):
-                i += 1
-        
-        return i</code></pre>
-</details>
-<div class="desc"><p>Deprecated method included to support programs written expecting legacy
-whitespace handling. Calls count_leading_whitespace(), see that
-method for documentation.</p></div>
-</dd>
 <dt id="weftspace.data_reader.DataReader.count_leading_whitespace"><code class="name flex">
 <span>def <span class="ident">count_leading_whitespace</span></span>(<span>line: str) ‑> int</span>
 </code></dt>
@@ -350,14 +283,14 @@ def root(self):
 <h3>Methods</h3>
 <dl>
 <dt id="weftspace.data_reader.DataReader.make_node"><code class="name flex">
-<span>def <span class="ident">make_node</span></span>(<span>self, line: str, number: int, check_for_flags: bool) ‑> <a title="weftspace.loaded_node.LoadedNode" href="loaded_node.html#weftspace.loaded_node.LoadedNode">LoadedNode</a> | None</span>
+<span>def <span class="ident">make_node</span></span>(<span>self, line: str, number: int) ‑> <a title="weftspace.loaded_node.LoadedNode" href="loaded_node.html#weftspace.loaded_node.LoadedNode">LoadedNode</a> | None</span>
 </code></dt>
 <dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def make_node(self, line: str, number: int, check_for_flags: bool) -&gt; LoadedNode | None:
+<pre><code class="python">def make_node(self, line: str, number: int) -&gt; LoadedNode | None:
         &#34;&#34;&#34;Parses a single line and converts it to a node.&#34;&#34;&#34;
         stripped_line: str = line.strip()
         data: list[str] = []
@@ -405,33 +338,22 @@ def root(self):
         # Treat the first entry as the node name, and everything else as args.
         node_name: str = data.pop(0)
 
-        flag: DataNode.Flag = DataNode.Flag.NORMAL
-
-        # Check for flags
-        if check_for_flags:
-                if node_name == &#34;add&#34;:
-                        flag = DataNode.Flag.ADD
-                        node_name = data.pop(0)
-                elif node_name == &#34;remove&#34;:
-                        flag = DataNode.Flag.REMOVE
-                        node_name = data.pop(0)
-        
-        return LoadedNode(node_name, flag, None, data, [], number, self.file)</code></pre>
+        return LoadedNode(node_name, None, data, [], number, self.file)</code></pre>
 </details>
 <div class="desc"><p>Parses a single line and converts it to a node.</p></div>
 </dd>
 <dt id="weftspace.data_reader.DataReader.parse"><code class="name flex">
-<span>def <span class="ident">parse</span></span>(<span>self,<br>*args: <a title="weftspace.data_reader.DataReader.Option" href="#weftspace.data_reader.DataReader.Option">DataReader.Option</a>) ‑> None</span>
+<span>def <span class="ident">parse</span></span>(<span>self) ‑> None</span>
 </code></dt>
 <dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def parse(self, *args: Option) -&gt; None:
+<pre><code class="python">def parse(self) -&gt; None:
         &#34;&#34;&#34;Parses the file associated with this object, and stores all nodes in the tree.&#34;&#34;&#34;
-        ignore_node_flags: bool = DataReader.Option.IGNORE_NODE_FLAGS in args
         try:
+                mixed_whitespace: bool = False
                 line_number: int = 0
                 node_stack: deque[DataNode] = deque()
                 current_node: DataNode | None = None
@@ -459,12 +381,12 @@ def root(self):
                                 if (expected_indent_string == None and len(indent_substring) &gt; 0):
                                         expected_indent_string = indent_substring
                                         if (&#34; &#34; in expected_indent_string and &#34;\t&#34; in expected_indent_string):
-                                                Logger.WARN_MIXED_WHITESPACE.log(f)
+                                                mixed_whitespace = True
 
 
                                 if indent &gt; indent_depths[-1] and current_node != None:
                                         if expected_indent_string != indent_substring:
-                                                Logger.WARN_MIXED_WHITESPACE.log(f)
+                                                mixed_whitespace = True
 
                                         node_stack.append(current_node)
                                         indent_depths.append(indent)
@@ -473,7 +395,7 @@ def root(self):
                                                 node_stack.pop()
                                                 indent_depths.pop()
                                 
-                                current_node = self.make_node(line, line_number, not ignore_node_flags)
+                                current_node = self.make_node(line, line_number)
 
                                 if len(node_stack) == 0 and current_node != None:
                                         self.root.children.append(current_node)
@@ -485,8 +407,10 @@ def root(self):
                         
                         f.close()
 
+                        if mixed_whitespace:
+                                raise ReaderError(&#34;Warning - mixed whitespace in file %s (parsing completed with issue)&#34; % (self.file))
         except FileNotFoundError:
-                Logger.ERROR_FILE_DNE.log(self.file)</code></pre>
+                raise ReaderError(&#34;No such file as %s&#34; % (self.file))</code></pre>
 </details>
 <div class="desc"><p>Parses the file associated with this object, and stores all nodes in the tree.</p></div>
 </dd>
@@ -510,8 +434,6 @@ def root(self):
 <li>
 <h4><code><a title="weftspace.data_reader.DataReader" href="#weftspace.data_reader.DataReader">DataReader</a></code></h4>
 <ul class="">
-<li><code><a title="weftspace.data_reader.DataReader.Option" href="#weftspace.data_reader.DataReader.Option">Option</a></code></li>
-<li><code><a title="weftspace.data_reader.DataReader.count_leading_tabs" href="#weftspace.data_reader.DataReader.count_leading_tabs">count_leading_tabs</a></code></li>
 <li><code><a title="weftspace.data_reader.DataReader.count_leading_whitespace" href="#weftspace.data_reader.DataReader.count_leading_whitespace">count_leading_whitespace</a></code></li>
 <li><code><a title="weftspace.data_reader.DataReader.file" href="#weftspace.data_reader.DataReader.file">file</a></code></li>
 <li><code><a title="weftspace.data_reader.DataReader.get_indent_substring" href="#weftspace.data_reader.DataReader.get_indent_substring">get_indent_substring</a></code></li>
