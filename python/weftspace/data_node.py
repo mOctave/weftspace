@@ -114,8 +114,9 @@ class DataNode:
 		prime: int = 31
 		hash_code: int = 1
 		hash_code = prime * hash_code + hash(self.name)
-		hash_code = prime * hash_code + hash(self.args)
-		hash_code = prime * hash_code + 0 if self in self.children else hash(self.children)
+		# Length is used for hashing here because lists are mutable and so can't be hashed.
+		hash_code = prime * hash_code + hash(len(self.args))
+		hash_code = prime * hash_code + 0 if self in self.children else hash(len(self.children))
 
 		return hash_code
 	

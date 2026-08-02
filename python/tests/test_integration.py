@@ -16,14 +16,14 @@ import unittest
 
 from weftspace import Builder, BuilderError, DataNode, DataReader, DataWriter, ReaderError
 
-from tests.test_utils import TestUtils
+from tests.testing_utils import TestingUtils
 
 class TestIntegration(unittest.TestCase):
 	"""The integration tests for this library."""
 
 	def test_node_equality(self):
 		"""A test to make sure identical data nodes are being treated as equal."""
-		self.assertEqual(TestUtils.get_test_node(), TestUtils.get_test_node())
+		self.assertEqual(TestingUtils.get_test_node(), TestingUtils.get_test_node())
 	
 
 
@@ -36,7 +36,7 @@ class TestIntegration(unittest.TestCase):
 		# Write test data to a file
 		writer: DataWriter = DataWriter("test.txt")
 		writer.open()
-		writer.write(TestUtils.get_test_node())
+		writer.write(TestingUtils.get_test_node())
 		writer.close()
 
 		# Read test data from the file
@@ -51,7 +51,7 @@ class TestIntegration(unittest.TestCase):
 		Path.unlink(Path("test.txt"))
 
 		# Check to make sure there were no issues
-		self.assertEqual(TestUtils.get_test_node(), loaded_node)
+		self.assertEqual(TestingUtils.get_test_node(), loaded_node)
 
 
 
@@ -62,7 +62,7 @@ class TestIntegration(unittest.TestCase):
 		"""
 
 		# Build the node
-		node: DataNode = TestUtils.get_test_node()
+		node: DataNode = TestingUtils.get_test_node()
 		name: str | None = Builder.build_string(node, 0)
 		mass: int = 0
 		drag: float = 0
@@ -109,7 +109,7 @@ class TestIntegration(unittest.TestCase):
 		loaded_node: DataNode = root_node.children[0]
 
 		# Check to make sure there were no issues
-		self.assertEqual(TestUtils.get_test_node(), loaded_node)
+		self.assertEqual(TestingUtils.get_test_node(), loaded_node)
 
 
 
@@ -127,7 +127,7 @@ class TestIntegration(unittest.TestCase):
 		loaded_node: DataNode = root_node.children[0]
 
 		# Check to make sure there were no issues
-		self.assertEqual(TestUtils.get_test_node(), loaded_node)
+		self.assertEqual(TestingUtils.get_test_node(), loaded_node)
 	
 
 
@@ -139,7 +139,7 @@ class TestIntegration(unittest.TestCase):
 
 		# Open and parse the test data
 		root_node: DataNode = DataNode.create_root_node()
-		reader: DataReader = DataReader("../testdata/spaceindented.txt", root_node)
+		reader: DataReader = DataReader("../testdata/terriblyindented.txt", root_node)
 		try:
 			reader.parse()
 			self.fail()
@@ -150,7 +150,7 @@ class TestIntegration(unittest.TestCase):
 		loaded_node: DataNode = root_node.children[0]
 
 		# Check to make sure there were no issues
-		self.assertEqual(TestUtils.get_test_node(), loaded_node)
+		self.assertEqual(TestingUtils.get_test_node(), loaded_node)
 
 
 

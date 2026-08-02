@@ -15,7 +15,7 @@ from abc import ABC
 
 from weftspace import DataNode
 
-class TestUtils(ABC):
+class TestingUtils(ABC):
 	"""A class containing utility methods to support tests."""
 
 	@classmethod
@@ -42,9 +42,3 @@ class TestUtils(ABC):
 		test_node.children.append(child_node)
 
 		return test_node
-
-
-
-	
-
-

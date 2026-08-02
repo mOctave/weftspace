@@ -76,5 +76,6 @@ class BuilderError(Exception):
 			for _ in range(i):
 				representation += "\t"
 			representation += desc
+			i += 1
 
 		return representation
