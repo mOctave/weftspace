@@ -14,7 +14,7 @@
 from pathlib import Path
 import unittest
 
-from weftspace import Builder, DataNode, DataReader, DataWriter, Logger
+from weftspace import Builder, BuilderError, DataNode, DataReader, DataWriter, ReaderError
 
 from tests.test_utils import TestUtils
 
@@ -33,9 +33,6 @@ class TestIntegration(unittest.TestCase):
 		reads it using DataReader, and compares it against the original node.
 		"""
 
-		# Start the error counters
-		Logger.reset_alert_counts()
-
 		# Write test data to a file
 		writer: DataWriter = DataWriter("test.txt")
 		writer.open()
@@ -44,15 +41,16 @@ class TestIntegration(unittest.TestCase):
 
 		# Read test data from the file
 		reader: DataReader = DataReader("test.txt", DataNode.create_root_node())
-		reader.parse()
+		try:
+			reader.parse()
+		except ReaderError:
+			self.fail()
 		loaded_node: DataNode = reader.root.children[0]
 
 		# Do clean-up
 		Path.unlink(Path("test.txt"))
 
 		# Check to make sure there were no issues
-		self.assertEqual(Logger.get_error_count(), 0)
-		self.assertEqual(Logger.get_warning_count(), 0)
 		self.assertEqual(TestUtils.get_test_node(), loaded_node)
 
 
@@ -63,29 +61,27 @@ class TestIntegration(unittest.TestCase):
 		working properly.
 		"""
 
-		# Start the error counters
-		Logger.reset_alert_counts()
-
 		# Build the node
 		node: DataNode = TestUtils.get_test_node()
-		name: str | None = Builder.build_string(node, 0, "ship")
+		name: str | None = Builder.build_string(node, 0)
 		mass: int = 0
 		drag: float = 0
 		description: str | None = ""
-		for child in node.children:
-			match child.name:
-				case "mass":
-					mass = Builder.build_int(child, 0, "ship")
-				case "drag":
-					drag = Builder.build_float(child, 0, "ship")
-				case "description":
-					description = Builder.build_string(child, 0, "ship")
-				case _:
-					pass
+		try:
+			for child in node.children:
+				match child.name:
+					case "mass":
+						mass = Builder.build_int(child, 0)
+					case "drag":
+						drag = Builder.build_float(child, 0)
+					case "description":
+						description = Builder.build_string(child, 0)
+					case _:
+						pass
+		except BuilderError:
+			self.fail()
 		
 		# Check to make sure there were no issues
-		self.assertEqual(Logger.get_error_count(), 0)
-		self.assertEqual(Logger.get_warning_count(), 0)
 		self.assertTrue(
 			name == "Much Confused Wardragon"
 			and mass == 35
@@ -101,38 +97,36 @@ class TestIntegration(unittest.TestCase):
 		middle of their definitions still parse properly.
 		"""
 
-		# Start the error counters
-		Logger.reset_alert_counts()
-
 		# Open and parse the test data
 		root_node: DataNode = DataNode.create_root_node()
 		reader: DataReader = DataReader("../testdata/humanreadable.txt", root_node)
-		reader.parse()
+
+		try:
+			reader.parse()
+		except ReaderError:
+			self.fail()
 
 		loaded_node: DataNode = root_node.children[0]
 
 		# Check to make sure there were no issues
-		self.assertEqual(Logger.get_error_count(), 0)
-		self.assertEqual(Logger.get_warning_count(), 0)
 		self.assertEqual(TestUtils.get_test_node(), loaded_node)
 
 
 
 	def test_space_indentation(self):
 		"""This test checks to make sure that space-based indentation is parsed properly."""
-		# Start the error counters
-		Logger.reset_alert_counts()
 
 		# Open and parse the test data
 		root_node: DataNode = DataNode.create_root_node()
 		reader: DataReader = DataReader("../testdata/spaceindented.txt", root_node)
-		reader.parse()
+		try:
+			reader.parse()
+		except ReaderError:
+			self.fail()
 
 		loaded_node: DataNode = root_node.children[0]
 
 		# Check to make sure there were no issues
-		self.assertEqual(Logger.get_error_count(), 0)
-		self.assertEqual(Logger.get_warning_count(), 0)
 		self.assertEqual(TestUtils.get_test_node(), loaded_node)
 	
 
@@ -142,19 +136,20 @@ class TestIntegration(unittest.TestCase):
 		This test checks to make sure that even the worst indentation can still be parsed,
 		but that the proper warnings are thrown when you attempt to do so.
 		"""
-		# Start the error counters
-		Logger.reset_alert_counts()
 
 		# Open and parse the test data
 		root_node: DataNode = DataNode.create_root_node()
 		reader: DataReader = DataReader("../testdata/spaceindented.txt", root_node)
-		reader.parse()
+		try:
+			reader.parse()
+			self.fail()
+		except ReaderError:
+			# There should be an error thrown, but everything should still work
+			pass
 
 		loaded_node: DataNode = root_node.children[0]
 
 		# Check to make sure there were no issues
-		self.assertEqual(Logger.get_error_count(), 0)
-		self.assertEqual(Logger.get_warning_count(), 0)
 		self.assertEqual(TestUtils.get_test_node(), loaded_node)
 
 

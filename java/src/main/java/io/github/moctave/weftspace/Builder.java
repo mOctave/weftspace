@@ -15,8 +15,6 @@ package io.github.moctave.weftspace;
 
 import org.jspecify.annotations.*;
 
-import io.github.moctave.weftspace.exceptions.BuilderException;
-
 /** A class of utility methods designed to allow easy conversion from nodes to objects. */
 public abstract class Builder {
 	/**

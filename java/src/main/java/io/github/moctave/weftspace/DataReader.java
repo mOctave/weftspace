@@ -23,8 +23,6 @@ import java.util.Deque;
 
 import org.jspecify.annotations.*;
 
-import io.github.moctave.weftspace.exceptions.ReaderException;
-
 /** A class which reads data from a file and stores it in a node tree. */
 public class DataReader {
 	// MARK: Fields

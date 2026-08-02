@@ -6,8 +6,6 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
-import io.github.moctave.weftspace.exceptions.BuilderException;
-
 /** Tests that the represent() method of BuilderException works properly. */
 public class TestBuilderException {
 	@Test

@@ -88,4 +88,4 @@ xfail_strict = true
 
 [tool.pyright]
 typeCheckingMode = "strict"
-pythonVersion = 3.13
+pythonVersion = "3.13"

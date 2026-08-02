@@ -20,8 +20,6 @@ import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import io.github.moctave.weftspace.exceptions.BuilderException;
-
 public class TestBuilder {
 	private DataNode testNoArgs;
 	private DataNode testStringArgs;
