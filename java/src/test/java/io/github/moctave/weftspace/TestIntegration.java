@@ -17,8 +17,6 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
 
-import io.github.moctave.weftspace.exceptions.*;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
