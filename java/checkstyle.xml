@@ -1,0 +1,402 @@
+<?xml version="1.0"?>
+<!DOCTYPE module PUBLIC
+		"-//Puppy Crawl//DTD Check Configuration 1.3//EN"
+		"http://checkstyle.sourceforge.net/dtds/configuration_1_3.dtd">
+
+
+<module name="Checker">
+	<property name="charset" value="UTF-8"/>
+	<property name="severity" value="error"/>
+	<property name="tabWidth" value="4"/>
+	<property name="fileExtensions" value="java, properties, xml"/>
+
+	<!--Use Unix line endings-->
+	<module name="LineEnding"/>
+
+	<!--Lines should not exceed 120 characters in length-->
+	<module name="LineLength">
+		<property name="max" value="120"/>
+		<property name="ignorePattern" value="^package.*|^import.*|a href|href|http://|https://|ftp://"/>
+	</module>
+
+	<!--Javadoc package files should be used-->
+	<module name="JavadocPackage"/>
+
+	<!--Files should end with a trailing newline-->
+	<module name="NewlineAtEndOfFile">
+		<property name="lineSeparator" value="lf"/>
+	</module>
+
+	<!--Do not include trailing whitespace outside of Javadoc comments-->
+	<module name="RegexpSingleline">
+		<property name="format" value="(\s{2,}|(?&lt;!\s+\*)\s)$"/>
+		<property name="message" value="Line includes trailing whitespace"/>
+	</module>
+
+	<!--All blank lines in Javadoc comments should end with a single space-->
+	<module name="RegexpSingleline">
+		<property name="format" value="(\s+\*|\s+\*\s{2,})$"/>
+		<property name="message" value="Include one space after the asterisk in a Javadoc comment"/>
+	</module>
+
+	<module name="TreeWalker">
+
+		<!--Only abbreviations of up to 2 characters are allowed-->
+		<module name="AbbreviationAsWordInName">
+			<property name="ignoreFinal" value="true"/>
+			<property name="ignoreOverriddenMethods" value="true"/>
+			<property name="allowedAbbreviationLength" value="2"/>
+		</module>
+
+		<!--Anonymous inner classes should not exceed 20 lines in length-->
+		<module name="AnonInnerLength"/>
+
+		<!--All arrays should be defined in Java style (eg int[] arr rather than int arr[])-->
+		<module name="ArrayTypeStyle"/>
+
+		<!--
+		Javadoc tags should be defined in the following order:
+		@author @version @param @return @throws @exception
+		@see @since @serial @serialField @serialData
+		-->
+		<module name="AtclauseOrder"/>
+
+		<!--Avoid double brace initialization-->
+		<module name="AvoidDoubleBraceInitialization"/>
+
+		<!--Escaped unicode characters must be clarified-->
+		<module name="AvoidEscapedUnicodeCharacters">
+			<property name="allowByTailComment" value="true"/>
+		</module>
+
+		<!--Do not use nested blocks-->
+		<module name="AvoidNestedBlocks"/>
+
+		<!--Do not include a redundant call to super() in a constructor-->
+		<module name="AvoidNoArgumentSuperConstructorCall"/>
+
+		<!--
+		Catch parameters should use the names e, ex, t, _, or two
+		lowercase letters followed by at least one more letter
+		-->
+		<module name="CatchParameterName"/>
+
+		<!--Modifiers on nested types should be explicitly specified-->
+		<module name="ClassMemberImpliedModifier"/>
+
+		<!--Class type parameter names should be a single capital letter-->
+		<module name="ClassTypeParameterName"/>
+
+		<!--Comments should be indented at the same level as the surrounding code-->
+		<module name="CommentsIndentation"/>
+
+		<!--Constants should use the format MY_CONSTANT-->
+		<module name="ConstantName"/>
+
+		<!--All constructors should be grouped together-->
+		<module name="ConstructorsDeclarationGrouping"/>
+
+		<!--Any class with an equals() method should override equals(Object)-->
+		<module name="CovariantEquals"/>
+
+		<!--
+		It's okay to have complex methods, but it's flagged because they
+		will be harder to test
+		-->
+		<module name="CyclomaticComplexity">
+			<property name="severity" value="warning"/>
+			<message key="cyclomaticComplexity" value="Cyclomatic Complexity is {0,number,integer}. This may make testing difficult, so it is recommended to reduce it to {1,number,integer} if possible."/>
+		</module>
+
+		<!--
+		Declarations should follow the following order:
+		static variables, instance variables, constructors, methods.
+		Public variables should appear first, then protected, default, and finally private.
+		-->
+		<module name="DeclarationOrder"/>
+
+		<!--Default cases should always be the last cases in a switch statement-->
+		<module name="DefaultComesLast"/>
+
+		<!--No blocks may be empty except catch blocks-->
+		<module name="EmptyBlock"/>
+
+		<!--Empty for iterators should not be padded-->
+		<module name="EmptyForInitializerPad"/>
+		<module name="EmptyForIteratorPad"/>
+
+		<!--Empty statements should not be used-->
+		<module name="EmptyStatement"/>
+
+		<!--Classes should override both equals and hashCode, or neither-->
+		<module name="EqualsHashCode"/>
+
+		<!--Switch fall-throughs must be labelled with a comment such as /* fallthrough */-->
+		<module name="FallThrough"/>
+
+		<!--All classes and local variables that can be declared as final should be explicitly marked-->
+		<module name="FinalClass"/>
+		<module name="FinalLocalVariable"/>
+
+		<!--Generics should follow typical whitespace conventions-->
+		<module name="GenericWhitespace"/>
+
+		<!--Non-constant fields should follow the Google Java Style Guide-->
+		<module name="GoogleNonConstantFieldName"/>
+
+		<!--Hex literals should use uppercase letters-->
+		<module name="HexLiteralCase"/>
+
+		<!--Utility classes should not have a public or default constructor-->
+		<module name="HideUtilityClassConstructor"/>
+
+		<!--Indent everything a normal amount, use double indents when wrapping lines-->
+		<module name="Indentation"/>
+
+		<!--Inner assignments should only be used in for loops-->
+		<module name="InnerAssignment"/>
+
+		<!--Inner types should be declared at the bottom of their parent class-->
+		<module name="InnerTypeLast"/>
+
+		<!--Interfaces should be types, not just places to store constants-->
+		<module name="InterfaceIsType"/>
+
+		<!--Interface member modifiers should be explicitly defined-->
+		<module name="InterfaceMemberImpliedModifier"/>
+
+		<!--Interface type parameter names should be a single capital letter-->
+		<module name="InterfaceTypeParameterName"/>
+
+		<!--Javadoc comments should precede annotations-->
+		<module name="InvalidJavadocPosition"/>
+
+		<!--
+		Classes should contain no more than 1500 non-commenting lines
+		Files should contain no more than 2000
+		Methods should contain no more than 50
+		Records should contain no more than 150
+		-->
+		<module name="JavaNCSS"/>
+
+		<!--
+		Javadoc block tags should be at the beginning of a line
+		or else inside inline tags
+		-->
+		<module name="JavadocBlockTagLocation"/>
+
+		<!--The content of Javadoc comments should start on the second line-->
+		<module name="JavadocContentLocation"/>
+
+		<!--Leading asterisks in Javadoc should be vertically aligned-->
+		<module name="JavadocLeadingAsteriskAlign"/>
+
+		<!--All Javadoc comments should be complete-->
+		<module name="JavadocMethod"/>
+
+		<!--Lines of Javadoc comments should have leading asterisks followed by single whitespace-->
+		<module name="JavadocMissingLeadingAsterisk"/>
+		<module name="JavadocMissingWhitespaceAfterAsterisk"/>
+
+		<!--Javadoc should be well-formed-->
+		<module name="JavadocStyle"/>
+		<module name="JavadocType"/>
+
+		<!--Variables should have Javadoc-->
+		<module name="JavadocVariable"/>
+
+		<!--Lambdas should not exceed 5 lines in length-->
+		<module name="LambdaBodyLength">
+			<property name="max" value="5"/>
+		</module>
+
+		<!--Lambda parameter names should use camel case-->
+		<module name="LambdaParameterName"/>
+
+		<!--Left curly braces should be at the end of the previous line-->
+		<module name="LeftCurly"/>
+
+		<!--Local variables and method names should use camel case-->
+		<module name="LocalFinalVariableName"/>
+		<module name="LocalVariableName"/>
+		<module name="MethodName"/>
+
+		<!--Method parameters should not be padded-->
+		<module name="MethodParamPad"/>
+
+		<!--Method type parameter names should be a single uppercase letter-->
+		<module name="MethodTypeParameterName"/>
+
+		<!--
+		Either both the @Deprecated annotation and @deprecated Javadoc tag should
+		be present, or neither.
+		-->
+		<module name="MissingDeprecated"/>
+
+		<!--All methods should have Javadoc comments-->
+		<module name="MissingJavadocMethod">
+			<property name="scope" value="private"/>
+		</module>
+
+		<!--package-info.java files should have Javadoc comments-->
+		<module name="MissingJavadocPackage"/>
+
+		<!--If @inheritDoc is used, an @Override annotation should be present-->
+		<module name="MissingOverride"/>
+
+		<!--Switch statements should have default cases-->
+		<module name="MissingSwitchDefault"/>
+
+		<!--Loop control variables should not be modified within their blocks-->
+		<module name="ModifiedControlVariable"/>
+
+		<!--Modifier order should comply with the suggestions from the Java specification-->
+		<module name="ModifierOrder"/>
+
+		<!--Each variable should be declared on its own line-->
+		<module name="MultipleVariableDeclarations"/>
+
+		<!--Exceptions should be immutable-->
+		<module name="MutableException"/>
+
+		<!--Code blocks longer than one line must use braces-->
+		<module name="NeedBraces">
+			<property name="allowSingleLineStatement" value="true"/>
+		</module>
+
+		<!--Use common sense with whitespace-->
+		<module name="NoWhitespaceAfter"/>
+		<module name="NoWhitespaceBefore"/>
+		<module name="NoWhitespaceBeforeCaseDefaultColon"/>
+
+		<!--Javadoc block tags should be followed with descriptions-->
+		<module name="NonEmptyAtclauseDescription"/>
+
+		<!--Numerical prefixes and suffixes should be in lowercase-->
+		<module name="NumericalPrefixesInfixesSuffixesCharacterCase"/>
+
+		<!--Each statement should get its own line-->
+		<module name="OneStatementPerLine"/>
+
+		<!--Each file should contain only one top-level class-->
+		<module name="OneTopLevelClass"/>
+
+		<!--When wrapping, operators should go at the beginning of the new line-->
+		<module name="OperatorWrap"/>
+
+		<!--The outer type name must match the file name-->
+		<module name="OuterTypeFilename"/>
+
+		<!--All overloaded methods should be placed next to each other-->
+		<module name="OverloadMethodsDeclarationOrder"/>
+
+		<!--Every class should have a package declaration-->
+		<module name="PackageDeclaration"/>
+
+		<!--Package names should use camel case-->
+		<module name="PackageName"/>
+
+		<!--Parameters should not be assigned-->
+		<module name="ParameterAssignment"/>
+
+		<!--Parameter names should use camel case-->
+		<module name="ParameterName"/>
+
+		<!--Do not pad parentheses-->
+		<module name="ParenPad"/>
+
+		<!--Pattern variables should not be assigned-->
+		<module name="PatternVariableAssignment"/>
+
+		<!--Pattern variable names should use camel case-->
+		<module name="PatternVariableName"/>
+
+		<!--Record component names should use camel case-->
+		<module name="RecordComponentName"/>
+
+		<!--Record type parameter names should be a single capital letter-->
+		<module name="RecordTypeParameterName"/>
+
+		<!--Avoid redundant imports-->
+		<module name="RedundantImport"/>
+
+		<!--There should be an empty line between Javadoc descriptions and block tags-->
+		<module name="RequireEmptyLineBeforeBlockTagGroup"/>
+
+		<!--
+		Right curly braces should be on the same line as the next
+		statement in if-else, try-catch, and do-while blocks only
+		-->
+		<module name="RightCurly">
+			<property name="id" value="RightCurlySame"/>
+			<property name="tokens" value="LITERAL_TRY, LITERAL_CATCH, LITERAL_FINALLY, LITERAL_IF, LITERAL_ELSE, LITERAL_DO"/>
+		</module>
+		<module name="RightCurly">
+			<property name="id" value="RightCurlyAlone"/>
+			<property name="option" value="alone"/>
+			<property name="tokens" value="CLASS_DEF, METHOD_DEF, CTOR_DEF, LITERAL_FOR, LITERAL_WHILE, STATIC_INIT, INSTANCE_INIT"/>
+		</module>
+
+		<!--
+		When wrapping, place the following at the end of the line:
+		commas, array declarators, semicolons, and ellipses
+		Place the following at the beginning of the next line:
+		 @, ::, and dots
+		-->
+		<module name="SeparatorWrap">
+			<property name="option" value="eol"/>
+			<property name="tokens" value="COMMA, ARRAY_DECLARATOR, SEMI, ELLIPSIS"/>
+		</module>
+		<module name="SeparatorWrap">
+			<property name="option" value="nl"/>
+			<property name="tokens" value="DOT, AT, METHOD_REF"/>
+		</module>
+
+		<!--Simplify boolean expressions-->
+		<module name="SimplifyBooleanExpression"/>
+		<module name="SimplifyBooleanReturn"/>
+
+		<!--Non-whitespace characters should be separated by only one whitespace character-->
+		<module name="SingleSpaceSeparator"/>
+
+		<!--Static variable names should use camel case-->
+		<module name="StaticVariableName"/>
+
+		<!--String literals should be compared with equals() rather than ==-->
+		<module name="StringLiteralEquality"/>
+
+		<!--Use Google style for formatting text blocks-->
+		<module name="TextBlockGoogleStyleFormatting"/>
+
+		<!--Type names should use upper camel case-->
+		<module name="TypeName"/>
+
+		<!--Typecast parentheses should not be padded-->
+		<module name="TypecastParenPad"/>
+
+		<!--Avoid overusing semicolons-->
+		<module name="UnnecessarySemicolonAfterOuterTypeDeclaration"/>
+		<module name="UnnecessarySemicolonAfterTypeMemberDeclaration"/>
+		<module name="UnnecessarySemicolonInEnumeration"/>
+		<module name="UnnecessarySemicolonInTryWithResources"/>
+
+		<!--Delete unused imports-->
+		<module name="UnusedImports"/>
+
+		<!--Don't leave unused local variables hanging around-->
+		<module name="UnusedLocalVariable"/>
+
+		<!--Use common sense with whitespace-->
+		<module name="WhitespaceAfter"/>
+		<module name="WhitespaceAround">
+			<property name="tokens" value="ASSIGN, DIV_ASSIGN, PLUS_ASSIGN, MINUS_ASSIGN, STAR_ASSIGN, MOD_ASSIGN, SR_ASSIGN, BSR_ASSIGN, SL_ASSIGN, BXOR_ASSIGN, BOR_ASSIGN, BAND_ASSIGN"/>
+		</module>
+
+		<!--Use tab indentation-->
+		<module name="RegexpSinglelineJava">
+			<property name="format" value="^\t* "/>
+			<property name="message" value="Indentation must use tab characters"/>
+			<property name="ignoreComments" value="true"/>
+		</module>
+	</module>
+</module>

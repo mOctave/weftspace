@@ -34,6 +34,7 @@ public class DataWriter {
 	// MARK: Constructor
 	/**
 	 * Sole constructor.
+	 * 
 	 * @param file The file to write to.
 	 */
 	public DataWriter(@NonNull File file) {
@@ -56,13 +57,14 @@ public class DataWriter {
 	 * Helper function to close the PrintWriter.
 	 */
 	public void close() {
-		writer.close();
+		if (writer != null) writer.close();
 	}
 
 
 
 	/**
 	 * Writes a node to a file with no indent.
+	 * 
 	 * @param node The node to write.
 	 */
 	public void write(@NonNull DataNode node) {
@@ -73,10 +75,13 @@ public class DataWriter {
 
 	/**
 	 * Writes a node to the file.
+	 * 
 	 * @param node The node to write.
 	 * @param indentLevel How many tabs should be inserted before the node.
 	 */
 	public void write(@NonNull DataNode node, int indentLevel) {
+		if (writer == null) return;
+
 		for (int i = 0; i < indentLevel; i++) {
 			writer.append("\t");
 		}
@@ -95,6 +100,7 @@ public class DataWriter {
 	/**
 	 * Represents a node as a line to be saved to a file.
 	 * Not to be confused with {@link DataNode#toString()}.
+	 * 
 	 * @param node The node to convert.
 	 * @return A single-line representation of the node, excluding its children.
 	 */
@@ -114,6 +120,7 @@ public class DataWriter {
 	 * Puts quotes around text, adapting between no quotes, double quotes, and backticks as necessary.
 	 * Does not conform to Endless Sky human readability conventions, but uses the simplest
 	 * possible quotes for a given word.
+	 * 
 	 * @param word The text to quote.
 	 * @return The text in a format that will be interpreted as a single token by a parser.
 	 */
@@ -134,6 +141,7 @@ public class DataWriter {
 	// MARK: Getters / Setters
 	/**
 	 * Getter: Returns the file being written to.
+	 * 
 	 * @return {@link #file}
 	 */
 	public @NonNull File getFile() {
@@ -144,6 +152,7 @@ public class DataWriter {
 
 	/**
 	 * Getter: Returns the PrintWriter for this writer.
+	 * 
 	 * @return {@link #writer}
 	 */
 	public @NonNull PrintWriter getWriter() {

@@ -22,7 +22,7 @@ import org.jspecify.annotations.*;
 public class DataNode {
 	// MARK: Fields
 	/** The name of this node. */
-	private @Nullable String name;
+	private @NonNull String name;
 
 	/** The parent of this node. */
 	private @Nullable DataNode parent;
@@ -39,6 +39,7 @@ public class DataNode {
 	/**
 	 * Primary constructor. Takes all the standard arguments, except
 	 * those defined by {@link LoadedNode}.
+	 * 
 	 * @param name The name of this node, typically the first phrase present on its line.
 	 * @param parent This node's parent node (or {@code null} if it should be the root of its tree).
 	 * @param args A list of arguments attached to this node.
@@ -50,7 +51,7 @@ public class DataNode {
 		@NonNull List<String> args,
 		@NonNull List<DataNode> children
 	) {
-		setName(name);
+		this.name = name;
 		this.parent = parent;
 		this.args = args;
 		this.children = children;
@@ -62,7 +63,7 @@ public class DataNode {
 	 * node for the {@link DataReader}.
 	 */
 	public DataNode() {
-		setName("--ROOT--");
+		this.name = "--ROOT--";
 		this.parent = null;
 		this.args = new ArrayList<>();
 		this.children = new ArrayList<>();
@@ -79,6 +80,7 @@ public class DataNode {
 	 * (1) the mechanics for name.hashCode() are not controlled,
 	 * (2) parents are not taken into account in this method, and
 	 * (3) nodes which have themself as a child will not have their children considered.
+	 * 
 	 * @return A hash code value for this node.
 	 */
 	@Override
@@ -112,8 +114,8 @@ public class DataNode {
 		if (!(obj instanceof DataNode)) return false;
 
 
-		DataNode node = (DataNode) obj;
-		
+		final DataNode node = (DataNode) obj;
+
 		// Check if the two nodes have a different parameter
 		if (!node.getName().equals(name)) return false;
 
@@ -136,8 +138,9 @@ public class DataNode {
 	 */
 	public boolean sameParent(@NonNull DataNode node) {
 		if (node.hasParent()) {
-			if (!this.hasParent())
+			if (!this.hasParent()) {
 				return false;
+			}
 
 			return (node.getParent().equals(this.getParent()));
 		} else {
@@ -147,9 +150,10 @@ public class DataNode {
 
 
 
-	/** 
+	/**
 	 * Returns a string representation of this node, including name, arguments,
 	 * and the number of children it has.
+	 * 
 	 * @return A string representation of this node.
 	 */
 	@Override
@@ -165,6 +169,7 @@ public class DataNode {
 
 	/**
 	 * Mutator method to add an argument to this node's argument list.
+	 * 
 	 * @param arg The argument to add.
 	 */
 	public void addArg(@NonNull String arg) {
@@ -175,6 +180,7 @@ public class DataNode {
 
 	/**
 	 * Accessor method to get a specific argument from this node.
+	 * 
 	 * @param i The index of the argument to get.
 	 * @return The selected argument.
 	 */
@@ -186,6 +192,7 @@ public class DataNode {
 
 	/**
 	 * Convenience method to get the size of this node's argument list.
+	 * 
 	 * @return The number of arguments this node has.
 	 */
 	public int countArgs() {
@@ -195,6 +202,7 @@ public class DataNode {
 
 	/**
 	 * Mutator method to add a node to the tree as a child of this node.
+	 * 
 	 * @param child The node to add.
 	 */
 	public void addChild(@NonNull DataNode child) {
@@ -205,6 +213,7 @@ public class DataNode {
 
 	/**
 	 * Accessor method to get a specific child from this node.
+	 * 
 	 * @param i The index of the child to get.
 	 * @return The selected child.
 	 */
@@ -216,6 +225,7 @@ public class DataNode {
 
 	/**
 	 * Convenience method to get the size of this node's child list.
+	 * 
 	 * @return The number of children this node has.
 	 */
 	public int countChildren() {
@@ -226,6 +236,7 @@ public class DataNode {
 
 	/**
 	 * Convenience method to check whether a node has a defined parent.
+	 * 
 	 * @return {@code true} if a node has a parent, or {@code false} otherwise.
 	 */
 	public boolean hasParent() {
@@ -237,6 +248,7 @@ public class DataNode {
 	// MARK: Getters / Setters
 	/**
 	 * Getter: Returns the name of this node.
+	 * 
 	 * @return {@link #name}
 	 */
 	public @NonNull String getName() {
@@ -245,6 +257,7 @@ public class DataNode {
 
 	/**
 	 * Setter: Changes the name of this node.
+	 * 
 	 * @param name The new value for {@link #name}.
 	 */
 	public void setName(@NonNull String name) {
@@ -254,6 +267,7 @@ public class DataNode {
 
 	/**
 	 * Getter: Returns the parent of this node.
+	 * 
 	 * @return {@link #parent}
 	 */
 	public @Nullable DataNode getParent() {
@@ -264,6 +278,7 @@ public class DataNode {
 	 * Setter: Changes this node's parent.
 	 * This method should be used very cautiously, as it can easily
 	 * damage the structure of the node tree.
+	 * 
 	 * @param parent This node's new {@link #parent}.
 	 */
 	public void setParent(@Nullable DataNode parent) {
@@ -273,6 +288,7 @@ public class DataNode {
 
 	/**
 	 * Getter: Returns the full argument list of this node.
+	 * 
 	 * @return {@link #args}
 	 */
 	public @NonNull List<String> getArgs() {
@@ -281,6 +297,7 @@ public class DataNode {
 
 	/**
 	 * Setter: Entirely overwrites the arguments of this node.
+	 * 
 	 * @param args The new value for {@link #args}.
 	 */
 	public void setArgs(@NonNull List<String> args) {
@@ -290,6 +307,7 @@ public class DataNode {
 
 	/**
 	 * Getter: Returns the full list of children of this node.
+	 * 
 	 * @return {@link #children}
 	 */
 	public @NonNull List<DataNode> getChildren() {
@@ -300,6 +318,7 @@ public class DataNode {
 	 * Setter: Entirely overwrites the children of this node.
 	 * This method should be used very cautiously, as it can easily
 	 * damage the structure of the node tree.
+	 * 
 	 * @param children The new value for {@link #children}.
 	 */
 	public void setChildren(@NonNull List<DataNode> children) {

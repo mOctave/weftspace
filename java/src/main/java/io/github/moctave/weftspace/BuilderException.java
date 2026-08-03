@@ -20,13 +20,14 @@ import java.util.List;
 public class BuilderException extends Exception {
 	// MARK: Fields
 	/** The node associated with this exception. */
-	private DataNode node;
+	private final DataNode node;
 
-	
+
 
 	// MARK: Constructor
 	/**
-	 * Constructs a new builder exception with the given message and data node
+	 * Constructs a new builder exception with the given message and data node.
+	 * 
 	 * @param message The error message for this instruction
 	 * @param node The data node that caused the exception to be thrown
 	 */
@@ -39,11 +40,12 @@ public class BuilderException extends Exception {
 
 	// MARK: Methods
 	/**
-	 * Represents this exception as a long-form error message
+	 * Represents this exception as a long-form error message.
+	 * 
 	 * @return The exception message followed by a trace of the node that threw it.
 	 */
 	public String represent() {
-		List<String> nodeDescriptions = new ArrayList<>();
+		final List<String> nodeDescriptions = new ArrayList<>();
 		DataNode currentNode = node;
 		while (currentNode != null) {
 			nodeDescriptions.add(0, DataWriter.nodeToLine(currentNode));

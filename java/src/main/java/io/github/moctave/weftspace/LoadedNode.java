@@ -32,6 +32,7 @@ public class LoadedNode extends DataNode {
 	// MARK: Constructor
 	/**
 	 * Sole constructor.
+	 * 
 	 * @param name The name of this node, typically the first phrase present on its line.
 	 * @param parent This node's parent node (or {@code null} if it should be the root of its tree).
 	 * @param args A list of arguments attached to this node.
@@ -49,8 +50,8 @@ public class LoadedNode extends DataNode {
 	) {
 		super(name, parent, args, children);
 
-		setLine(line);
-		setFile(file);
+		this.line = line;
+		this.file = file;
 	}
 
 
@@ -58,6 +59,7 @@ public class LoadedNode extends DataNode {
 	// MARK: Getters / Setters
 	/**
 	 * Getter: Returns the line number this node was parsed from.
+	 * 
 	 * @return {@link #line}
 	 */
 	public int getLine() {
@@ -66,6 +68,7 @@ public class LoadedNode extends DataNode {
 
 	/**
 	 * Setter: Changes the line number associated with this node.
+	 * 
 	 * @param line The new value for {@link #line}.
 	 */
 	public void setLine(int line) {
@@ -74,6 +77,7 @@ public class LoadedNode extends DataNode {
 
 	/**
 	 * Getter: Returns the file this node was parsed from.
+	 * 
 	 * @return {@link #file}
 	 */
 	public @NonNull File getFile() {
@@ -82,6 +86,7 @@ public class LoadedNode extends DataNode {
 
 	/**
 	 * Setter: Changes the file associated with this node.
+	 * 
 	 * @param file The new value for {@link #file}.
 	 */
 	public void setFile(@NonNull File file) {

@@ -20,6 +20,7 @@ public abstract class Builder {
 	/**
 	 * Takes an argument from a node and returns it as a string, throwing a
 	 * BuilderException if there is an error that prevents parsing.
+	 * 
 	 * @param node The node to access.
 	 * @param arg The index of the argument to convert.
 	 * @return The argument, as a string.
@@ -30,13 +31,14 @@ public abstract class Builder {
 		} catch (IndexOutOfBoundsException e) {
 			throw new BuilderException(String.format("No argument at position %d.", arg), node);
 		}
-	};
+	}
 
 
 
 	/**
 	 * Takes an argument from a node and returns it as an integer, throwing a
 	 * BuilderException if there is an error that prevents parsing.
+	 * 
 	 * @param node The node to access.
 	 * @param arg The index of the argument to convert.
 	 * @return The argument, as a integer.
@@ -47,15 +49,17 @@ public abstract class Builder {
 		} catch (IndexOutOfBoundsException e) {
 			throw new BuilderException(String.format("No argument at position %d.", arg), node);
 		} catch (NumberFormatException e) {
-			throw new BuilderException(String.format("The string \"%s\" could not be parsed to an integer.", node.getArg(arg)), node);
+			throw new BuilderException(
+				String.format("The string \"%s\" could not be parsed to an integer.", node.getArg(arg)), node);
 		}
-	};
+	}
 
 
 
 	/**
 	 * Takes an argument from a node and returns it as a double, throwing a
 	 * BuilderException if there is an error that prevents parsing.
+	 * 
 	 * @param node The node to access.
 	 * @param arg The index of the argument to convert.
 	 * @return The argument, as a double.
@@ -66,16 +70,17 @@ public abstract class Builder {
 		} catch (IndexOutOfBoundsException e) {
 			throw new BuilderException(String.format("No argument at position %d.", arg), node);
 		} catch (NumberFormatException e) {
-			throw new BuilderException(String.format("The string \"%s\" could not be parsed to a double.", node.getArg(arg)), node);
-
+			throw new BuilderException(
+				String.format("The string \"%s\" could not be parsed to a double.", node.getArg(arg)), node);
 		}
-	};
+	}
 
 
 
 	/**
 	 * Takes an argument from a node and returns it as a long int, throwing a
 	 * BuilderException if there is an error that prevents parsing.
+	 * 
 	 * @param node The node to access.
 	 * @param arg The index of the argument to convert.
 	 * @return The argument, as a long int.
@@ -86,15 +91,17 @@ public abstract class Builder {
 		} catch (IndexOutOfBoundsException e) {
 			throw new BuilderException(String.format("No argument at position %d.", arg), node);
 		} catch (NumberFormatException e) {
-			throw new BuilderException(String.format("The string \"%s\" could not be parsed to a long int.", node.getArg(arg)), node);
+			throw new BuilderException(
+				String.format("The string \"%s\" could not be parsed to a long int.", node.getArg(arg)), node);
 		}
-	};
+	}
 
 
 
 	/**
 	 * Takes a node and uses it as a key to search the scope for a node
 	 * with a matching name and first argument.
+	 * 
 	 * @param node The node to use as a search key.
 	 * @param scope The node whose children should be searched.
 	 * @return The node with the same name, or {@code null} if none exist.
@@ -114,5 +121,5 @@ public abstract class Builder {
 		}
 
 		return null;
-	};
+	}
 }

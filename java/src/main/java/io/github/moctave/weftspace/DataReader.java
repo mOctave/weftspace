@@ -26,7 +26,7 @@ import org.jspecify.annotations.*;
 /** A class which reads data from a file and stores it in a node tree. */
 public class DataReader {
 	// MARK: Fields
-	// The file to be parsed.
+	/** The file to be parsed. */
 	private @NonNull File file;
 
 	/** The root node of the tree that nodes are stored in. */
@@ -37,6 +37,7 @@ public class DataReader {
 	// MARK: Constructor
 	/**
 	 * Sole constructor.
+	 * 
 	 * @param file The file to be parsed.
 	 * @param root The root node of the tree that nodes are stored in.
 	 */
@@ -54,32 +55,30 @@ public class DataReader {
 	public void parse() throws ReaderException {
 		try {
 			boolean mixedWhitespace = false;
-			Scanner s = new Scanner(file);
+			final Scanner s = new Scanner(file);
 			int lineNumber = 0;
 
-			Deque<DataNode> nodeStack = new ArrayDeque<>();
+			final Deque<DataNode> nodeStack = new ArrayDeque<>();
 			DataNode currentNode = null;
 
 			int indent = 0;
-			Deque<Integer> indentDepths = new ArrayDeque<>();
+			final Deque<Integer> indentDepths = new ArrayDeque<>();
 			String expectedIndentString = null;
 
 			indentDepths.push(0);
 
 			while (s.hasNextLine()) {
-				lineNumber ++;
-				String line = s.nextLine();
+				lineNumber++;
+				final String line = s.nextLine();
 
 				if (line.split("#").length == 0) {
-					if (line.isBlank())
-						continue;
+					if (line.isBlank()) continue;
 				} else {
-					if (line.split("#")[0].isBlank())
-						continue;
+					if (line.split("#")[0].isBlank()) continue;
 				}
 
 				indent = countLeadingWhitespace(line);
-				String indentSubstring = getIndentSubstring(line, indentDepths.peek());
+				final String indentSubstring = getIndentSubstring(line, indentDepths.peek());
 				if (expectedIndentString == null && indentSubstring.length() > 0) {
 					expectedIndentString = indentSubstring;
 					if (
@@ -108,7 +107,7 @@ public class DataReader {
 					root.addChild(currentNode);
 					currentNode.setParent(root);
 				} else if (currentNode != null) {
-					DataNode parent = nodeStack.peek();
+					final DataNode parent = nodeStack.peek();
 					parent.addChild(currentNode);
 					currentNode.setParent(parent);
 				}
@@ -117,7 +116,8 @@ public class DataReader {
 			s.close();
 
 			if (mixedWhitespace) {
-				throw new ReaderException(String.format("Warning - mixed whitespace in file %s (parsing completed with issue)", file.getPath()));
+				throw new ReaderException(String.format(
+					"Warning - mixed whitespace in file %s (parsing completed with issue)", file.getPath()));
 			}
 		} catch (FileNotFoundException e) {
 			throw new ReaderException(String.format("No such file as %s", file.getPath()));
@@ -128,13 +128,14 @@ public class DataReader {
 
 	/**
 	 * Parses a single line and converts it to a node.
+	 * 
 	 * @param line The line to parse.
 	 * @param number The number of the line being parsed, for debugging purposes.
 	 * @return The node created from the line.
 	 */
 	public @Nullable DataNode makeNode(@NonNull String line, int number) {
-		String trimmedLine = line.trim();
-		List<String> data = new ArrayList<>();
+		final String trimmedLine = line.trim();
+		final List<String> data = new ArrayList<>();
 		char splitOn = ' ';
 		String currentItem = "";
 		boolean isEmpty = true;
@@ -177,11 +178,10 @@ public class DataReader {
 			data.add(currentItem);
 		}
 
-		if (data.size() == 0)
-			return null;
+		if (data.size() == 0) return null;
 
 		// The first entry is the node name, everything else is args.
-		String nodeName = data.get(0);
+		final String nodeName = data.get(0);
 		data.remove(0);
 
 		return new LoadedNode(nodeName, null, data, new ArrayList<>(), number, file);
@@ -191,6 +191,7 @@ public class DataReader {
 
 	/**
 	 * Gets the substring which appears to be being used for indentation.
+	 * 
 	 * @param line The line to find the indent of.
 	 * @param depth The base depth from which the line is being indented.
 	 * @return The substring used for indentation.
@@ -209,6 +210,7 @@ public class DataReader {
 
 	/**
 	 * Trims comments from a line of text, removing everything after the first {@code #} character.
+	 * 
 	 * @param line The line to trim.
 	 * @return The uncommented line.
 	 */
@@ -220,6 +222,7 @@ public class DataReader {
 
 	/**
 	 * Counts the number of leading tab or space characters on a line.
+	 * 
 	 * @param line The line to count.
 	 * @return The number of tabs or spaces that come before the first
 	 * non-whitespace character on the line.
@@ -236,18 +239,18 @@ public class DataReader {
 
 	/**
 	 * Checks if a line contains only whitespace, as defined by {@link Character#isWhitespace(char)}.
+	 * 
 	 * @param line The line to check.
-	 * @return {@code true} if the line is empty or contains only whitespace, or {@code false} if it contains other characters as well.
+	 * @return {@code true} if the line is empty or contains only whitespace,
+	 * or {@code false} if it contains other characters as well.
 	 */
 	public static boolean containsOnlyWhitespace(@NonNull String line) {
 		// If the line is empty, for our purposes it's all whitespace.
-		if (line == null || line.isEmpty())
-			return true;
+		if (line == null || line.isEmpty()) return true;
 
 		// Check if the line contains anything that isn't whitespace.
 		for (int i = 0; i < line.length(); i++) {
-			if (!Character.isWhitespace(line.charAt(i)))
-				return false;
+			if (!Character.isWhitespace(line.charAt(i))) return false;
 		}
 
 		return true;
@@ -258,6 +261,7 @@ public class DataReader {
 	// MARK: Getters / Setters
 	/**
 	 * Getter: Returns the file this reader is parsing.
+	 * 
 	 * @return {@link #file}
 	 */
 	public @NonNull File getFile() {
@@ -266,6 +270,7 @@ public class DataReader {
 
 	/**
 	 * Setter: Changes the file this reader is parsing.
+	 * 
 	 * @param file The new value for {@link #file}.
 	 */
 	public void setFile(@NonNull File file) {
@@ -275,6 +280,7 @@ public class DataReader {
 
 	/**
 	 * Getter: Returns the root node of the tree this reader is writing to.
+	 * 
 	 * @return {@link #root}
 	 */
 	public @NonNull DataNode getRoot() {
@@ -283,6 +289,7 @@ public class DataReader {
 
 	/**
 	 * Setter: Changes the root node this reader adds children to.
+	 * 
 	 * @param root The new value for {@link #root}.
 	 */
 	public void setRoot(@NonNull DataNode root) {
