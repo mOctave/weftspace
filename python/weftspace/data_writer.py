@@ -12,6 +12,7 @@
 # this program. If not, see <https://www.gnu.org/licenses/>.
 
 from io import TextIOWrapper
+import os
 
 from .data_node import DataNode
 
@@ -77,14 +78,14 @@ class DataWriter:
 			self.io_wrapper.write("\t")
 			
 		self.io_wrapper.write(DataWriter.node_to_line(node))
-		self.io_wrapper.write("\n")
+		self.io_wrapper.write(os.linesep)
 		self.io_wrapper.flush()
 
 		for child in node.children:
 			self.write_indented(child, indent + 1)
 			
 		if indent == 0:
-			self.io_wrapper.write("\n")
+			self.io_wrapper.write(os.linesep)
 
 
 
