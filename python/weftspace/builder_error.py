@@ -25,12 +25,12 @@ class BuilderError(Exception):
 	_message: str
 
 	@property
-	def message(self):
+	def message(self) -> str:
 		"""The error message for this error."""
 		return self._message
 	
 	@message.setter
-	def message(self, message: str):
+	def message(self, message: str) -> None:
 		"""Changes the error message associated with this error."""
 		self._message = message
 
@@ -39,18 +39,18 @@ class BuilderError(Exception):
 	_node: DataNode
 
 	@property
-	def node(self):
+	def node(self) -> DataNode:
 		"""The node that caused this error."""
 		return self._node
 
 	@node.setter
-	def node(self, node: DataNode):
+	def node(self, node: DataNode) -> None:
 		"""Changes the node associated with this error."""
 		self._node = node
 
 
 	# MARK: Constructor
-	def __init__(self, message: str, node: DataNode):
+	def __init__(self, message: str, node: DataNode) -> None:
 		"""Sole constructor. Takes a message and the data node that caused the error."""
 		super().__init__(message)
 		self._message = message
@@ -58,7 +58,7 @@ class BuilderError(Exception):
 
 
 	# MARK: Methods
-	def represent(self):
+	def represent(self) -> str:
 		"""
 		Represents this exception as a long-form error message with a trace of
 		the node that caused it.

@@ -20,12 +20,12 @@ class DataNode:
 	_name: str
 
 	@property
-	def name(self):
+	def name(self) -> str:
 		"""The name of this node."""
 		return self._name
 	
 	@name.setter
-	def name(self, name: str):
+	def name(self, name: str) -> None:
 		"""Changes the name of this node."""
 		self._name = name
 
@@ -34,12 +34,12 @@ class DataNode:
 	_parent: DataNode | None
 
 	@property
-	def parent(self):
+	def parent(self) -> DataNode | None:
 		"""The parent of this node."""
 		return self._parent
 	
 	@parent.setter
-	def parent(self, parent: DataNode | None):
+	def parent(self, parent: DataNode | None) -> None:
 		"""
 		Changes the parent of this node. This should be used very cautiously, as it can
 		easily damage the structure of the node tree.
@@ -49,12 +49,12 @@ class DataNode:
 	_args: list[str]
 
 	@property
-	def args(self):
+	def args(self) -> list[str]:
 		"""This node's arguments."""
 		return self._args
 	
 	@args.setter
-	def args(self, args: list[str]):
+	def args(self, args: list[str]) -> None:
 		"""
 		Overwrites this node's argument list.
 		"""
@@ -63,12 +63,12 @@ class DataNode:
 	_children: list[DataNode]
 
 	@property
-	def children(self):
+	def children(self) -> list[DataNode]:
 		"""This node's children."""
 		return self._children
 	
 	@children.setter
-	def children(self, children: list[DataNode]):
+	def children(self, children: list[DataNode]) -> None:
 		"""
 		Entirely overwrites the list of this node's children.
 		This should be used very cautiously, as it can
@@ -79,7 +79,7 @@ class DataNode:
 
 
 	# MARK: Constructors
-	def __init__(self, name: str, parent: DataNode | None, args: list[str], children: list[DataNode]):
+	def __init__(self, name: str, parent: DataNode | None, args: list[str], children: list[DataNode]) -> None:
 		"""
 		Primary constructor. Takes all the standard arguments, except those defined by
 		LoadedNode.
@@ -91,7 +91,7 @@ class DataNode:
 
 
 	@staticmethod
-	def create_root_node():
+	def create_root_node() -> DataNode:
 		"""
 		Builds and returns an empty node intended to be used as a root node for the DataReader.
 		"""
@@ -101,7 +101,7 @@ class DataNode:
 
 
 	# MARK: Methods
-	def __hash__(self):
+	def __hash__(self) -> int:
 		"""
 		Generates a hash code for this node, so that all nodes which are equal
 		have the same hash code.

@@ -22,12 +22,12 @@ class DataWriter:
 	_file: str
 
 	@property
-	def file(self):
+	def file(self) -> str:
 		"""The file this DataWriter is writing to."""
 		return self._file
 	
 	@file.setter
-	def file(self, file: str):
+	def file(self, file: str) -> None:
 		"""Changes the file being written to."""
 		self._file = file
 	
@@ -36,7 +36,7 @@ class DataWriter:
 	_io_wrapper: TextIOWrapper
 
 	@property
-	def io_wrapper(self):
+	def io_wrapper(self) -> TextIOWrapper:
 		"""The TextIOWrapper used to write to this DataWriter's file."""
 		return self._io_wrapper
 	
@@ -45,33 +45,33 @@ class DataWriter:
 
 
 	# MARK: Constructor
-	def __init__(self, file: str):
+	def __init__(self, file: str) -> None:
 		"""Sole constructor."""
 		self.file = file
 
 	
 
 	# MARK: Methods
-	def open(self):
+	def open(self) -> None:
 		"""Opens the TextIOWrapper for this DataWriter."""
 		self._io_wrapper = open(self.file, "a")
 
 
 
-	def close(self):
+	def close(self) -> None:
 		"""Closes the TextIOWrapper for this DataWriter."""
 		self.io_wrapper.close()
 	
 
 
-	def write(self, node: DataNode):
+	def write(self, node: DataNode) -> None:
 		"""Writes a node to a file with no indent."""
 		self.write_indented(node, 0)
 
 	
 
 
-	def write_indented(self, node: DataNode, indent: int):
+	def write_indented(self, node: DataNode, indent: int) -> None:
 		"""Writes a node to the file."""
 		for _ in range(indent):
 			self.io_wrapper.write("\t")
@@ -89,7 +89,7 @@ class DataWriter:
 
 
 	@classmethod
-	def node_to_line(cls, node: DataNode):
+	def node_to_line(cls, node: DataNode) -> str:
 		"""
 		Represents a node as a line to be saved to a file.
 		Not to be confused with DataNode.__str__
@@ -107,7 +107,7 @@ class DataWriter:
 
 
 	@classmethod
-	def quote_word(cls, word: str):
+	def quote_word(cls, word: str) -> str:
 		"""
 		Puts quotes around text, adapting between no quotes, double quotes, and backticks as
 		necessary. Does not conform to Endless Sky human readability conventions, but uses the

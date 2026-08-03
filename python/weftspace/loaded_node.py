@@ -16,6 +16,34 @@ from .data_node import DataNode
 class LoadedNode(DataNode):
 	"""A subclass of a node that is attached to a specific line and file, for use in debugging."""
 
+	# MARK: Properties
+	_line: int
+
+	@property
+	def line(self) -> int:
+		"""The line this node was parsed from."""
+		return self._line
+	
+	@line.setter
+	def line(self, line: int) -> None:
+		"""Changes the line number associated with this node."""
+		self._line = line
+
+
+	_file: str
+
+	@property
+	def file(self) -> str:
+		"""The filename of the file this node was parsed from."""
+		return self._file
+	
+	@file.setter
+	def file(self, file: str) -> None:
+		"""Changes the file associated with this node."""
+		self._file = file
+
+
+
 	# MARK: Constructor
 	def __init__(
 		self,
@@ -25,38 +53,10 @@ class LoadedNode(DataNode):
 		children: list[DataNode],
 		line: int,
 		file: str
-	):
+	) -> None:
 		"""
 		Sole constructor.
 		"""
 		super().__init__(name, parent, args, children)
 		self.line = line
 		self.file = file
-
-
-
-	# MARK: Properties
-	_line: int
-
-	@property
-	def line(self):
-		"""The line this node was parsed from."""
-		return self._name
-	
-	@line.setter
-	def line(self, line: int):
-		"""Changes the line number associated with this node."""
-		self._line = line
-
-
-	_file: str
-
-	@property
-	def file(self):
-		"""The filename of the file this node was parsed from."""
-		return self._name
-	
-	@file.setter
-	def file(self, file: str):
-		"""Changes the file associated with this node."""
-		self._file = file

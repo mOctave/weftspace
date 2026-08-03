@@ -24,31 +24,31 @@ class DataReader:
 	_file: str
 
 	@property
-	def file(self):
+	def file(self) -> str:
 		"""The file this DataReader is parsing."""
 		return self._file
 	
 	@file.setter
-	def file(self, file: str):
+	def file(self, file: str) -> None:
 		"""Changes the file being parsed."""
 		self._file = file
 
 	_root: DataNode
 
 	@property
-	def root(self):
+	def root(self) -> DataNode:
 		"""The node this DataReader is using as its root."""
 		return self._root
 	
 	@root.setter
-	def root(self, root: DataNode):
+	def root(self, root: DataNode) -> None:
 		"""Changes the root node being added to."""
 		self._root = root
 
 
 
 	# MARK: Constructor
-	def __init__(self, file: str, root: DataNode):
+	def __init__(self, file: str, root: DataNode) -> None:
 		self.file = file
 		self.root = root
 
