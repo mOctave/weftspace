@@ -59,7 +59,7 @@ class DataWriter:
 	# MARK: Methods
 	def open(self) -> None:
 		"""Opens the TextIOWrapper for this DataWriter."""
-		self._io_wrapper = open(self.file, "a", encoding="UTF-8")
+		self._io_wrapper = open(self.file, "a", encoding="UTF-8") # pylint: disable=consider-using-with
 
 
 
@@ -121,7 +121,7 @@ class DataWriter:
 		if " " in word:
 			if "\"" in word:
 				return "`" + word + "`"
-			else:
-				return "\"" + word + "\""
-		else:
-			return word
+
+			return "\"" + word + "\""
+
+		return word

@@ -139,14 +139,14 @@ class DataReader:
 					# Item will end with a double quote, ignore this one.
 					split_on = "\""
 					continue
-				elif char == "`":
+				if char == "`":
 					# Item will end with a backtick, ignore this one.
 					split_on = "`"
 					continue
-				else:
-					# Item will end when the current word ends.
-					split_on = " "
-			elif is_empty:
+
+				# Item will end when the current word ends.
+				split_on = " "
+			if is_empty:
 				continue
 
 			if char == split_on:
@@ -155,7 +155,7 @@ class DataReader:
 				current_item = ""
 				is_empty = True
 				continue
-			elif char == "#" and split_on == " ":
+			if char == "#" and split_on == " ":
 				# Ignore everything after a comment.
 				break
 
