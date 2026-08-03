@@ -11,16 +11,12 @@
 // You should have received a copy of the GNU Affero General Public License along with
 // this program. If not, see <https://www.gnu.org/licenses/>.
 
-package io.github.moctave.weftspace;
+/**
+ * This package contains the Java version of Weftspace,
+ * the easy Endless Sky datafile parser.
+ * 
+ * @author mOctave
+ * @since 2.0.0
+ */
 
-/** An exception thrown when parsing a file into nodes. */
-public class ReaderException extends Exception {
-	/**
-	 * Constructs a new file exception with the given message.
-	 * 
-	 * @param message The error message for this instruction
-	 */
-	public ReaderException(String message) {
-		super(message);
-	}
-}
+package io.github.moctave.weftspace;
