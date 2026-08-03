@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
 <meta name="generator" content="pdoc3 0.11.6">
 <title>weftspace.data_writer API documentation</title>
-<meta name="description" content="">
+<meta name="description" content="A class which writes a node to a file.">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
@@ -36,6 +36,7 @@ el.replaceWith(d);
 <h1 class="title">Module <code>weftspace.data_writer</code></h1>
 </header>
 <section id="section-intro">
+<p>A class which writes a node to a file.</p>
 </section>
 <section>
 </section>
@@ -65,12 +66,12 @@ el.replaceWith(d);
         def file(self) -&gt; str:
                 &#34;&#34;&#34;The file this DataWriter is writing to.&#34;&#34;&#34;
                 return self._file
-        
+
         @file.setter
         def file(self, file: str) -&gt; None:
                 &#34;&#34;&#34;Changes the file being written to.&#34;&#34;&#34;
                 self._file = file
-        
+
 
 
         _io_wrapper: TextIOWrapper
@@ -79,7 +80,7 @@ el.replaceWith(d);
         def io_wrapper(self) -&gt; TextIOWrapper:
                 &#34;&#34;&#34;The TextIOWrapper used to write to this DataWriter&#39;s file.&#34;&#34;&#34;
                 return self._io_wrapper
-        
+
         # io_wrapper has no setter, and should be created with open()
 
 
@@ -89,40 +90,40 @@ el.replaceWith(d);
                 &#34;&#34;&#34;Sole constructor.&#34;&#34;&#34;
                 self.file = file
 
-        
+
 
         # MARK: Methods
         def open(self) -&gt; None:
                 &#34;&#34;&#34;Opens the TextIOWrapper for this DataWriter.&#34;&#34;&#34;
-                self._io_wrapper = open(self.file, &#34;a&#34;)
+                self._io_wrapper = open(self.file, &#34;a&#34;, encoding=&#34;UTF-8&#34;)
 
 
 
         def close(self) -&gt; None:
                 &#34;&#34;&#34;Closes the TextIOWrapper for this DataWriter.&#34;&#34;&#34;
                 self.io_wrapper.close()
-        
+
 
 
         def write(self, node: DataNode) -&gt; None:
                 &#34;&#34;&#34;Writes a node to a file with no indent.&#34;&#34;&#34;
                 self.write_indented(node, 0)
 
-        
+
 
 
         def write_indented(self, node: DataNode, indent: int) -&gt; None:
                 &#34;&#34;&#34;Writes a node to the file.&#34;&#34;&#34;
                 for _ in range(indent):
                         self.io_wrapper.write(&#34;\t&#34;)
-                        
+
                 self.io_wrapper.write(DataWriter.node_to_line(node))
                 self.io_wrapper.write(os.linesep)
                 self.io_wrapper.flush()
 
                 for child in node.children:
                         self.write_indented(child, indent + 1)
-                        
+
                 if indent == 0:
                         self.io_wrapper.write(os.linesep)
 
@@ -134,14 +135,14 @@ el.replaceWith(d);
                 Represents a node as a line to be saved to a file.
                 Not to be confused with DataNode.__str__
                 &#34;&#34;&#34;
-                
+
                 s: str = &#34;&#34;
-                
+
                 s += DataWriter.quote_word(node.name) + &#34; &#34;
 
                 for arg in node.args:
                         s += DataWriter.quote_word(arg) + &#34; &#34;
-                
+
                 return s.strip()
 
 
@@ -236,7 +237,7 @@ def io_wrapper(self) -&gt; TextIOWrapper:
 </summary>
 <pre><code class="python">def open(self) -&gt; None:
         &#34;&#34;&#34;Opens the TextIOWrapper for this DataWriter.&#34;&#34;&#34;
-        self._io_wrapper = open(self.file, &#34;a&#34;)</code></pre>
+        self._io_wrapper = open(self.file, &#34;a&#34;, encoding=&#34;UTF-8&#34;)</code></pre>
 </details>
 <div class="desc"><p>Opens the TextIOWrapper for this DataWriter.</p></div>
 </dd>
@@ -266,14 +267,14 @@ def io_wrapper(self) -&gt; TextIOWrapper:
         &#34;&#34;&#34;Writes a node to the file.&#34;&#34;&#34;
         for _ in range(indent):
                 self.io_wrapper.write(&#34;\t&#34;)
-                
+
         self.io_wrapper.write(DataWriter.node_to_line(node))
         self.io_wrapper.write(os.linesep)
         self.io_wrapper.flush()
 
         for child in node.children:
                 self.write_indented(child, indent + 1)
-                
+
         if indent == 0:
                 self.io_wrapper.write(os.linesep)</code></pre>
 </details>

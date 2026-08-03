@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
 <meta name="generator" content="pdoc3 0.11.6">
 <title>weftspace.builder API documentation</title>
-<meta name="description" content="">
+<meta name="description" content="A class of utility methods designed to allow easy conversion from nodes to objects.">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
@@ -36,6 +36,7 @@ el.replaceWith(d);
 <h1 class="title">Module <code>weftspace.builder</code></h1>
 </header>
 <section id="section-intro">
+<p>A class of utility methods designed to allow easy conversion from nodes to objects.</p>
 </section>
 <section>
 </section>
@@ -65,8 +66,8 @@ el.replaceWith(d);
                 &#34;&#34;&#34;
                 try:
                         return node.args[arg]
-                except IndexError:
-                        raise BuilderError(&#34;No argument at position %d.&#34; % (arg), node)
+                except IndexError as exc:
+                        raise BuilderError(f&#34;No argument at position {arg}.&#34;, node) from exc
 
 
 
@@ -78,10 +79,11 @@ el.replaceWith(d);
                 &#34;&#34;&#34;
                 try:
                         return int(node.args[arg])
-                except ValueError:
-                        raise BuilderError(&#34;The string \&#34;%s\&#34; could not be parsed to an integer.&#34; % (node.args[arg]), node)
-                except IndexError:
-                        raise BuilderError(&#34;No argument at position %d.&#34; % (arg), node)
+                except ValueError as exc:
+                        raise BuilderError(
+                                f&#34;The string \&#34;{node.args[arg]}\&#34; could not be parsed to an integer.&#34;, node) from exc
+                except IndexError as exc:
+                        raise BuilderError(f&#34;No argument at position {arg}.&#34;, node) from exc
 
 
 
@@ -93,12 +95,13 @@ el.replaceWith(d);
                 &#34;&#34;&#34;
                 try:
                         return float(node.args[arg])
-                except ValueError:
-                        raise BuilderError(&#34;The string \&#34;%s\&#34; could not be parsed to a float.&#34; % (node.args[arg]), node)
-                except IndexError:
-                        raise BuilderError(&#34;No argument at position %d.&#34; % (arg), node)
+                except ValueError as exc:
+                        raise BuilderError(
+                                f&#34;The string \&#34;{node.args[arg]}\&#34; could not be parsed to a float.&#34;, node) from exc
+                except IndexError as exc:
+                        raise BuilderError(f&#34;No argument at position {arg}.&#34;, node) from exc
 
-        
+
 
 
         @classmethod
@@ -114,7 +117,7 @@ el.replaceWith(d);
                 except IndexError:
                         # This is not necessarily an error, so no error message is printed.
                         pass
-                
+
                 return None</code></pre>
 </details>
 <div class="desc"><p>A class of utility methods designed to allow easy conversion from nodes to objects.</p></div>

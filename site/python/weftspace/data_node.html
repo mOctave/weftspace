@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
 <meta name="generator" content="pdoc3 0.11.6">
 <title>weftspace.data_node API documentation</title>
-<meta name="description" content="">
+<meta name="description" content="A class representing a node on the data tree.">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
@@ -36,6 +36,7 @@ el.replaceWith(d);
 <h1 class="title">Module <code>weftspace.data_node</code></h1>
 </header>
 <section id="section-intro">
+<p>A class representing a node on the data tree.</p>
 </section>
 <section>
 </section>
@@ -65,7 +66,7 @@ el.replaceWith(d);
         def name(self) -&gt; str:
                 &#34;&#34;&#34;The name of this node.&#34;&#34;&#34;
                 return self._name
-        
+
         @name.setter
         def name(self, name: str) -&gt; None:
                 &#34;&#34;&#34;Changes the name of this node.&#34;&#34;&#34;
@@ -79,7 +80,7 @@ el.replaceWith(d);
         def parent(self) -&gt; DataNode | None:
                 &#34;&#34;&#34;The parent of this node.&#34;&#34;&#34;
                 return self._parent
-        
+
         @parent.setter
         def parent(self, parent: DataNode | None) -&gt; None:
                 &#34;&#34;&#34;
@@ -94,7 +95,7 @@ el.replaceWith(d);
         def args(self) -&gt; list[str]:
                 &#34;&#34;&#34;This node&#39;s arguments.&#34;&#34;&#34;
                 return self._args
-        
+
         @args.setter
         def args(self, args: list[str]) -&gt; None:
                 &#34;&#34;&#34;
@@ -108,7 +109,7 @@ el.replaceWith(d);
         def children(self) -&gt; list[DataNode]:
                 &#34;&#34;&#34;This node&#39;s children.&#34;&#34;&#34;
                 return self._children
-        
+
         @children.setter
         def children(self, children: list[DataNode]) -&gt; None:
                 &#34;&#34;&#34;
@@ -121,7 +122,8 @@ el.replaceWith(d);
 
 
         # MARK: Constructors
-        def __init__(self, name: str, parent: DataNode | None, args: list[str], children: list[DataNode]) -&gt; None:
+        def __init__(self, name: str, parent: DataNode | None,
+                args: list[str], children: list[DataNode]) -&gt; None:
                 &#34;&#34;&#34;
                 Primary constructor. Takes all the standard arguments, except those defined by
                 LoadedNode.
@@ -161,7 +163,7 @@ el.replaceWith(d);
                 hash_code = prime * hash_code + 0 if self in self.children else hash(len(self.children))
 
                 return hash_code
-        
+
 
 
         def __eq__(self, other: object) -&gt; bool:
@@ -180,7 +182,7 @@ el.replaceWith(d);
                 # The other object is not a data node
                 if not isinstance(other, DataNode):
                         return False
-                
+
                 # Check if the two nodes have a different property
                 if other.name != self.name:
                         return False
@@ -199,7 +201,7 @@ el.replaceWith(d);
                 Returns a string representation of this node, including name, arguments,
                 and the number of children it has.
                 &#34;&#34;&#34;
-                return &#34;Node{{name: {0}, args: {1}, children: {2}}}&#34;.format(self.name, str(self.args), len(self.children))</code></pre>
+                return f&#34;Node{{name: {self.name}, args: {self.args}, children: {len(self.children)}}}&#34;</code></pre>
 </details>
 <div class="desc"><p>A class representing a node on the data tree.</p>
 <p>Primary constructor. Takes all the standard arguments, except those defined by
