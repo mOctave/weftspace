@@ -7,6 +7,14 @@
 # Weftspace
 Weftspace was originally written in Java, but it is now also available in Python. The Python library is slightly smaller than the Java one, but it provides all the same functionalities.
 
+## Version 2 Migration
+
+Version 2.0.0 contains some big breaking changes that have streamlined the library and made it more versatile at the cost of removing some functionality. Namely:
+
+- The Logger class has been removed. Methods that depended on it now throw exceptions instead; you will need to handle these exceptions in your code.
+- Node flags (and, as a result, parsing options) have been removed, since they added complexity without utility. If you rely on node flags, do not update to version 2.0.0.
+- The builder no longer takes context; rather than including context in error messages all error messages include a trace of the node tree that can be accessed by calling `represent()` on the exception
+
 ## Installation
 The Weftspace Python library can be installed using pip:
 
@@ -58,25 +66,24 @@ Both the arguments and children of any given node are presented in a list, and t
 
 ## Building Objects from Nodes
 
-Let's face it: you probably don't want a node tree. You want to turn the nodes into objects. And you probably don't want to handle a billion exceptions that might arise if the data doesn't conform to the expected pattern. For this reason, I put together the `Builder` class, which allows you to convert a `DataNode` argument into any of several common data types, given a node, the number of the argument to build, and a "context" string that is usually the same across all instances of a class and is best defined as a constant at the top of the class you're writing a constructor for.
+Let's face it: you probably don't want a node tree. You want to turn the nodes into objects. And you probably don't want to handle a billion exceptions that might arise if the data doesn't conform to the expected pattern. For this reason, I put together the `Builder` class, which allows you to convert a `DataNode` argument into any of several common data types, given a node, and the index of the argument to build.
 
 Here's an example of how you could convert a node to an object:
 
 ```python
-	CONTEXT: Final[str] = "node-based object"
 	def __init__(self, node: DataNode):
-		self.name = Builder.build_string(node, 0, CONTEXT)
+		self.name = Builder.build_string(node, 0)
 		for child in node.children:
 			match child.name:
 				case "description": # Normal string
-					self.description = Builder.build_string(child, 0, CONTEXT)
+					self.description = Builder.build_string(child, 0)
 				case "mass": # Non-negative integer
-					self.mass = Builder.build_spec_int(child, 0, CONTEXT, Builder.IntType.NATURAL)
+					self.mass = Builder.build_spec_int(child, 0, Builder.IntType.NATURAL)
 				case "random number for fun": # A float
-					self.thingy = Builder.build_float(child, 0, CONTEXT)
+					self.thingy = Builder.build_float(child, 0)
 				case "position": # From "position" x y
-					self.x = Builder.build_int(child, 0, CONTEXT)
-					self.y = Builder.build_int(child, 1, CONTEXT)
+					self.x = Builder.build_int(child, 0)
+					self.y = Builder.build_int(child, 1)
 				case _:
 					pass
 ```

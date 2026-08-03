@@ -7,6 +7,14 @@
 # Weftspace
 Weftspace was originally written in Java, and the Java library continues to provide the maximum possible level of support for Endless Sky datafile syntax. As well as providing read/write functionality through the DataReader and DataWriter classes, it provides support for handling the data nodes themselves.
 
+## Version 2 Migration
+
+Version 2.0.0 contains some big breaking changes that have streamlined the library and made it more versatile at the cost of removing some functionality. Namely:
+
+- The Logger class has been removed. Methods that depended on it now throw exceptions instead; you will need to handle these exceptions in your code.
+- Node flags (and, as a result, parsing options) have been removed, since they added complexity without utility. If you rely on node flags, do not update to version 2.0.0.
+- The builder no longer takes context; rather than including context in error messages all error messages include a trace of the node tree that can be accessed by calling `represent()` on the exception
+
 ## Installation
 The Weftspace Java library is best installed with Maven. To use it, add both a repository and a dependency to your `pom.xml` file. Something along the following lines should work:
 
@@ -31,7 +39,7 @@ As a dependency, you'll need to add:
     <dependency>
      <groupId>io.github.moctave.weftspace</groupId>
       <artifactId>weftspace</artifactId>
-      <version>0.1.12</version>
+      <version>2.0.0</version>
     </dependency>
 	[...]
   </dependencies>
@@ -57,27 +65,30 @@ Now, assuming everything went right, you should be able to install with `mvn ins
 
 The most common use case of Weftspace is to read data from a file into a node tree. This is accomplished by using the `DataReader` class.
 
-Although the DataReader class does have several potentially useful methods, in the vast majority of cases a variation on the following four lines is all you need.
+Although the DataReader class does have several potentially useful methods, in the vast majority of cases a variation on the following seven lines is all you need.
 
 ```java
 File file = new File("path/to/file"); // From java.io.File
 DataNode rootNode = new DataNode(); // Creates a generic root node that you'll access your parsed nodes from later
 DataReader reader = new DataReader(file, rootNode); // Constructs a DataReader
-reader.parse(); // Parses every line in the file, writing its contents as children of rootNode, and automatically handling exceptions
+try {
+	reader.parse(); // Parses every line in the file, writing its contents as children of rootNode.
+} catch (ReaderException e) {
+	// As of version 2.0.0, exceptions are no longer handled automatically, so you do need a catch block now.
+}
 ```
 
 These lines should turn your file of ES-formatted data into a node tree, ready for use!
 
 ### Options
 
-`DataReader` currently has the following options that can be used as varargs when parsing:
-- `IGNORE_NODE_FLAGS`: Treats the keywords `add` and `remove` as node names rather than flags.
+As of version 2.0.0, options have been removed.
 
 ## Working with the Node Tree
 
 Now that you've parsed your data, it should end up written to a (sometimes enormous) tree, with a single root node. Keep track of that root node, because it's how you access the rest of the tree!
 
-The tree itself is made up of a whole bunch of `DataNode`s, each with three major properties: a name, a list of arguments, and a list of child nodes. Additionally, nodes include a reference to their parent node (if they aren't the root of a tree), and a special `Flag` that usually isn't all that important. Any nodes loaded using `DataReader` will also contain information about where they were loaded from for debug purposes.
+The tree itself is made up of a whole bunch of `DataNode`s, each with three major properties: a name, a list of arguments, and a list of child nodes. Additionally, nodes include a reference to their parent node (if they aren't the root of a tree), and a special `Flag` (removed in version 2.0.0). Any nodes loaded using `DataReader` will also contain information about where they were loaded from for debug purposes.
 
 Suppose you have the following lines in a datafile:
 
@@ -96,30 +107,33 @@ Both the arguments and children of any given node are presented in a list, and t
 
 ## Building Objects from Nodes
 
-Let's face it: you probably don't want a node tree. You want to turn the nodes into objects. And you probably don't want to handle a billion exceptions that might arise if the data doesn't conform to the expected pattern. For this reason, I put together the `Builder` class, which allows you to convert a `DataNode` argument into any of several common data types, given a node, the number of the argument to build, and a "context" string that is usually the same across all instances of a class and is best defined as a constant at the top of the class you're writing a constructor for.
+Let's face it: you probably don't want a node tree. You want to turn the nodes into objects. And you probably don't want to handle a billion exceptions that might arise if the data doesn't conform to the expected pattern. For this reason, I put together the `Builder` class, which allows you to convert a `DataNode` argument into any of several common data types, given a node, and the index of the argument to build.
 
 Here's an example of how you could convert a node to an object:
 
 ```java
-	public static final String CONTEXT = "node-based object";
 	public YourObject(DataNode node) {
-		setName(Builder.buildString(node, 0, CONTEXT));
-		for (DataNode child : node.getChildren()) {
-			switch (child.getName()) {
-				case "description": // Normal string
-					setDescription(Builder.buildString(child, 0, CONTEXT));
-					break;
-				case "mass": // Non-negative integer
-					setMass(Builder.buildInt(child, 0, CONTEXT, Builder.IntType.NATURAL));
-					break;
-				case "random number for fun": // Any double-precision float
-					setThingy(Builder.buildDouble(child, 0, CONTEXT));
-					break;
-				case "position": // From "position" x y
-					setX(Builder.buildInt(child, 0, CONTEXT));
-					setY(Builder.buildInt(child, 1, CONTEXT));
-					break;
+		try {
+			setName(Builder.buildString(node, 0));
+			for (DataNode child : node.getChildren()) {
+				switch (child.getName()) {
+					case "description": // Normal string
+						setDescription(Builder.buildString(child, 0));
+						break;
+					case "mass": // Non-negative integer
+						setMass(Builder.buildInt(child, 0, Builder.IntType.NATURAL));
+						break;
+					case "random number for fun": // Any double-precision float
+						setThingy(Builder.buildDouble(child, 0));
+						break;
+					case "position": // From "position" x y
+						setX(Builder.buildInt(child, 0));
+						setY(Builder.buildInt(child, 1));
+						break;
+				}
 			}
+		} catch (BuilderException e) {
+			System.err.println(e.represent());
 		}
 	}
 ```

@@ -1,3 +1,27 @@
+Version 2.0.0:
+Stable Release - 2 August 2026
+- Major / Breaking:
+  - Removed the Logger class: Methods now throw exceptions on errors, builder context has been removed
+  - Removed methods deprecated in version 1.0.0
+  - Removed additional range checking for numbers produced by Builder
+  - Removed node flags
+- Documentation:
+  - Improved inline documentation
+  - Added copyright file
+  - Improved the site index and pull request template
+- Features:
+  - Added node tree traces to Builder error messages
+  - Added support for space-based indentation
+- Development:
+  - Greatly improved the test suites for both Java and Python
+  - Added linting for both Java and Python
+  - Added codespell (@TheGirrafe3)
+  - Implemented null-checking for Java
+  - Upgraded Java documentation job from Oracle 17 to Temurin 25 for checkstyle compatibility (CI intentionally remains on Oracle 17 to ensure backwards compatibilty)
+- Minor:
+  - Switched to using system line separator properties instead of \n
+  - Improved the banner image
+
 Version 1.0.0:
 Unstable Release - 26 July 2025
 - Major / Breaking:
