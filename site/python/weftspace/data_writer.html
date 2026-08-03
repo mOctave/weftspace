@@ -95,7 +95,7 @@ el.replaceWith(d);
         # MARK: Methods
         def open(self) -&gt; None:
                 &#34;&#34;&#34;Opens the TextIOWrapper for this DataWriter.&#34;&#34;&#34;
-                self._io_wrapper = open(self.file, &#34;a&#34;, encoding=&#34;UTF-8&#34;)
+                self._io_wrapper = open(self.file, &#34;a&#34;, encoding=&#34;UTF-8&#34;) # pylint: disable=consider-using-with
 
 
 
@@ -157,10 +157,10 @@ el.replaceWith(d);
                 if &#34; &#34; in word:
                         if &#34;\&#34;&#34; in word:
                                 return &#34;`&#34; + word + &#34;`&#34;
-                        else:
-                                return &#34;\&#34;&#34; + word + &#34;\&#34;&#34;
-                else:
-                        return word</code></pre>
+
+                        return &#34;\&#34;&#34; + word + &#34;\&#34;&#34;
+
+                return word</code></pre>
 </details>
 <div class="desc"><p>A class which writes a node to a file.</p>
 <p>Sole constructor.</p></div>
@@ -237,7 +237,7 @@ def io_wrapper(self) -&gt; TextIOWrapper:
 </summary>
 <pre><code class="python">def open(self) -&gt; None:
         &#34;&#34;&#34;Opens the TextIOWrapper for this DataWriter.&#34;&#34;&#34;
-        self._io_wrapper = open(self.file, &#34;a&#34;, encoding=&#34;UTF-8&#34;)</code></pre>
+        self._io_wrapper = open(self.file, &#34;a&#34;, encoding=&#34;UTF-8&#34;) # pylint: disable=consider-using-with</code></pre>
 </details>
 <div class="desc"><p>Opens the TextIOWrapper for this DataWriter.</p></div>
 </dd>
