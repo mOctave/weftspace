@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
 <meta name="generator" content="pdoc3 0.11.6">
 <title>weftspace.loaded_node API documentation</title>
-<meta name="description" content="">
+<meta name="description" content="A subclass of a node that is attached to a specific line and file, for use in debugging.">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
@@ -36,6 +36,7 @@ el.replaceWith(d);
 <h1 class="title">Module <code>weftspace.loaded_node</code></h1>
 </header>
 <section id="section-intro">
+<p>A subclass of a node that is attached to a specific line and file, for use in debugging.</p>
 </section>
 <section>
 </section>
@@ -48,7 +49,7 @@ el.replaceWith(d);
 <dl>
 <dt id="weftspace.loaded_node.LoadedNode"><code class="flex name class">
 <span>class <span class="ident">LoadedNode</span></span>
-<span>(</span><span>name: str,<br>flag: <a title="weftspace.data_node.DataNode.Flag" href="data_node.html#weftspace.data_node.DataNode.Flag">DataNode.Flag</a>,<br>parent: <a title="weftspace.data_node.DataNode" href="data_node.html#weftspace.data_node.DataNode">DataNode</a> | None,<br>args: list[str],<br>children: list[<a title="weftspace.data_node.DataNode" href="data_node.html#weftspace.data_node.DataNode">DataNode</a>],<br>line: int,<br>file: str)</span>
+<span>(</span><span>name: str,<br>parent: <a title="weftspace.data_node.DataNode" href="data_node.html#weftspace.data_node.DataNode">DataNode</a> | None,<br>args: list[str],<br>children: list[<a title="weftspace.data_node.DataNode" href="data_node.html#weftspace.data_node.DataNode">DataNode</a>],<br>line: int,<br>file: str)</span>
 </code></dt>
 <dd>
 <details class="source">
@@ -58,36 +59,16 @@ el.replaceWith(d);
 <pre><code class="python">class LoadedNode(DataNode):
         &#34;&#34;&#34;A subclass of a node that is attached to a specific line and file, for use in debugging.&#34;&#34;&#34;
 
-        # MARK: Constructor
-        def __init__(
-                self,
-                name: str,
-                flag: DataNode.Flag,
-                parent: DataNode | None,
-                args: list[str],
-                children: list[DataNode],
-                line: int,
-                file: str
-        ):
-                &#34;&#34;&#34;
-                Sole constructor.
-                &#34;&#34;&#34;
-                super().__init__(name, flag, parent, args, children)
-                self.line = line
-                self.file = file
-
-
-
         # MARK: Properties
         _line: int
 
         @property
-        def line(self):
+        def line(self) -&gt; int:
                 &#34;&#34;&#34;The line this node was parsed from.&#34;&#34;&#34;
-                return self._name
-        
+                return self._line
+
         @line.setter
-        def line(self, line: int):
+        def line(self, line: int) -&gt; None:
                 &#34;&#34;&#34;Changes the line number associated with this node.&#34;&#34;&#34;
                 self._line = line
 
@@ -95,14 +76,33 @@ el.replaceWith(d);
         _file: str
 
         @property
-        def file(self):
+        def file(self) -&gt; str:
                 &#34;&#34;&#34;The filename of the file this node was parsed from.&#34;&#34;&#34;
-                return self._name
-        
+                return self._file
+
         @file.setter
-        def file(self, file: str):
+        def file(self, file: str) -&gt; None:
                 &#34;&#34;&#34;Changes the file associated with this node.&#34;&#34;&#34;
-                self._file = file</code></pre>
+                self._file = file
+
+
+
+        # MARK: Constructor
+        def __init__(
+                self,
+                name: str,
+                parent: DataNode | None,
+                args: list[str],
+                children: list[DataNode],
+                line: int,
+                file: str
+        ) -&gt; None:
+                &#34;&#34;&#34;
+                Sole constructor.
+                &#34;&#34;&#34;
+                super().__init__(name, parent, args, children)
+                self.line = line
+                self.file = file</code></pre>
 </details>
 <div class="desc"><p>A subclass of a node that is attached to a specific line and file, for use in debugging.</p>
 <p>Sole constructor.</p></div>
@@ -112,29 +112,29 @@ el.replaceWith(d);
 </ul>
 <h3>Instance variables</h3>
 <dl>
-<dt id="weftspace.loaded_node.LoadedNode.file"><code class="name">prop <span class="ident">file</span></code></dt>
+<dt id="weftspace.loaded_node.LoadedNode.file"><code class="name">prop <span class="ident">file</span> : str</code></dt>
 <dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def file(self):
+def file(self) -&gt; str:
         &#34;&#34;&#34;The filename of the file this node was parsed from.&#34;&#34;&#34;
-        return self._name</code></pre>
+        return self._file</code></pre>
 </details>
 <div class="desc"><p>The filename of the file this node was parsed from.</p></div>
 </dd>
-<dt id="weftspace.loaded_node.LoadedNode.line"><code class="name">prop <span class="ident">line</span></code></dt>
+<dt id="weftspace.loaded_node.LoadedNode.line"><code class="name">prop <span class="ident">line</span> : int</code></dt>
 <dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def line(self):
+def line(self) -&gt; int:
         &#34;&#34;&#34;The line this node was parsed from.&#34;&#34;&#34;
-        return self._name</code></pre>
+        return self._line</code></pre>
 </details>
 <div class="desc"><p>The line this node was parsed from.</p></div>
 </dd>
@@ -143,11 +143,9 @@ def line(self):
 <ul class="hlist">
 <li><code><b><a title="weftspace.data_node.DataNode" href="data_node.html#weftspace.data_node.DataNode">DataNode</a></b></code>:
 <ul class="hlist">
-<li><code><a title="weftspace.data_node.DataNode.Flag" href="data_node.html#weftspace.data_node.DataNode.Flag">Flag</a></code></li>
 <li><code><a title="weftspace.data_node.DataNode.args" href="data_node.html#weftspace.data_node.DataNode.args">args</a></code></li>
 <li><code><a title="weftspace.data_node.DataNode.children" href="data_node.html#weftspace.data_node.DataNode.children">children</a></code></li>
 <li><code><a title="weftspace.data_node.DataNode.create_root_node" href="data_node.html#weftspace.data_node.DataNode.create_root_node">create_root_node</a></code></li>
-<li><code><a title="weftspace.data_node.DataNode.flag" href="data_node.html#weftspace.data_node.DataNode.flag">flag</a></code></li>
 <li><code><a title="weftspace.data_node.DataNode.name" href="data_node.html#weftspace.data_node.DataNode.name">name</a></code></li>
 <li><code><a title="weftspace.data_node.DataNode.parent" href="data_node.html#weftspace.data_node.DataNode.parent">parent</a></code></li>
 </ul>

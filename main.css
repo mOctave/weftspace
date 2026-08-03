@@ -1,6 +1,14 @@
 html {
-	background-color: silver;
 	font-family: Ubuntu, Roboto, Arial, sans-serif;
+	background-color: black;
+	height: 100%;
+}
+
+body {
+	background-color: silver;
+	margin: 5px;
+	padding: 10px;
+	min-height: calc(100% - 30px);
 }
 
 h1 {
@@ -17,8 +25,9 @@ a:hover {
 }
 
 a.linkbutton {
+	display: inline-block;
 	color: white;
-	background-color: black;
+	background-color: #555;
 	padding: 10px;
 	margin: 5px;
 	border-radius: 5px;
@@ -26,6 +35,7 @@ a.linkbutton {
 
 a.linkbutton:hover {
 	text-decoration: none;
+	background-color: #777;
 }
 
 a.javabutton {
@@ -42,4 +52,13 @@ a.pythonbutton {
 
 a.pythonbutton:hover {
 	background-color: #cb0;
+}
+
+.siteicon {
+	width: 100px;
+	aspect-ratio: 1;
+	float: left;
+	margin: 0px;
+	margin-right: 5px;
+	margin-bottom: 5px;
 }

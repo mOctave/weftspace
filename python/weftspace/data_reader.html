@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
 <meta name="generator" content="pdoc3 0.11.6">
 <title>weftspace.data_reader API documentation</title>
-<meta name="description" content="">
+<meta name="description" content="A class which reads data from a file and stores it in a node tree.">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
@@ -36,6 +36,7 @@ el.replaceWith(d);
 <h1 class="title">Module <code>weftspace.data_reader</code></h1>
 </header>
 <section id="section-intro">
+<p>A class which reads data from a file and stores it in a node tree.</p>
 </section>
 <section>
 </section>
@@ -58,61 +59,56 @@ el.replaceWith(d);
 <pre><code class="python">class DataReader:
         &#34;&#34;&#34;A class which reads data from a file and stores it in a node tree.&#34;&#34;&#34;
 
-        # MARK: Constants
-        class Option(Enum):
-                &#34;&#34;&#34;Special flags that can be used when parsing.&#34;&#34;&#34;
-
-                IGNORE_NODE_FLAGS = 1
-                &#34;&#34;&#34;Do not apply node flags.&#34;&#34;&#34;
-
-
-
-        # MARK: Constructor
-        def __init__(self, file: str, root: DataNode):
-                self.file = file
-                self.root = root
-
-
-
         # MARK: Properties
         _file: str
 
         @property
-        def file(self):
+        def file(self) -&gt; str:
                 &#34;&#34;&#34;The file this DataReader is parsing.&#34;&#34;&#34;
                 return self._file
-        
+
         @file.setter
-        def file(self, file: str):
+        def file(self, file: str) -&gt; None:
                 &#34;&#34;&#34;Changes the file being parsed.&#34;&#34;&#34;
                 self._file = file
 
         _root: DataNode
 
         @property
-        def root(self):
+        def root(self) -&gt; DataNode:
                 &#34;&#34;&#34;The node this DataReader is using as its root.&#34;&#34;&#34;
                 return self._root
-        
+
         @root.setter
-        def root(self, root: DataNode):
+        def root(self, root: DataNode) -&gt; None:
                 &#34;&#34;&#34;Changes the root node being added to.&#34;&#34;&#34;
                 self._root = root
 
 
 
+        # MARK: Constructor
+        def __init__(self, file: str, root: DataNode) -&gt; None:
+                self.file = file
+                self.root = root
+
+
+
         # MARK: Methods
-        def parse(self, *args: Option):
+        def parse(self) -&gt; None:
                 &#34;&#34;&#34;Parses the file associated with this object, and stores all nodes in the tree.&#34;&#34;&#34;
-                ignore_node_flags: bool = DataReader.Option.IGNORE_NODE_FLAGS in args
                 try:
+                        mixed_whitespace: bool = False
                         line_number: int = 0
                         node_stack: deque[DataNode] = deque()
-                        tabs: int = 0
-                        last_tabs: int = 0
                         current_node: DataNode | None = None
 
-                        with open(self.file, &#34;r&#34;) as f:
+                        indent: int = 0
+                        indent_depths: deque[int] = deque()
+                        expected_indent_string: str | None = None
+
+                        indent_depths.append(0)
+
+                        with open(self.file, &#34;r&#34;, encoding=&#34;UTF-8&#34;) as f:
                                 for line in f:
                                         line_number += 1
                                         if len(line.split(&#34;#&#34;)) == 0:
@@ -122,34 +118,48 @@ el.replaceWith(d);
                                                 tl: str = line.split(&#34;#&#34;)[0]
                                                 if tl.isspace() or not tl:
                                                         continue
-                                
-                                        tabs = DataReader.count_leading_tabs(line)
-                                        if tabs &gt; last_tabs and current_node != None:
-                                                node_stack.append(current_node)
-                                        else:
-                                                while len(node_stack) &gt; tabs:
-                                                        node_stack.pop()
-                                        
-                                        current_node = self.make_node(line, line_number, not ignore_node_flags)
 
-                                        if len(node_stack) == 0 and current_node != None:
+                                        indent = DataReader.count_leading_whitespace(line)
+                                        indent_substring: str = DataReader.get_indent_substring(line, indent_depths[-1])
+
+                                        if (expected_indent_string is None and len(indent_substring) &gt; 0):
+                                                expected_indent_string = indent_substring
+                                                if (&#34; &#34; in expected_indent_string and &#34;\t&#34; in expected_indent_string):
+                                                        mixed_whitespace = True
+
+
+                                        if indent &gt; indent_depths[-1] and current_node is not None:
+                                                if expected_indent_string != indent_substring:
+                                                        mixed_whitespace = True
+
+                                                node_stack.append(current_node)
+                                                indent_depths.append(indent)
+                                        else:
+                                                while indent_depths[-1] &gt; indent:
+                                                        node_stack.pop()
+                                                        indent_depths.pop()
+
+                                        current_node = self.make_node(line, line_number)
+
+                                        if len(node_stack) == 0 and current_node is not None:
                                                 self.root.children.append(current_node)
                                                 current_node.parent = self.root
-                                        elif current_node != None:
+                                        elif current_node is not None:
                                                 parent: DataNode = node_stack[-1]
                                                 parent.children.append(current_node)
                                                 current_node.parent = parent
-                                        
-                                        last_tabs = tabs
-                                
+
                                 f.close()
 
-                except FileNotFoundError:
-                        Logger.ERROR_FILE_DNE.log(self.file)
+                                if mixed_whitespace:
+                                        raise ReaderError(
+                                                f&#34;Warning - mixed whitespace in file {self.file}(parsing completed without further issues)&#34;)
+                except FileNotFoundError as exc:
+                        raise ReaderError(f&#34;No such file as {self.file}&#34;) from exc
 
 
 
-        def make_node(self, line: str, number: int, check_for_flags: bool):
+        def make_node(self, line: str, number: int) -&gt; LoadedNode | None:
                 &#34;&#34;&#34;Parses a single line and converts it to a node.&#34;&#34;&#34;
                 stripped_line: str = line.strip()
                 data: list[str] = []
@@ -164,14 +174,14 @@ el.replaceWith(d);
                                         # Item will end with a double quote, ignore this one.
                                         split_on = &#34;\&#34;&#34;
                                         continue
-                                elif char == &#34;`&#34;:
+                                if char == &#34;`&#34;:
                                         # Item will end with a backtick, ignore this one.
                                         split_on = &#34;`&#34;
                                         continue
-                                else:
-                                        # Item will end when the current word ends.
-                                        split_on = &#34; &#34;
-                        elif is_empty:
+
+                                # Item will end when the current word ends.
+                                split_on = &#34; &#34;
+                        if is_empty:
                                 continue
 
                         if char == split_on:
@@ -180,87 +190,92 @@ el.replaceWith(d);
                                 current_item = &#34;&#34;
                                 is_empty = True
                                 continue
-                        elif char == &#34;#&#34; and split_on == &#34; &#34;:
+                        if char == &#34;#&#34; and split_on == &#34; &#34;:
                                 # Ignore everything after a comment.
                                 break
 
                         # Add to the current item.
                         current_item += char
-                
+
                 # Items can end at the end of the line, too.
                 if current_item:
                         data.append(current_item)
-                
+
                 if len(data) == 0:
                         return None
-                
+
                 # Treat the first entry as the node name, and everything else as args.
                 node_name: str = data.pop(0)
 
-                flag: DataNode.Flag = DataNode.Flag.NORMAL
-
-                # Check for flags
-                if check_for_flags:
-                        if node_name == &#34;add&#34;:
-                                flag = DataNode.Flag.ADD
-                                node_name = data.pop(0)
-                        elif node_name == &#34;remove&#34;:
-                                flag = DataNode.Flag.REMOVE
-                                node_name = data.pop(0)
-                
-                return LoadedNode(node_name, flag, None, data, [], number, self.file)
+                return LoadedNode(node_name, None, data, [], number, self.file)
 
 
 
         @classmethod
-        def count_leading_tabs(cls, line: str):
-                &#34;&#34;&#34;Counts the number of leading tabs on a line.&#34;&#34;&#34;
-                i: int = 0
-                while (i &lt; len(line) and line[i] == &#34;\t&#34;):
+        def get_indent_substring(cls, line: str, depth: int) -&gt; str:
+                &#34;&#34;&#34;
+                Gets the substring which appears to be used for indentation, starting
+                with the character at a given depth.
+                &#34;&#34;&#34;
+                i: int = depth
+                s: str = &#34;&#34;
+                while (i &lt; len(line) and (line[i] == &#34;\t&#34; or line[i] == &#34; &#34;)):
+                        s += line[i]
                         i += 1
-                
+
+                return s
+
+
+
+        @classmethod
+        def count_leading_whitespace(cls, line: str) -&gt; int:
+                &#34;&#34;&#34;Counts the number of leading tab or space characters on a line.&#34;&#34;&#34;
+                i: int = 0
+                while (i &lt; len(line) and (line[i] == &#34;\t&#34; or line[i] == &#34; &#34;)):
+                        i += 1
+
                 return i</code></pre>
 </details>
 <div class="desc"><p>A class which reads data from a file and stores it in a node tree.</p></div>
-<h3>Class variables</h3>
-<dl>
-<dt id="weftspace.data_reader.DataReader.Option"><code class="name">var <span class="ident">Option</span></code></dt>
-<dd>
-<div class="desc"><p>Special flags that can be used when parsing.</p></div>
-</dd>
-</dl>
 <h3>Static methods</h3>
 <dl>
-<dt id="weftspace.data_reader.DataReader.count_leading_tabs"><code class="name flex">
-<span>def <span class="ident">count_leading_tabs</span></span>(<span>line: str)</span>
+<dt id="weftspace.data_reader.DataReader.count_leading_whitespace"><code class="name flex">
+<span>def <span class="ident">count_leading_whitespace</span></span>(<span>line: str) ‑> int</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Counts the number of leading tabs on a line.</p></div>
+<div class="desc"><p>Counts the number of leading tab or space characters on a line.</p></div>
+</dd>
+<dt id="weftspace.data_reader.DataReader.get_indent_substring"><code class="name flex">
+<span>def <span class="ident">get_indent_substring</span></span>(<span>line: str, depth: int) ‑> str</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Gets the substring which appears to be used for indentation, starting
+with the character at a given depth.</p></div>
 </dd>
 </dl>
 <h3>Instance variables</h3>
 <dl>
-<dt id="weftspace.data_reader.DataReader.file"><code class="name">prop <span class="ident">file</span></code></dt>
+<dt id="weftspace.data_reader.DataReader.file"><code class="name">prop <span class="ident">file</span> : str</code></dt>
 <dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def file(self):
+def file(self) -&gt; str:
         &#34;&#34;&#34;The file this DataReader is parsing.&#34;&#34;&#34;
         return self._file</code></pre>
 </details>
 <div class="desc"><p>The file this DataReader is parsing.</p></div>
 </dd>
-<dt id="weftspace.data_reader.DataReader.root"><code class="name">prop <span class="ident">root</span></code></dt>
+<dt id="weftspace.data_reader.DataReader.root"><code class="name">prop <span class="ident">root</span> : <a title="weftspace.data_node.DataNode" href="data_node.html#weftspace.data_node.DataNode">DataNode</a></code></dt>
 <dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def root(self):
+def root(self) -&gt; DataNode:
         &#34;&#34;&#34;The node this DataReader is using as its root.&#34;&#34;&#34;
         return self._root</code></pre>
 </details>
@@ -270,14 +285,14 @@ def root(self):
 <h3>Methods</h3>
 <dl>
 <dt id="weftspace.data_reader.DataReader.make_node"><code class="name flex">
-<span>def <span class="ident">make_node</span></span>(<span>self, line: str, number: int, check_for_flags: bool)</span>
+<span>def <span class="ident">make_node</span></span>(<span>self, line: str, number: int) ‑> <a title="weftspace.loaded_node.LoadedNode" href="loaded_node.html#weftspace.loaded_node.LoadedNode">LoadedNode</a> | None</span>
 </code></dt>
 <dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def make_node(self, line: str, number: int, check_for_flags: bool):
+<pre><code class="python">def make_node(self, line: str, number: int) -&gt; LoadedNode | None:
         &#34;&#34;&#34;Parses a single line and converts it to a node.&#34;&#34;&#34;
         stripped_line: str = line.strip()
         data: list[str] = []
@@ -292,14 +307,14 @@ def root(self):
                                 # Item will end with a double quote, ignore this one.
                                 split_on = &#34;\&#34;&#34;
                                 continue
-                        elif char == &#34;`&#34;:
+                        if char == &#34;`&#34;:
                                 # Item will end with a backtick, ignore this one.
                                 split_on = &#34;`&#34;
                                 continue
-                        else:
-                                # Item will end when the current word ends.
-                                split_on = &#34; &#34;
-                elif is_empty:
+
+                        # Item will end when the current word ends.
+                        split_on = &#34; &#34;
+                if is_empty:
                         continue
 
                 if char == split_on:
@@ -308,57 +323,50 @@ def root(self):
                         current_item = &#34;&#34;
                         is_empty = True
                         continue
-                elif char == &#34;#&#34; and split_on == &#34; &#34;:
+                if char == &#34;#&#34; and split_on == &#34; &#34;:
                         # Ignore everything after a comment.
                         break
 
                 # Add to the current item.
                 current_item += char
-        
+
         # Items can end at the end of the line, too.
         if current_item:
                 data.append(current_item)
-        
+
         if len(data) == 0:
                 return None
-        
+
         # Treat the first entry as the node name, and everything else as args.
         node_name: str = data.pop(0)
 
-        flag: DataNode.Flag = DataNode.Flag.NORMAL
-
-        # Check for flags
-        if check_for_flags:
-                if node_name == &#34;add&#34;:
-                        flag = DataNode.Flag.ADD
-                        node_name = data.pop(0)
-                elif node_name == &#34;remove&#34;:
-                        flag = DataNode.Flag.REMOVE
-                        node_name = data.pop(0)
-        
-        return LoadedNode(node_name, flag, None, data, [], number, self.file)</code></pre>
+        return LoadedNode(node_name, None, data, [], number, self.file)</code></pre>
 </details>
 <div class="desc"><p>Parses a single line and converts it to a node.</p></div>
 </dd>
 <dt id="weftspace.data_reader.DataReader.parse"><code class="name flex">
-<span>def <span class="ident">parse</span></span>(<span>self,<br>*args: <a title="weftspace.data_reader.DataReader.Option" href="#weftspace.data_reader.DataReader.Option">DataReader.Option</a>)</span>
+<span>def <span class="ident">parse</span></span>(<span>self) ‑> None</span>
 </code></dt>
 <dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def parse(self, *args: Option):
+<pre><code class="python">def parse(self) -&gt; None:
         &#34;&#34;&#34;Parses the file associated with this object, and stores all nodes in the tree.&#34;&#34;&#34;
-        ignore_node_flags: bool = DataReader.Option.IGNORE_NODE_FLAGS in args
         try:
+                mixed_whitespace: bool = False
                 line_number: int = 0
                 node_stack: deque[DataNode] = deque()
-                tabs: int = 0
-                last_tabs: int = 0
                 current_node: DataNode | None = None
 
-                with open(self.file, &#34;r&#34;) as f:
+                indent: int = 0
+                indent_depths: deque[int] = deque()
+                expected_indent_string: str | None = None
+
+                indent_depths.append(0)
+
+                with open(self.file, &#34;r&#34;, encoding=&#34;UTF-8&#34;) as f:
                         for line in f:
                                 line_number += 1
                                 if len(line.split(&#34;#&#34;)) == 0:
@@ -368,30 +376,44 @@ def root(self):
                                         tl: str = line.split(&#34;#&#34;)[0]
                                         if tl.isspace() or not tl:
                                                 continue
-                        
-                                tabs = DataReader.count_leading_tabs(line)
-                                if tabs &gt; last_tabs and current_node != None:
-                                        node_stack.append(current_node)
-                                else:
-                                        while len(node_stack) &gt; tabs:
-                                                node_stack.pop()
-                                
-                                current_node = self.make_node(line, line_number, not ignore_node_flags)
 
-                                if len(node_stack) == 0 and current_node != None:
+                                indent = DataReader.count_leading_whitespace(line)
+                                indent_substring: str = DataReader.get_indent_substring(line, indent_depths[-1])
+
+                                if (expected_indent_string is None and len(indent_substring) &gt; 0):
+                                        expected_indent_string = indent_substring
+                                        if (&#34; &#34; in expected_indent_string and &#34;\t&#34; in expected_indent_string):
+                                                mixed_whitespace = True
+
+
+                                if indent &gt; indent_depths[-1] and current_node is not None:
+                                        if expected_indent_string != indent_substring:
+                                                mixed_whitespace = True
+
+                                        node_stack.append(current_node)
+                                        indent_depths.append(indent)
+                                else:
+                                        while indent_depths[-1] &gt; indent:
+                                                node_stack.pop()
+                                                indent_depths.pop()
+
+                                current_node = self.make_node(line, line_number)
+
+                                if len(node_stack) == 0 and current_node is not None:
                                         self.root.children.append(current_node)
                                         current_node.parent = self.root
-                                elif current_node != None:
+                                elif current_node is not None:
                                         parent: DataNode = node_stack[-1]
                                         parent.children.append(current_node)
                                         current_node.parent = parent
-                                
-                                last_tabs = tabs
-                        
+
                         f.close()
 
-        except FileNotFoundError:
-                Logger.ERROR_FILE_DNE.log(self.file)</code></pre>
+                        if mixed_whitespace:
+                                raise ReaderError(
+                                        f&#34;Warning - mixed whitespace in file {self.file}(parsing completed without further issues)&#34;)
+        except FileNotFoundError as exc:
+                raise ReaderError(f&#34;No such file as {self.file}&#34;) from exc</code></pre>
 </details>
 <div class="desc"><p>Parses the file associated with this object, and stores all nodes in the tree.</p></div>
 </dd>
@@ -414,10 +436,10 @@ def root(self):
 <ul>
 <li>
 <h4><code><a title="weftspace.data_reader.DataReader" href="#weftspace.data_reader.DataReader">DataReader</a></code></h4>
-<ul class="two-column">
-<li><code><a title="weftspace.data_reader.DataReader.Option" href="#weftspace.data_reader.DataReader.Option">Option</a></code></li>
-<li><code><a title="weftspace.data_reader.DataReader.count_leading_tabs" href="#weftspace.data_reader.DataReader.count_leading_tabs">count_leading_tabs</a></code></li>
+<ul class="">
+<li><code><a title="weftspace.data_reader.DataReader.count_leading_whitespace" href="#weftspace.data_reader.DataReader.count_leading_whitespace">count_leading_whitespace</a></code></li>
 <li><code><a title="weftspace.data_reader.DataReader.file" href="#weftspace.data_reader.DataReader.file">file</a></code></li>
+<li><code><a title="weftspace.data_reader.DataReader.get_indent_substring" href="#weftspace.data_reader.DataReader.get_indent_substring">get_indent_substring</a></code></li>
 <li><code><a title="weftspace.data_reader.DataReader.make_node" href="#weftspace.data_reader.DataReader.make_node">make_node</a></code></li>
 <li><code><a title="weftspace.data_reader.DataReader.parse" href="#weftspace.data_reader.DataReader.parse">parse</a></code></li>
 <li><code><a title="weftspace.data_reader.DataReader.root" href="#weftspace.data_reader.DataReader.root">root</a></code></li>

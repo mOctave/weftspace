@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
 <meta name="generator" content="pdoc3 0.11.6">
 <title>weftspace.data_node API documentation</title>
-<meta name="description" content="">
+<meta name="description" content="A class representing a node on the data tree.">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
@@ -36,6 +36,7 @@ el.replaceWith(d);
 <h1 class="title">Module <code>weftspace.data_node</code></h1>
 </header>
 <section id="section-intro">
+<p>A class representing a node on the data tree.</p>
 </section>
 <section>
 </section>
@@ -48,7 +49,7 @@ el.replaceWith(d);
 <dl>
 <dt id="weftspace.data_node.DataNode"><code class="flex name class">
 <span>class <span class="ident">DataNode</span></span>
-<span>(</span><span>name: str,<br>flag: Flag,<br>parent: <a title="weftspace.data_node.DataNode" href="#weftspace.data_node.DataNode">DataNode</a> | None,<br>args: list[str],<br>children: list[<a title="weftspace.data_node.DataNode" href="#weftspace.data_node.DataNode">DataNode</a>])</span>
+<span>(</span><span>name: str,<br>parent: <a title="weftspace.data_node.DataNode" href="#weftspace.data_node.DataNode">DataNode</a> | None,<br>args: list[str],<br>children: list[<a title="weftspace.data_node.DataNode" href="#weftspace.data_node.DataNode">DataNode</a>])</span>
 </code></dt>
 <dd>
 <details class="source">
@@ -58,85 +59,30 @@ el.replaceWith(d);
 <pre><code class="python">class DataNode:
         &#34;&#34;&#34;A class representing a node on the data tree.&#34;&#34;&#34;
 
-        # MARK: Constants
-        class Flag(Enum):
-                &#34;&#34;&#34;The flag attached to this node, influencing how it should be treated during instantiation.&#34;&#34;&#34;
-
-                NORMAL = 1
-                &#34;&#34;&#34;This node should be treated normally, with no special consideration.&#34;&#34;&#34;
-
-                ADD = 2
-                &#34;&#34;&#34;
-                This node should always result in the addition of an object,
-                even if it would usually overwrite one instead.
-                &#34;&#34;&#34;
-
-                REMOVE = 3
-                &#34;&#34;&#34;This node should result in the removal of its associated object.&#34;&#34;&#34;
-
-                ROOT = 4
-                &#34;&#34;&#34;This node is a root node, and should not be parsed or written.&#34;&#34;&#34;
-
-
-
-        # MARK: Constructors
-        def __init__(self, name: str, flag: Flag, parent: DataNode | None, args: list[str], children: list[DataNode]):
-                &#34;&#34;&#34;
-                Primary constructor. Takes all the standard arguments, except those defined by
-                LoadedNode.
-                &#34;&#34;&#34;
-                self.name = name
-                self.flag = flag
-                self.parent = parent
-                self.args = args
-                self.children = children
-
-
-        @staticmethod
-        def create_root_node():
-                &#34;&#34;&#34;
-                Builds and returns an empty node intended to be used as a root node for the DataReader.
-                &#34;&#34;&#34;
-                return DataNode(&#34;--ROOT--&#34;, DataNode.Flag.ROOT, None, [], [])
-
-
-
         # MARK: Properties
         _name: str
 
         @property
-        def name(self):
+        def name(self) -&gt; str:
                 &#34;&#34;&#34;The name of this node.&#34;&#34;&#34;
                 return self._name
-        
+
         @name.setter
-        def name(self, name: str):
+        def name(self, name: str) -&gt; None:
                 &#34;&#34;&#34;Changes the name of this node.&#34;&#34;&#34;
                 self._name = name
-        
 
-        _flag: Flag
-
-        @property
-        def flag(self):
-                &#34;&#34;&#34;The flag attached to this node.&#34;&#34;&#34;
-                return self._flag
-        
-        @flag.setter
-        def flag(self, flag: Flag):
-                &#34;&#34;&#34;Changes the flag attached to this node.&#34;&#34;&#34;
-                self._flag = flag
 
 
         _parent: DataNode | None
 
         @property
-        def parent(self):
+        def parent(self) -&gt; DataNode | None:
                 &#34;&#34;&#34;The parent of this node.&#34;&#34;&#34;
                 return self._parent
-        
+
         @parent.setter
-        def parent(self, parent: DataNode | None):
+        def parent(self, parent: DataNode | None) -&gt; None:
                 &#34;&#34;&#34;
                 Changes the parent of this node. This should be used very cautiously, as it can
                 easily damage the structure of the node tree.
@@ -146,12 +92,12 @@ el.replaceWith(d);
         _args: list[str]
 
         @property
-        def args(self):
+        def args(self) -&gt; list[str]:
                 &#34;&#34;&#34;This node&#39;s arguments.&#34;&#34;&#34;
                 return self._args
-        
+
         @args.setter
-        def args(self, args: list[str]):
+        def args(self, args: list[str]) -&gt; None:
                 &#34;&#34;&#34;
                 Overwrites this node&#39;s argument list.
                 &#34;&#34;&#34;
@@ -160,12 +106,12 @@ el.replaceWith(d);
         _children: list[DataNode]
 
         @property
-        def children(self):
+        def children(self) -&gt; list[DataNode]:
                 &#34;&#34;&#34;This node&#39;s children.&#34;&#34;&#34;
                 return self._children
-        
+
         @children.setter
-        def children(self, children: list[DataNode]):
+        def children(self, children: list[DataNode]) -&gt; None:
                 &#34;&#34;&#34;
                 Entirely overwrites the list of this node&#39;s children.
                 This should be used very cautiously, as it can
@@ -173,8 +119,33 @@ el.replaceWith(d);
                 &#34;&#34;&#34;
                 self._children = children
 
+
+
+        # MARK: Constructors
+        def __init__(self, name: str, parent: DataNode | None,
+                args: list[str], children: list[DataNode]) -&gt; None:
+                &#34;&#34;&#34;
+                Primary constructor. Takes all the standard arguments, except those defined by
+                LoadedNode.
+                &#34;&#34;&#34;
+                self.name = name
+                self.parent = parent
+                self.args = args
+                self.children = children
+
+
+        @staticmethod
+        def create_root_node() -&gt; DataNode:
+                &#34;&#34;&#34;
+                Builds and returns an empty node intended to be used as a root node for the DataReader.
+                &#34;&#34;&#34;
+                return DataNode(&#34;--ROOT--&#34;, None, [], [])
+
+
+
+
         # MARK: Methods
-        def __hash__(self):
+        def __hash__(self) -&gt; int:
                 &#34;&#34;&#34;
                 Generates a hash code for this node, so that all nodes which are equal
                 have the same hash code.
@@ -182,17 +153,17 @@ el.replaceWith(d);
                 Multiple distinct nodes may have the same hash code, as
                 (1) the mechanics for hash() are not controlled,
                 (2) parents are not taken into account in this method, and
-                (3) nodes which have themself as a child will not have their childen considered.
+                (3) nodes which have themself as a child will not have their children considered.
                 &#34;&#34;&#34;
                 prime: int = 31
                 hash_code: int = 1
                 hash_code = prime * hash_code + hash(self.name)
-                hash_code = prime * hash_code + hash(self.flag)
-                hash_code = prime * hash_code + hash(self.args)
-                hash_code = prime * hash_code + 0 if self in self.children else hash(self.children)
+                # Length is used for hashing here because lists are mutable and so can&#39;t be hashed.
+                hash_code = prime * hash_code + hash(len(self.args))
+                hash_code = prime * hash_code + 0 if self in self.children else hash(len(self.children))
 
                 return hash_code
-        
+
 
 
         def __eq__(self, other: object) -&gt; bool:
@@ -211,11 +182,9 @@ el.replaceWith(d);
                 # The other object is not a data node
                 if not isinstance(other, DataNode):
                         return False
-                
+
                 # Check if the two nodes have a different property
                 if other.name != self.name:
-                        return False
-                if other.flag != self.flag:
                         return False
                 if other.args != self.args:
                         return False
@@ -232,7 +201,7 @@ el.replaceWith(d);
                 Returns a string representation of this node, including name, arguments,
                 and the number of children it has.
                 &#34;&#34;&#34;
-                return &#34;Node{{name: {0}, args: {1}, children: {2}}}&#34;.format(self.name, str(self.args), len(self.children))</code></pre>
+                return f&#34;Node{{name: {self.name}, args: {self.args}, children: {len(self.children)}}}&#34;</code></pre>
 </details>
 <div class="desc"><p>A class representing a node on the data tree.</p>
 <p>Primary constructor. Takes all the standard arguments, except those defined by
@@ -241,17 +210,10 @@ LoadedNode.</p></div>
 <ul class="hlist">
 <li><a title="weftspace.loaded_node.LoadedNode" href="loaded_node.html#weftspace.loaded_node.LoadedNode">LoadedNode</a></li>
 </ul>
-<h3>Class variables</h3>
-<dl>
-<dt id="weftspace.data_node.DataNode.Flag"><code class="name">var <span class="ident">Flag</span></code></dt>
-<dd>
-<div class="desc"><p>The flag attached to this node, influencing how it should be treated during instantiation.</p></div>
-</dd>
-</dl>
 <h3>Static methods</h3>
 <dl>
 <dt id="weftspace.data_node.DataNode.create_root_node"><code class="name flex">
-<span>def <span class="ident">create_root_node</span></span>(<span>)</span>
+<span>def <span class="ident">create_root_node</span></span>(<span>) ‑> <a title="weftspace.data_node.DataNode" href="#weftspace.data_node.DataNode">DataNode</a></span>
 </code></dt>
 <dd>
 <details class="source">
@@ -259,77 +221,64 @@ LoadedNode.</p></div>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@staticmethod
-def create_root_node():
+def create_root_node() -&gt; DataNode:
         &#34;&#34;&#34;
         Builds and returns an empty node intended to be used as a root node for the DataReader.
         &#34;&#34;&#34;
-        return DataNode(&#34;--ROOT--&#34;, DataNode.Flag.ROOT, None, [], [])</code></pre>
+        return DataNode(&#34;--ROOT--&#34;, None, [], [])</code></pre>
 </details>
 <div class="desc"><p>Builds and returns an empty node intended to be used as a root node for the DataReader.</p></div>
 </dd>
 </dl>
 <h3>Instance variables</h3>
 <dl>
-<dt id="weftspace.data_node.DataNode.args"><code class="name">prop <span class="ident">args</span></code></dt>
+<dt id="weftspace.data_node.DataNode.args"><code class="name">prop <span class="ident">args</span> : list[str]</code></dt>
 <dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def args(self):
+def args(self) -&gt; list[str]:
         &#34;&#34;&#34;This node&#39;s arguments.&#34;&#34;&#34;
         return self._args</code></pre>
 </details>
 <div class="desc"><p>This node's arguments.</p></div>
 </dd>
-<dt id="weftspace.data_node.DataNode.children"><code class="name">prop <span class="ident">children</span></code></dt>
+<dt id="weftspace.data_node.DataNode.children"><code class="name">prop <span class="ident">children</span> : list[<a title="weftspace.data_node.DataNode" href="#weftspace.data_node.DataNode">DataNode</a>]</code></dt>
 <dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def children(self):
+def children(self) -&gt; list[DataNode]:
         &#34;&#34;&#34;This node&#39;s children.&#34;&#34;&#34;
         return self._children</code></pre>
 </details>
 <div class="desc"><p>This node's children.</p></div>
 </dd>
-<dt id="weftspace.data_node.DataNode.flag"><code class="name">prop <span class="ident">flag</span></code></dt>
+<dt id="weftspace.data_node.DataNode.name"><code class="name">prop <span class="ident">name</span> : str</code></dt>
 <dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def flag(self):
-        &#34;&#34;&#34;The flag attached to this node.&#34;&#34;&#34;
-        return self._flag</code></pre>
-</details>
-<div class="desc"><p>The flag attached to this node.</p></div>
-</dd>
-<dt id="weftspace.data_node.DataNode.name"><code class="name">prop <span class="ident">name</span></code></dt>
-<dd>
-<details class="source">
-<summary>
-<span>Expand source code</span>
-</summary>
-<pre><code class="python">@property
-def name(self):
+def name(self) -&gt; str:
         &#34;&#34;&#34;The name of this node.&#34;&#34;&#34;
         return self._name</code></pre>
 </details>
 <div class="desc"><p>The name of this node.</p></div>
 </dd>
-<dt id="weftspace.data_node.DataNode.parent"><code class="name">prop <span class="ident">parent</span></code></dt>
+<dt id="weftspace.data_node.DataNode.parent"><code class="name">prop <span class="ident">parent</span> : <a title="weftspace.data_node.DataNode" href="#weftspace.data_node.DataNode">DataNode</a> | None</code></dt>
 <dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def parent(self):
+def parent(self) -&gt; DataNode | None:
         &#34;&#34;&#34;The parent of this node.&#34;&#34;&#34;
         return self._parent</code></pre>
 </details>
@@ -354,12 +303,10 @@ def parent(self):
 <ul>
 <li>
 <h4><code><a title="weftspace.data_node.DataNode" href="#weftspace.data_node.DataNode">DataNode</a></code></h4>
-<ul class="two-column">
-<li><code><a title="weftspace.data_node.DataNode.Flag" href="#weftspace.data_node.DataNode.Flag">Flag</a></code></li>
+<ul class="">
 <li><code><a title="weftspace.data_node.DataNode.args" href="#weftspace.data_node.DataNode.args">args</a></code></li>
 <li><code><a title="weftspace.data_node.DataNode.children" href="#weftspace.data_node.DataNode.children">children</a></code></li>
 <li><code><a title="weftspace.data_node.DataNode.create_root_node" href="#weftspace.data_node.DataNode.create_root_node">create_root_node</a></code></li>
-<li><code><a title="weftspace.data_node.DataNode.flag" href="#weftspace.data_node.DataNode.flag">flag</a></code></li>
 <li><code><a title="weftspace.data_node.DataNode.name" href="#weftspace.data_node.DataNode.name">name</a></code></li>
 <li><code><a title="weftspace.data_node.DataNode.parent" href="#weftspace.data_node.DataNode.parent">parent</a></code></li>
 </ul>
