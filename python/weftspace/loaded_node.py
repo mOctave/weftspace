@@ -11,6 +11,10 @@
 # You should have received a copy of the GNU Affero General Public License along with
 # this program. If not, see <https://www.gnu.org/licenses/>.
 
+"""
+A subclass of a node that is attached to a specific line and file, for use in debugging.
+"""
+
 from .data_node import DataNode
 
 class LoadedNode(DataNode):
@@ -23,7 +27,7 @@ class LoadedNode(DataNode):
 	def line(self) -> int:
 		"""The line this node was parsed from."""
 		return self._line
-	
+
 	@line.setter
 	def line(self, line: int) -> None:
 		"""Changes the line number associated with this node."""
@@ -36,7 +40,7 @@ class LoadedNode(DataNode):
 	def file(self) -> str:
 		"""The filename of the file this node was parsed from."""
 		return self._file
-	
+
 	@file.setter
 	def file(self, file: str) -> None:
 		"""Changes the file associated with this node."""

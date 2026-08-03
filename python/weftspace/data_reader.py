@@ -11,6 +11,10 @@
 # You should have received a copy of the GNU Affero General Public License along with
 # this program. If not, see <https://www.gnu.org/licenses/>.
 
+"""
+A class which reads data from a file and stores it in a node tree.
+"""
+
 from collections import deque
 
 from .data_node import DataNode
@@ -27,7 +31,7 @@ class DataReader:
 	def file(self) -> str:
 		"""The file this DataReader is parsing."""
 		return self._file
-	
+
 	@file.setter
 	def file(self, file: str) -> None:
 		"""Changes the file being parsed."""
@@ -39,7 +43,7 @@ class DataReader:
 	def root(self) -> DataNode:
 		"""The node this DataReader is using as its root."""
 		return self._root
-	
+
 	@root.setter
 	def root(self, root: DataNode) -> None:
 		"""Changes the root node being added to."""
@@ -69,7 +73,7 @@ class DataReader:
 
 			indent_depths.append(0)
 
-			with open(self.file, "r") as f:
+			with open(self.file, "r", encoding="UTF-8") as f:
 				for line in f:
 					line_number += 1
 					if len(line.split("#")) == 0:
@@ -79,17 +83,17 @@ class DataReader:
 						tl: str = line.split("#")[0]
 						if tl.isspace() or not tl:
 							continue
-				
+
 					indent = DataReader.count_leading_whitespace(line)
 					indent_substring: str = DataReader.get_indent_substring(line, indent_depths[-1])
 
-					if (expected_indent_string == None and len(indent_substring) > 0):
+					if (expected_indent_string is None and len(indent_substring) > 0):
 						expected_indent_string = indent_substring
 						if (" " in expected_indent_string and "\t" in expected_indent_string):
 							mixed_whitespace = True
 
 
-					if indent > indent_depths[-1] and current_node != None:
+					if indent > indent_depths[-1] and current_node is not None:
 						if expected_indent_string != indent_substring:
 							mixed_whitespace = True
 
@@ -99,23 +103,24 @@ class DataReader:
 						while indent_depths[-1] > indent:
 							node_stack.pop()
 							indent_depths.pop()
-					
+
 					current_node = self.make_node(line, line_number)
 
-					if len(node_stack) == 0 and current_node != None:
+					if len(node_stack) == 0 and current_node is not None:
 						self.root.children.append(current_node)
 						current_node.parent = self.root
-					elif current_node != None:
+					elif current_node is not None:
 						parent: DataNode = node_stack[-1]
 						parent.children.append(current_node)
 						current_node.parent = parent
-				
+
 				f.close()
 
 				if mixed_whitespace:
-					raise ReaderError("Warning - mixed whitespace in file %s (parsing completed with issue)" % (self.file))
-		except FileNotFoundError:
-			raise ReaderError("No such file as %s" % (self.file))
+					raise ReaderError(
+						f"Warning - mixed whitespace in file {self.file}(parsing completed without further issues)")
+		except FileNotFoundError as exc:
+			raise ReaderError(f"No such file as {self.file}") from exc
 
 
 
@@ -156,14 +161,14 @@ class DataReader:
 
 			# Add to the current item.
 			current_item += char
-		
+
 		# Items can end at the end of the line, too.
 		if current_item:
 			data.append(current_item)
-		
+
 		if len(data) == 0:
 			return None
-		
+
 		# Treat the first entry as the node name, and everything else as args.
 		node_name: str = data.pop(0)
 
@@ -182,7 +187,7 @@ class DataReader:
 		while (i < len(line) and (line[i] == "\t" or line[i] == " ")):
 			s += line[i]
 			i += 1
-		
+
 		return s
 
 
@@ -193,5 +198,5 @@ class DataReader:
 		i: int = 0
 		while (i < len(line) and (line[i] == "\t" or line[i] == " ")):
 			i += 1
-		
+
 		return i

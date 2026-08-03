@@ -11,6 +11,10 @@
 # You should have received a copy of the GNU Affero General Public License along with
 # this program. If not, see <https://www.gnu.org/licenses/>.
 
+"""
+A class of utility methods designed to allow easy conversion from nodes to objects.
+"""
+
 from abc import ABC
 
 from .builder_error import BuilderError
@@ -27,8 +31,8 @@ class Builder(ABC):
 		"""
 		try:
 			return node.args[arg]
-		except IndexError:
-			raise BuilderError("No argument at position %d." % (arg), node)
+		except IndexError as exc:
+			raise BuilderError(f"No argument at position {arg}.", node) from exc
 
 
 
@@ -40,10 +44,11 @@ class Builder(ABC):
 		"""
 		try:
 			return int(node.args[arg])
-		except ValueError:
-			raise BuilderError("The string \"%s\" could not be parsed to an integer." % (node.args[arg]), node)
-		except IndexError:
-			raise BuilderError("No argument at position %d." % (arg), node)
+		except ValueError as exc:
+			raise BuilderError(
+				f"The string \"{node.args[arg]}\" could not be parsed to an integer.", node) from exc
+		except IndexError as exc:
+			raise BuilderError(f"No argument at position {arg}.", node) from exc
 
 
 
@@ -55,12 +60,13 @@ class Builder(ABC):
 		"""
 		try:
 			return float(node.args[arg])
-		except ValueError:
-			raise BuilderError("The string \"%s\" could not be parsed to a float." % (node.args[arg]), node)
-		except IndexError:
-			raise BuilderError("No argument at position %d." % (arg), node)
+		except ValueError as exc:
+			raise BuilderError(
+				f"The string \"{node.args[arg]}\" could not be parsed to a float.", node) from exc
+		except IndexError as exc:
+			raise BuilderError(f"No argument at position {arg}.", node) from exc
 
-	
+
 
 
 	@classmethod
@@ -76,5 +82,5 @@ class Builder(ABC):
 		except IndexError:
 			# This is not necessarily an error, so no error message is printed.
 			pass
-		
+
 		return None

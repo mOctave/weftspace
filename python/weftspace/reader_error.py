@@ -11,6 +11,10 @@
 # You should have received a copy of the GNU Affero General Public License along with
 # this program. If not, see <https://www.gnu.org/licenses/>.
 
+"""
+An exception thrown by the data reader.
+"""
+
 from __future__ import annotations
 
 class ReaderError(Exception):
@@ -23,7 +27,7 @@ class ReaderError(Exception):
 	def message(self):
 		"""The error message for this error."""
 		return self._message
-	
+
 	@message.setter
 	def message(self, message: str):
 		"""Changes the error message associated with this error."""

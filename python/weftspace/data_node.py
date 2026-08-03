@@ -11,6 +11,10 @@
 # You should have received a copy of the GNU Affero General Public License along with
 # this program. If not, see <https://www.gnu.org/licenses/>.
 
+"""
+A class representing a node on the data tree.
+"""
+
 from __future__ import annotations
 
 class DataNode:
@@ -23,7 +27,7 @@ class DataNode:
 	def name(self) -> str:
 		"""The name of this node."""
 		return self._name
-	
+
 	@name.setter
 	def name(self, name: str) -> None:
 		"""Changes the name of this node."""
@@ -37,7 +41,7 @@ class DataNode:
 	def parent(self) -> DataNode | None:
 		"""The parent of this node."""
 		return self._parent
-	
+
 	@parent.setter
 	def parent(self, parent: DataNode | None) -> None:
 		"""
@@ -52,7 +56,7 @@ class DataNode:
 	def args(self) -> list[str]:
 		"""This node's arguments."""
 		return self._args
-	
+
 	@args.setter
 	def args(self, args: list[str]) -> None:
 		"""
@@ -66,7 +70,7 @@ class DataNode:
 	def children(self) -> list[DataNode]:
 		"""This node's children."""
 		return self._children
-	
+
 	@children.setter
 	def children(self, children: list[DataNode]) -> None:
 		"""
@@ -79,7 +83,8 @@ class DataNode:
 
 
 	# MARK: Constructors
-	def __init__(self, name: str, parent: DataNode | None, args: list[str], children: list[DataNode]) -> None:
+	def __init__(self, name: str, parent: DataNode | None,
+		args: list[str], children: list[DataNode]) -> None:
 		"""
 		Primary constructor. Takes all the standard arguments, except those defined by
 		LoadedNode.
@@ -119,7 +124,7 @@ class DataNode:
 		hash_code = prime * hash_code + 0 if self in self.children else hash(len(self.children))
 
 		return hash_code
-	
+
 
 
 	def __eq__(self, other: object) -> bool:
@@ -138,7 +143,7 @@ class DataNode:
 		# The other object is not a data node
 		if not isinstance(other, DataNode):
 			return False
-		
+
 		# Check if the two nodes have a different property
 		if other.name != self.name:
 			return False
@@ -157,4 +162,4 @@ class DataNode:
 		Returns a string representation of this node, including name, arguments,
 		and the number of children it has.
 		"""
-		return "Node{{name: {0}, args: {1}, children: {2}}}".format(self.name, str(self.args), len(self.children))
+		return f"Node{{name: {self.name}, args: {self.args}, children: {len(self.children)}}}"

@@ -11,7 +11,9 @@
 # You should have received a copy of the GNU Affero General Public License along with
 # this program. If not, see <https://www.gnu.org/licenses/>.
 
-# This package contains the main code for the Python Weftspace library.
+"""
+This package contains the main code for the Python Weftspace library.
+"""
 
 # type: ignore
 from .builder import Builder

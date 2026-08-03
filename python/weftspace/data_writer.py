@@ -11,6 +11,10 @@
 # You should have received a copy of the GNU Affero General Public License along with
 # this program. If not, see <https://www.gnu.org/licenses/>.
 
+"""
+A class which writes a node to a file.
+"""
+
 from io import TextIOWrapper
 import os
 
@@ -26,12 +30,12 @@ class DataWriter:
 	def file(self) -> str:
 		"""The file this DataWriter is writing to."""
 		return self._file
-	
+
 	@file.setter
 	def file(self, file: str) -> None:
 		"""Changes the file being written to."""
 		self._file = file
-	
+
 
 
 	_io_wrapper: TextIOWrapper
@@ -40,7 +44,7 @@ class DataWriter:
 	def io_wrapper(self) -> TextIOWrapper:
 		"""The TextIOWrapper used to write to this DataWriter's file."""
 		return self._io_wrapper
-	
+
 	# io_wrapper has no setter, and should be created with open()
 
 
@@ -50,40 +54,40 @@ class DataWriter:
 		"""Sole constructor."""
 		self.file = file
 
-	
+
 
 	# MARK: Methods
 	def open(self) -> None:
 		"""Opens the TextIOWrapper for this DataWriter."""
-		self._io_wrapper = open(self.file, "a")
+		self._io_wrapper = open(self.file, "a", encoding="UTF-8")
 
 
 
 	def close(self) -> None:
 		"""Closes the TextIOWrapper for this DataWriter."""
 		self.io_wrapper.close()
-	
+
 
 
 	def write(self, node: DataNode) -> None:
 		"""Writes a node to a file with no indent."""
 		self.write_indented(node, 0)
 
-	
+
 
 
 	def write_indented(self, node: DataNode, indent: int) -> None:
 		"""Writes a node to the file."""
 		for _ in range(indent):
 			self.io_wrapper.write("\t")
-			
+
 		self.io_wrapper.write(DataWriter.node_to_line(node))
 		self.io_wrapper.write(os.linesep)
 		self.io_wrapper.flush()
 
 		for child in node.children:
 			self.write_indented(child, indent + 1)
-			
+
 		if indent == 0:
 			self.io_wrapper.write(os.linesep)
 
@@ -95,14 +99,14 @@ class DataWriter:
 		Represents a node as a line to be saved to a file.
 		Not to be confused with DataNode.__str__
 		"""
-		
+
 		s: str = ""
-		
+
 		s += DataWriter.quote_word(node.name) + " "
 
 		for arg in node.args:
 			s += DataWriter.quote_word(arg) + " "
-		
+
 		return s.strip()
 
 

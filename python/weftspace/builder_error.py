@@ -11,6 +11,10 @@
 # You should have received a copy of the GNU Affero General Public License along with
 # this program. If not, see <https://www.gnu.org/licenses/>.
 
+"""
+An exception thrown by the builder.
+"""
+
 from __future__ import annotations
 
 import os
@@ -28,7 +32,7 @@ class BuilderError(Exception):
 	def message(self) -> str:
 		"""The error message for this error."""
 		return self._message
-	
+
 	@message.setter
 	def message(self, message: str) -> None:
 		"""Changes the error message associated with this error."""
@@ -65,7 +69,7 @@ class BuilderError(Exception):
 		"""
 		node_descriptions: list[str] = []
 		current_node: DataNode | None = self.node
-		while (current_node != None):
+		while current_node is not None:
 			node_descriptions.insert(0, DataWriter.node_to_line(current_node))
 			current_node = current_node.parent
 
