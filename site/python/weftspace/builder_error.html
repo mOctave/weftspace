@@ -62,12 +62,12 @@ el.replaceWith(d);
         _message: str
 
         @property
-        def message(self):
+        def message(self) -&gt; str:
                 &#34;&#34;&#34;The error message for this error.&#34;&#34;&#34;
                 return self._message
         
         @message.setter
-        def message(self, message: str):
+        def message(self, message: str) -&gt; None:
                 &#34;&#34;&#34;Changes the error message associated with this error.&#34;&#34;&#34;
                 self._message = message
 
@@ -76,18 +76,18 @@ el.replaceWith(d);
         _node: DataNode
 
         @property
-        def node(self):
+        def node(self) -&gt; DataNode:
                 &#34;&#34;&#34;The node that caused this error.&#34;&#34;&#34;
                 return self._node
 
         @node.setter
-        def node(self, node: DataNode):
+        def node(self, node: DataNode) -&gt; None:
                 &#34;&#34;&#34;Changes the node associated with this error.&#34;&#34;&#34;
                 self._node = node
 
 
         # MARK: Constructor
-        def __init__(self, message: str, node: DataNode):
+        def __init__(self, message: str, node: DataNode) -&gt; None:
                 &#34;&#34;&#34;Sole constructor. Takes a message and the data node that caused the error.&#34;&#34;&#34;
                 super().__init__(message)
                 self._message = message
@@ -95,7 +95,7 @@ el.replaceWith(d);
 
 
         # MARK: Methods
-        def represent(self):
+        def represent(self) -&gt; str:
                 &#34;&#34;&#34;
                 Represents this exception as a long-form error message with a trace of
                 the node that caused it.
@@ -126,27 +126,27 @@ el.replaceWith(d);
 </ul>
 <h3>Instance variables</h3>
 <dl>
-<dt id="weftspace.builder_error.BuilderError.message"><code class="name">prop <span class="ident">message</span></code></dt>
+<dt id="weftspace.builder_error.BuilderError.message"><code class="name">prop <span class="ident">message</span> : str</code></dt>
 <dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def message(self):
+def message(self) -&gt; str:
         &#34;&#34;&#34;The error message for this error.&#34;&#34;&#34;
         return self._message</code></pre>
 </details>
 <div class="desc"><p>The error message for this error.</p></div>
 </dd>
-<dt id="weftspace.builder_error.BuilderError.node"><code class="name">prop <span class="ident">node</span></code></dt>
+<dt id="weftspace.builder_error.BuilderError.node"><code class="name">prop <span class="ident">node</span> : DataNode</code></dt>
 <dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def node(self):
+def node(self) -&gt; DataNode:
         &#34;&#34;&#34;The node that caused this error.&#34;&#34;&#34;
         return self._node</code></pre>
 </details>
@@ -156,14 +156,14 @@ def node(self):
 <h3>Methods</h3>
 <dl>
 <dt id="weftspace.builder_error.BuilderError.represent"><code class="name flex">
-<span>def <span class="ident">represent</span></span>(<span>self)</span>
+<span>def <span class="ident">represent</span></span>(<span>self) ‑> str</span>
 </code></dt>
 <dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def represent(self):
+<pre><code class="python">def represent(self) -&gt; str:
         &#34;&#34;&#34;
         Represents this exception as a long-form error message with a trace of
         the node that caused it.

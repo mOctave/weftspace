@@ -58,6 +58,34 @@ el.replaceWith(d);
 <pre><code class="python">class LoadedNode(DataNode):
         &#34;&#34;&#34;A subclass of a node that is attached to a specific line and file, for use in debugging.&#34;&#34;&#34;
 
+        # MARK: Properties
+        _line: int
+
+        @property
+        def line(self) -&gt; int:
+                &#34;&#34;&#34;The line this node was parsed from.&#34;&#34;&#34;
+                return self._line
+        
+        @line.setter
+        def line(self, line: int) -&gt; None:
+                &#34;&#34;&#34;Changes the line number associated with this node.&#34;&#34;&#34;
+                self._line = line
+
+
+        _file: str
+
+        @property
+        def file(self) -&gt; str:
+                &#34;&#34;&#34;The filename of the file this node was parsed from.&#34;&#34;&#34;
+                return self._file
+        
+        @file.setter
+        def file(self, file: str) -&gt; None:
+                &#34;&#34;&#34;Changes the file associated with this node.&#34;&#34;&#34;
+                self._file = file
+
+
+
         # MARK: Constructor
         def __init__(
                 self,
@@ -67,41 +95,13 @@ el.replaceWith(d);
                 children: list[DataNode],
                 line: int,
                 file: str
-        ):
+        ) -&gt; None:
                 &#34;&#34;&#34;
                 Sole constructor.
                 &#34;&#34;&#34;
                 super().__init__(name, parent, args, children)
                 self.line = line
-                self.file = file
-
-
-
-        # MARK: Properties
-        _line: int
-
-        @property
-        def line(self):
-                &#34;&#34;&#34;The line this node was parsed from.&#34;&#34;&#34;
-                return self._name
-        
-        @line.setter
-        def line(self, line: int):
-                &#34;&#34;&#34;Changes the line number associated with this node.&#34;&#34;&#34;
-                self._line = line
-
-
-        _file: str
-
-        @property
-        def file(self):
-                &#34;&#34;&#34;The filename of the file this node was parsed from.&#34;&#34;&#34;
-                return self._name
-        
-        @file.setter
-        def file(self, file: str):
-                &#34;&#34;&#34;Changes the file associated with this node.&#34;&#34;&#34;
-                self._file = file</code></pre>
+                self.file = file</code></pre>
 </details>
 <div class="desc"><p>A subclass of a node that is attached to a specific line and file, for use in debugging.</p>
 <p>Sole constructor.</p></div>
@@ -111,29 +111,29 @@ el.replaceWith(d);
 </ul>
 <h3>Instance variables</h3>
 <dl>
-<dt id="weftspace.loaded_node.LoadedNode.file"><code class="name">prop <span class="ident">file</span></code></dt>
+<dt id="weftspace.loaded_node.LoadedNode.file"><code class="name">prop <span class="ident">file</span> : str</code></dt>
 <dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def file(self):
+def file(self) -&gt; str:
         &#34;&#34;&#34;The filename of the file this node was parsed from.&#34;&#34;&#34;
-        return self._name</code></pre>
+        return self._file</code></pre>
 </details>
 <div class="desc"><p>The filename of the file this node was parsed from.</p></div>
 </dd>
-<dt id="weftspace.loaded_node.LoadedNode.line"><code class="name">prop <span class="ident">line</span></code></dt>
+<dt id="weftspace.loaded_node.LoadedNode.line"><code class="name">prop <span class="ident">line</span> : int</code></dt>
 <dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def line(self):
+def line(self) -&gt; int:
         &#34;&#34;&#34;The line this node was parsed from.&#34;&#34;&#34;
-        return self._name</code></pre>
+        return self._line</code></pre>
 </details>
 <div class="desc"><p>The line this node was parsed from.</p></div>
 </dd>
