@@ -174,14 +174,14 @@ el.replaceWith(d);
                                         # Item will end with a double quote, ignore this one.
                                         split_on = &#34;\&#34;&#34;
                                         continue
-                                elif char == &#34;`&#34;:
+                                if char == &#34;`&#34;:
                                         # Item will end with a backtick, ignore this one.
                                         split_on = &#34;`&#34;
                                         continue
-                                else:
-                                        # Item will end when the current word ends.
-                                        split_on = &#34; &#34;
-                        elif is_empty:
+
+                                # Item will end when the current word ends.
+                                split_on = &#34; &#34;
+                        if is_empty:
                                 continue
 
                         if char == split_on:
@@ -190,7 +190,7 @@ el.replaceWith(d);
                                 current_item = &#34;&#34;
                                 is_empty = True
                                 continue
-                        elif char == &#34;#&#34; and split_on == &#34; &#34;:
+                        if char == &#34;#&#34; and split_on == &#34; &#34;:
                                 # Ignore everything after a comment.
                                 break
 
@@ -307,14 +307,14 @@ def root(self) -&gt; DataNode:
                                 # Item will end with a double quote, ignore this one.
                                 split_on = &#34;\&#34;&#34;
                                 continue
-                        elif char == &#34;`&#34;:
+                        if char == &#34;`&#34;:
                                 # Item will end with a backtick, ignore this one.
                                 split_on = &#34;`&#34;
                                 continue
-                        else:
-                                # Item will end when the current word ends.
-                                split_on = &#34; &#34;
-                elif is_empty:
+
+                        # Item will end when the current word ends.
+                        split_on = &#34; &#34;
+                if is_empty:
                         continue
 
                 if char == split_on:
@@ -323,7 +323,7 @@ def root(self) -&gt; DataNode:
                         current_item = &#34;&#34;
                         is_empty = True
                         continue
-                elif char == &#34;#&#34; and split_on == &#34; &#34;:
+                if char == &#34;#&#34; and split_on == &#34; &#34;:
                         # Ignore everything after a comment.
                         break
 
