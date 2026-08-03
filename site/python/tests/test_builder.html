@@ -1,0 +1,626 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
+<meta name="generator" content="pdoc3 0.11.6">
+<title>tests.test_builder API documentation</title>
+<meta name="description" content="">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:1.5em;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:2em 0 .50em 0}h3{font-size:1.4em;margin:1.6em 0 .7em 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .2s ease-in-out}a:visited{color:#503}a:hover{color:#b62}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900;font-weight:bold}pre code{font-size:.8em;line-height:1.4em;padding:1em;display:block}code{background:#f3f3f3;font-family:"DejaVu Sans Mono",monospace;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source > summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible;min-width:max-content}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em 1em;margin:1em 0}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul ul{padding-left:1em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js" integrity="sha512-D9gUyxqja7hBtkWpPWGt9wfbfaMGVt9gnyCvYa+jojwwPHLCzUm5i8rpk7vD7wNee9bA35eYIjobYPaQuKS1MQ==" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => {
+hljs.configure({languages: ['bash', 'css', 'diff', 'graphql', 'ini', 'javascript', 'json', 'plaintext', 'python', 'python-repl', 'rust', 'shell', 'sql', 'typescript', 'xml', 'yaml']});
+hljs.highlightAll();
+/* Collapse source docstrings */
+setTimeout(() => {
+[...document.querySelectorAll('.hljs.language-python > .hljs-string')]
+.filter(el => el.innerHTML.length > 200 && ['"""', "'''"].includes(el.innerHTML.substring(0, 3)))
+.forEach(el => {
+let d = document.createElement('details');
+d.classList.add('hljs-string');
+d.innerHTML = '<summary>"""</summary>' + el.innerHTML.substring(3);
+el.replaceWith(d);
+});
+}, 100);
+})</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>tests.test_builder</code></h1>
+</header>
+<section id="section-intro">
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="tests.test_builder.TestBuilder"><code class="flex name class">
+<span>class <span class="ident">TestBuilder</span></span>
+<span>(</span><span>methodName='runTest')</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class TestBuilder(unittest.TestCase):
+        &#34;&#34;&#34;Tests for the various methods of Builder&#34;&#34;&#34;
+
+        no_args: DataNode
+        string_args: DataNode
+        int_args: DataNode
+        float_args: DataNode
+
+        def setUp(self) -&gt; None:
+                print(&#34;PRINT ME&#34;)
+                self.float_args = DataNode(&#34;doubargs&#34;, None, [&#34;0.&#34;, &#34;-0.8&#34;, &#34;15.36&#34;, &#34;3.14159&#34;], [])
+                self.string_args = DataNode(&#34;strargs&#34;, None, [&#34;foo&#34;, &#34;bar&#34;], [])
+                self.int_args = DataNode(&#34;intargs&#34;, None, [&#34;1&#34;, &#34;2&#34;, &#34;3&#34;, &#34;-1&#34;], [self.float_args])
+                self.no_args = DataNode(&#34;argless&#34;, None, [], [self.string_args, self.int_args])
+                return super().setUp()
+
+        def test_pass(self):
+                return
+
+        # MARK: build_string()
+        def test_build_string_no_args(self) -&gt; None:
+                try:
+                        Builder.build_string(self.no_args, 0)
+                        self.fail()
+                except BuilderError:
+                        # Expected Result
+                        pass
+        
+        def test_build_string_in_range(self) -&gt; None:
+                try:
+                        self.assertEqual(&#34;foo&#34;, Builder.build_string(self.string_args, 0))
+                        self.assertEqual(&#34;3.14159&#34;, Builder.build_string(self.float_args, 3))
+                except BuilderError:
+                        self.fail()
+
+        def test_build_string_out_of_range(self) -&gt; None:
+                try:
+                        Builder.build_string(self.string_args, 2)
+                        self.fail()
+                except BuilderError:
+                        # Expected Result
+                        pass
+
+
+
+        # MARK: build_int()
+        def test_build_int_no_args(self) -&gt; None:
+                try:
+                        Builder.build_int(self.no_args, 0)
+                        self.fail()
+                except BuilderError:
+                        # Expected Result
+                        pass
+        
+        def test_build_int_in_range(self) -&gt; None:
+                try:
+                        self.assertEqual(3, Builder.build_int(self.int_args, 2))
+                        self.assertEqual(-1, Builder.build_int(self.int_args, 3))
+                except BuilderError:
+                        self.fail()
+
+        def test_build_int_out_of_range(self) -&gt; None:
+                try:
+                        Builder.build_int(self.int_args, 4)
+                        self.fail()
+                except BuilderError:
+                        # Expected Result
+                        pass
+
+        def test_build_int_string_value(self) -&gt; None:
+                try:
+                        Builder.build_int(self.string_args, 0)
+                        self.fail()
+                except BuilderError:
+                        # Expected Result
+                        pass
+
+        def test_build_int_float_value(self) -&gt; None:
+                try:
+                        Builder.build_int(self.float_args, 0)
+                        self.fail()
+                except BuilderError:
+                        # Expected Result
+                        pass
+
+
+
+        # MARK: build_float()
+        def test_build_float_no_args(self) -&gt; None:
+                try:
+                        Builder.build_float(self.no_args, 0)
+                        self.fail()
+                except BuilderError:
+                        # Expected Result
+                        pass
+        
+        def test_build_float_in_range(self) -&gt; None:
+                try:
+                        self.assertAlmostEqual(0., Builder.build_float(self.float_args, 0))
+                        self.assertAlmostEqual(3.14159, Builder.build_float(self.float_args, 3))
+                except BuilderError:
+                        self.fail()
+
+        def test_build_float_out_of_range(self) -&gt; None:
+                try:
+                        Builder.build_float(self.float_args, 4)
+                        self.fail()
+                except BuilderError:
+                        # Expected Result
+                        pass
+
+        def test_build_float_string_value(self) -&gt; None:
+                try:
+                        Builder.build_float(self.string_args, 0)
+                        self.fail()
+                except BuilderError:
+                        # Expected Result
+                        pass
+
+        def test_build_float_int_value(self) -&gt; None:
+                try:
+                        self.assertAlmostEqual(1., Builder.build_float(self.int_args, 0))
+                except BuilderError:
+                        self.fail()
+                        pass
+
+
+
+        # search()
+        def test_search_no_match(self) -&gt; None:
+                self.assertEqual(None, Builder.search(DataNode(&#34;a&#34;, None, [&#34;q&#34;, &#34;r&#34;, &#34;s&#34;], []), self.no_args))
+
+
+        def test_search_exact_match(self) -&gt; None:
+                self.assertEqual(self.string_args, Builder.search(self.string_args, self.no_args))
+
+        def test_search_inexact_match(self) -&gt; None:
+                self.assertEqual(self.int_args,
+                        Builder.search(DataNode(&#34;intargs&#34;, None, [&#34;1&#34;, &#34;0&#34;, &#34;not even an int&#34;], []), self.no_args))
+
+
+        def test_search_close_failure(self) -&gt; None:
+                self.assertEqual(None,
+                        Builder.search(DataNode(&#34;intargs&#34;, None, [], []), self.no_args))
+                self.assertEqual(None,
+                        Builder.search(DataNode(&#34;intargs&#34;, None, [&#34;.&#34;], []), self.no_args))
+                self.assertEqual(None,
+                        Builder.search(DataNode(&#34;not int args&#34;, None, [&#34;1&#34;], []), self.no_args))
+
+        def test_search_second_level_match(self) -&gt; None:
+                self.assertEqual(None, Builder.search(self.float_args, self.no_args))</code></pre>
+</details>
+<div class="desc"><p>Tests for the various methods of Builder</p>
+<p>Create an instance of the class that will use the named test
+method when executed. Raises a ValueError if the instance does
+not have a method with the specified name.</p></div>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>unittest.case.TestCase</li>
+</ul>
+<h3>Class variables</h3>
+<dl>
+<dt id="tests.test_builder.TestBuilder.float_args"><code class="name">var <span class="ident">float_args</span> : weftspace.data_node.DataNode</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="tests.test_builder.TestBuilder.int_args"><code class="name">var <span class="ident">int_args</span> : weftspace.data_node.DataNode</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="tests.test_builder.TestBuilder.no_args"><code class="name">var <span class="ident">no_args</span> : weftspace.data_node.DataNode</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+<dt id="tests.test_builder.TestBuilder.string_args"><code class="name">var <span class="ident">string_args</span> : weftspace.data_node.DataNode</code></dt>
+<dd>
+<div class="desc"><p>The type of the None singleton.</p></div>
+</dd>
+</dl>
+<h3>Methods</h3>
+<dl>
+<dt id="tests.test_builder.TestBuilder.setUp"><code class="name flex">
+<span>def <span class="ident">setUp</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def setUp(self) -&gt; None:
+        print(&#34;PRINT ME&#34;)
+        self.float_args = DataNode(&#34;doubargs&#34;, None, [&#34;0.&#34;, &#34;-0.8&#34;, &#34;15.36&#34;, &#34;3.14159&#34;], [])
+        self.string_args = DataNode(&#34;strargs&#34;, None, [&#34;foo&#34;, &#34;bar&#34;], [])
+        self.int_args = DataNode(&#34;intargs&#34;, None, [&#34;1&#34;, &#34;2&#34;, &#34;3&#34;, &#34;-1&#34;], [self.float_args])
+        self.no_args = DataNode(&#34;argless&#34;, None, [], [self.string_args, self.int_args])
+        return super().setUp()</code></pre>
+</details>
+<div class="desc"><p>Hook method for setting up the test fixture before exercising it.</p></div>
+</dd>
+<dt id="tests.test_builder.TestBuilder.test_build_float_in_range"><code class="name flex">
+<span>def <span class="ident">test_build_float_in_range</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_build_float_in_range(self) -&gt; None:
+        try:
+                self.assertAlmostEqual(0., Builder.build_float(self.float_args, 0))
+                self.assertAlmostEqual(3.14159, Builder.build_float(self.float_args, 3))
+        except BuilderError:
+                self.fail()</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="tests.test_builder.TestBuilder.test_build_float_int_value"><code class="name flex">
+<span>def <span class="ident">test_build_float_int_value</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_build_float_int_value(self) -&gt; None:
+        try:
+                self.assertAlmostEqual(1., Builder.build_float(self.int_args, 0))
+        except BuilderError:
+                self.fail()
+                pass</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="tests.test_builder.TestBuilder.test_build_float_no_args"><code class="name flex">
+<span>def <span class="ident">test_build_float_no_args</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_build_float_no_args(self) -&gt; None:
+        try:
+                Builder.build_float(self.no_args, 0)
+                self.fail()
+        except BuilderError:
+                # Expected Result
+                pass</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="tests.test_builder.TestBuilder.test_build_float_out_of_range"><code class="name flex">
+<span>def <span class="ident">test_build_float_out_of_range</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_build_float_out_of_range(self) -&gt; None:
+        try:
+                Builder.build_float(self.float_args, 4)
+                self.fail()
+        except BuilderError:
+                # Expected Result
+                pass</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="tests.test_builder.TestBuilder.test_build_float_string_value"><code class="name flex">
+<span>def <span class="ident">test_build_float_string_value</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_build_float_string_value(self) -&gt; None:
+        try:
+                Builder.build_float(self.string_args, 0)
+                self.fail()
+        except BuilderError:
+                # Expected Result
+                pass</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="tests.test_builder.TestBuilder.test_build_int_float_value"><code class="name flex">
+<span>def <span class="ident">test_build_int_float_value</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_build_int_float_value(self) -&gt; None:
+        try:
+                Builder.build_int(self.float_args, 0)
+                self.fail()
+        except BuilderError:
+                # Expected Result
+                pass</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="tests.test_builder.TestBuilder.test_build_int_in_range"><code class="name flex">
+<span>def <span class="ident">test_build_int_in_range</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_build_int_in_range(self) -&gt; None:
+        try:
+                self.assertEqual(3, Builder.build_int(self.int_args, 2))
+                self.assertEqual(-1, Builder.build_int(self.int_args, 3))
+        except BuilderError:
+                self.fail()</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="tests.test_builder.TestBuilder.test_build_int_no_args"><code class="name flex">
+<span>def <span class="ident">test_build_int_no_args</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_build_int_no_args(self) -&gt; None:
+        try:
+                Builder.build_int(self.no_args, 0)
+                self.fail()
+        except BuilderError:
+                # Expected Result
+                pass</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="tests.test_builder.TestBuilder.test_build_int_out_of_range"><code class="name flex">
+<span>def <span class="ident">test_build_int_out_of_range</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_build_int_out_of_range(self) -&gt; None:
+        try:
+                Builder.build_int(self.int_args, 4)
+                self.fail()
+        except BuilderError:
+                # Expected Result
+                pass</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="tests.test_builder.TestBuilder.test_build_int_string_value"><code class="name flex">
+<span>def <span class="ident">test_build_int_string_value</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_build_int_string_value(self) -&gt; None:
+        try:
+                Builder.build_int(self.string_args, 0)
+                self.fail()
+        except BuilderError:
+                # Expected Result
+                pass</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="tests.test_builder.TestBuilder.test_build_string_in_range"><code class="name flex">
+<span>def <span class="ident">test_build_string_in_range</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_build_string_in_range(self) -&gt; None:
+        try:
+                self.assertEqual(&#34;foo&#34;, Builder.build_string(self.string_args, 0))
+                self.assertEqual(&#34;3.14159&#34;, Builder.build_string(self.float_args, 3))
+        except BuilderError:
+                self.fail()</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="tests.test_builder.TestBuilder.test_build_string_no_args"><code class="name flex">
+<span>def <span class="ident">test_build_string_no_args</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_build_string_no_args(self) -&gt; None:
+        try:
+                Builder.build_string(self.no_args, 0)
+                self.fail()
+        except BuilderError:
+                # Expected Result
+                pass</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="tests.test_builder.TestBuilder.test_build_string_out_of_range"><code class="name flex">
+<span>def <span class="ident">test_build_string_out_of_range</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_build_string_out_of_range(self) -&gt; None:
+        try:
+                Builder.build_string(self.string_args, 2)
+                self.fail()
+        except BuilderError:
+                # Expected Result
+                pass</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="tests.test_builder.TestBuilder.test_pass"><code class="name flex">
+<span>def <span class="ident">test_pass</span></span>(<span>self)</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_pass(self):
+        return</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="tests.test_builder.TestBuilder.test_search_close_failure"><code class="name flex">
+<span>def <span class="ident">test_search_close_failure</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_search_close_failure(self) -&gt; None:
+        self.assertEqual(None,
+                Builder.search(DataNode(&#34;intargs&#34;, None, [], []), self.no_args))
+        self.assertEqual(None,
+                Builder.search(DataNode(&#34;intargs&#34;, None, [&#34;.&#34;], []), self.no_args))
+        self.assertEqual(None,
+                Builder.search(DataNode(&#34;not int args&#34;, None, [&#34;1&#34;], []), self.no_args))</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="tests.test_builder.TestBuilder.test_search_exact_match"><code class="name flex">
+<span>def <span class="ident">test_search_exact_match</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_search_exact_match(self) -&gt; None:
+        self.assertEqual(self.string_args, Builder.search(self.string_args, self.no_args))</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="tests.test_builder.TestBuilder.test_search_inexact_match"><code class="name flex">
+<span>def <span class="ident">test_search_inexact_match</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_search_inexact_match(self) -&gt; None:
+        self.assertEqual(self.int_args,
+                Builder.search(DataNode(&#34;intargs&#34;, None, [&#34;1&#34;, &#34;0&#34;, &#34;not even an int&#34;], []), self.no_args))</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="tests.test_builder.TestBuilder.test_search_no_match"><code class="name flex">
+<span>def <span class="ident">test_search_no_match</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_search_no_match(self) -&gt; None:
+        self.assertEqual(None, Builder.search(DataNode(&#34;a&#34;, None, [&#34;q&#34;, &#34;r&#34;, &#34;s&#34;], []), self.no_args))</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="tests.test_builder.TestBuilder.test_search_second_level_match"><code class="name flex">
+<span>def <span class="ident">test_search_second_level_match</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_search_second_level_match(self) -&gt; None:
+        self.assertEqual(None, Builder.search(self.float_args, self.no_args))</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+</dl>
+</dd>
+</dl>
+</section>
+</article>
+<nav id="sidebar">
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3>Super-module</h3>
+<ul>
+<li><code><a title="tests" href="index.html">tests</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="tests.test_builder.TestBuilder" href="#tests.test_builder.TestBuilder">TestBuilder</a></code></h4>
+<ul class="">
+<li><code><a title="tests.test_builder.TestBuilder.float_args" href="#tests.test_builder.TestBuilder.float_args">float_args</a></code></li>
+<li><code><a title="tests.test_builder.TestBuilder.int_args" href="#tests.test_builder.TestBuilder.int_args">int_args</a></code></li>
+<li><code><a title="tests.test_builder.TestBuilder.no_args" href="#tests.test_builder.TestBuilder.no_args">no_args</a></code></li>
+<li><code><a title="tests.test_builder.TestBuilder.setUp" href="#tests.test_builder.TestBuilder.setUp">setUp</a></code></li>
+<li><code><a title="tests.test_builder.TestBuilder.string_args" href="#tests.test_builder.TestBuilder.string_args">string_args</a></code></li>
+<li><code><a title="tests.test_builder.TestBuilder.test_build_float_in_range" href="#tests.test_builder.TestBuilder.test_build_float_in_range">test_build_float_in_range</a></code></li>
+<li><code><a title="tests.test_builder.TestBuilder.test_build_float_int_value" href="#tests.test_builder.TestBuilder.test_build_float_int_value">test_build_float_int_value</a></code></li>
+<li><code><a title="tests.test_builder.TestBuilder.test_build_float_no_args" href="#tests.test_builder.TestBuilder.test_build_float_no_args">test_build_float_no_args</a></code></li>
+<li><code><a title="tests.test_builder.TestBuilder.test_build_float_out_of_range" href="#tests.test_builder.TestBuilder.test_build_float_out_of_range">test_build_float_out_of_range</a></code></li>
+<li><code><a title="tests.test_builder.TestBuilder.test_build_float_string_value" href="#tests.test_builder.TestBuilder.test_build_float_string_value">test_build_float_string_value</a></code></li>
+<li><code><a title="tests.test_builder.TestBuilder.test_build_int_float_value" href="#tests.test_builder.TestBuilder.test_build_int_float_value">test_build_int_float_value</a></code></li>
+<li><code><a title="tests.test_builder.TestBuilder.test_build_int_in_range" href="#tests.test_builder.TestBuilder.test_build_int_in_range">test_build_int_in_range</a></code></li>
+<li><code><a title="tests.test_builder.TestBuilder.test_build_int_no_args" href="#tests.test_builder.TestBuilder.test_build_int_no_args">test_build_int_no_args</a></code></li>
+<li><code><a title="tests.test_builder.TestBuilder.test_build_int_out_of_range" href="#tests.test_builder.TestBuilder.test_build_int_out_of_range">test_build_int_out_of_range</a></code></li>
+<li><code><a title="tests.test_builder.TestBuilder.test_build_int_string_value" href="#tests.test_builder.TestBuilder.test_build_int_string_value">test_build_int_string_value</a></code></li>
+<li><code><a title="tests.test_builder.TestBuilder.test_build_string_in_range" href="#tests.test_builder.TestBuilder.test_build_string_in_range">test_build_string_in_range</a></code></li>
+<li><code><a title="tests.test_builder.TestBuilder.test_build_string_no_args" href="#tests.test_builder.TestBuilder.test_build_string_no_args">test_build_string_no_args</a></code></li>
+<li><code><a title="tests.test_builder.TestBuilder.test_build_string_out_of_range" href="#tests.test_builder.TestBuilder.test_build_string_out_of_range">test_build_string_out_of_range</a></code></li>
+<li><code><a title="tests.test_builder.TestBuilder.test_pass" href="#tests.test_builder.TestBuilder.test_pass">test_pass</a></code></li>
+<li><code><a title="tests.test_builder.TestBuilder.test_search_close_failure" href="#tests.test_builder.TestBuilder.test_search_close_failure">test_search_close_failure</a></code></li>
+<li><code><a title="tests.test_builder.TestBuilder.test_search_exact_match" href="#tests.test_builder.TestBuilder.test_search_exact_match">test_search_exact_match</a></code></li>
+<li><code><a title="tests.test_builder.TestBuilder.test_search_inexact_match" href="#tests.test_builder.TestBuilder.test_search_inexact_match">test_search_inexact_match</a></code></li>
+<li><code><a title="tests.test_builder.TestBuilder.test_search_no_match" href="#tests.test_builder.TestBuilder.test_search_no_match">test_search_no_match</a></code></li>
+<li><code><a title="tests.test_builder.TestBuilder.test_search_second_level_match" href="#tests.test_builder.TestBuilder.test_search_second_level_match">test_search_second_level_match</a></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.11.6</a>.</p>
+</footer>
+</body>
+</html>

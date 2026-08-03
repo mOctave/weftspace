@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
 <meta name="generator" content="pdoc3 0.11.6">
-<title>tests.test_utils API documentation</title>
+<title>tests.test_data_node API documentation</title>
 <meta name="description" content="">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
@@ -33,7 +33,7 @@ el.replaceWith(d);
 <main>
 <article id="content">
 <header>
-<h1 class="title">Module <code>tests.test_utils</code></h1>
+<h1 class="title">Module <code>tests.test_data_node</code></h1>
 </header>
 <section id="section-intro">
 </section>
@@ -46,54 +46,112 @@ el.replaceWith(d);
 <section>
 <h2 class="section-title" id="header-classes">Classes</h2>
 <dl>
-<dt id="tests.test_utils.TestUtils"><code class="flex name class">
-<span>class <span class="ident">TestUtils</span></span>
+<dt id="tests.test_data_node.TestDataNode"><code class="flex name class">
+<span>class <span class="ident">TestDataNode</span></span>
+<span>(</span><span>methodName='runTest')</span>
 </code></dt>
 <dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class TestUtils(ABC):
-        &#34;&#34;&#34;A class containing utility methods to support tests.&#34;&#34;&#34;
+<pre><code class="python">class TestDataNode(unittest.TestCase):
+        &#34;&#34;&#34;General tests for data nodes&#34;&#34;&#34;
 
-        @classmethod
-        def get_test_node(cls):
-                &#34;&#34;&#34;A method which constructs a sample data node that can be used across multiple tests.&#34;&#34;&#34;
-                test_node: DataNode = DataNode(&#34;ship&#34;, None, [&#34;Much Confused Wardragon&#34;], [])
+        def test_constructor(self) -&gt; None:
+                base: DataNode = DataNode.create_root_node()
+                dn: DataNode = DataNode(&#34;Name&#34;, None, [&#34;1&#34;, &#34;2&#34;, &#34;3&#34;], [base])
 
-                child_node: DataNode = DataNode(&#34;mass&#34;, test_node, [&#34;35&#34;], [])
-                test_node.children.append(child_node)
+                self.assertEqual(&#34;Name&#34;, dn.name)
+                self.assertEqual(None, dn.parent)
+                self.assertEqual([&#34;1&#34;, &#34;2&#34;, &#34;3&#34;], dn.args)
+                self.assertEqual([base], dn.children)
 
-                child_node: DataNode = DataNode(&#34;drag&#34;, test_node, [&#34;0.3&#34;], [])
-                test_node.children.append(child_node)
+        def test_equals_hash_code(self) -&gt; None:
+                child: DataNode = DataNode(&#34;X&#34;, None, [&#34;A&#34;, &#34;B&#34;, &#34;C&#34;], [])
+                a: DataNode = DataNode(&#34;X&#34;, None, [&#34;A&#34;, &#34;B&#34;, &#34;C&#34;], [child])
+                b: DataNode = DataNode(&#34;X&#34;, None, [&#34;A&#34;, &#34;B&#34;, &#34;C&#34;], [child])
+                c: DataNode = DataNode(&#34;Y&#34;, None, [&#34;A&#34;, &#34;B&#34;, &#34;C&#34;], [child])
+                d: DataNode = DataNode(&#34;X&#34;, None, [&#34;A&#34;, &#34;B&#34;], [child])
 
-                child_node: DataNode = DataNode(&#34;weapon&#34;, test_node, [], [])
-                grand_node: DataNode = DataNode(&#34;hit force&#34;, child_node, [&#34;308&#34;], [])
-                child_node.children.append(grand_node)
-                grand_node: DataNode = DataNode(&#34;hull damage&#34;, child_node, [&#34;6100&#34;], [])
-                child_node.children.append(grand_node)
-                grand_node: DataNode = DataNode(&#34;shield damage&#34;, child_node, [&#34;42&#34;], [])
-                child_node.children.append(grand_node)
-                test_node.children.append(child_node)
+                self.assertEqual(a, b)
+                self.assertEqual(a.__hash__(), b.__hash__())
+                self.assertNotEqual(a, c)
+                self.assertNotEqual(a, d)
+                self.assertNotEqual(a, child)
 
-                child_node: DataNode = DataNode(&#34;description&#34;, test_node, [&#34;This Wardragon bears no resemblance to any actual ship in the game Endless Sky. It has no material existence, despite having mass and possibly explaining the existence of the dark matter in our universe.&#34;], [])
-                test_node.children.append(child_node)
 
-                return test_node</code></pre>
+        def test_str(self) -&gt; None:
+                node: DataNode = DataNode(&#34;A&#34;, None, [&#34;1&#34;, &#34;2&#34;, &#34;3&#34;], [])
+
+                self.assertEqual(&#34;Node{name: A, args: [&#39;1&#39;, &#39;2&#39;, &#39;3&#39;], children: 0}&#34;, node.__str__())</code></pre>
 </details>
-<div class="desc"><p>A class containing utility methods to support tests.</p></div>
+<div class="desc"><p>General tests for data nodes</p>
+<p>Create an instance of the class that will use the named test
+method when executed. Raises a ValueError if the instance does
+not have a method with the specified name.</p></div>
 <h3>Ancestors</h3>
 <ul class="hlist">
-<li>abc.ABC</li>
+<li>unittest.case.TestCase</li>
 </ul>
-<h3>Static methods</h3>
+<h3>Methods</h3>
 <dl>
-<dt id="tests.test_utils.TestUtils.get_test_node"><code class="name flex">
-<span>def <span class="ident">get_test_node</span></span>(<span>)</span>
+<dt id="tests.test_data_node.TestDataNode.test_constructor"><code class="name flex">
+<span>def <span class="ident">test_constructor</span></span>(<span>self) ‑> None</span>
 </code></dt>
 <dd>
-<div class="desc"><p>A method which constructs a sample data node that can be used across multiple tests.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_constructor(self) -&gt; None:
+        base: DataNode = DataNode.create_root_node()
+        dn: DataNode = DataNode(&#34;Name&#34;, None, [&#34;1&#34;, &#34;2&#34;, &#34;3&#34;], [base])
+
+        self.assertEqual(&#34;Name&#34;, dn.name)
+        self.assertEqual(None, dn.parent)
+        self.assertEqual([&#34;1&#34;, &#34;2&#34;, &#34;3&#34;], dn.args)
+        self.assertEqual([base], dn.children)</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="tests.test_data_node.TestDataNode.test_equals_hash_code"><code class="name flex">
+<span>def <span class="ident">test_equals_hash_code</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_equals_hash_code(self) -&gt; None:
+        child: DataNode = DataNode(&#34;X&#34;, None, [&#34;A&#34;, &#34;B&#34;, &#34;C&#34;], [])
+        a: DataNode = DataNode(&#34;X&#34;, None, [&#34;A&#34;, &#34;B&#34;, &#34;C&#34;], [child])
+        b: DataNode = DataNode(&#34;X&#34;, None, [&#34;A&#34;, &#34;B&#34;, &#34;C&#34;], [child])
+        c: DataNode = DataNode(&#34;Y&#34;, None, [&#34;A&#34;, &#34;B&#34;, &#34;C&#34;], [child])
+        d: DataNode = DataNode(&#34;X&#34;, None, [&#34;A&#34;, &#34;B&#34;], [child])
+
+        self.assertEqual(a, b)
+        self.assertEqual(a.__hash__(), b.__hash__())
+        self.assertNotEqual(a, c)
+        self.assertNotEqual(a, d)
+        self.assertNotEqual(a, child)</code></pre>
+</details>
+<div class="desc"></div>
+</dd>
+<dt id="tests.test_data_node.TestDataNode.test_str"><code class="name flex">
+<span>def <span class="ident">test_str</span></span>(<span>self) ‑> None</span>
+</code></dt>
+<dd>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def test_str(self) -&gt; None:
+        node: DataNode = DataNode(&#34;A&#34;, None, [&#34;1&#34;, &#34;2&#34;, &#34;3&#34;], [])
+
+        self.assertEqual(&#34;Node{name: A, args: [&#39;1&#39;, &#39;2&#39;, &#39;3&#39;], children: 0}&#34;, node.__str__())</code></pre>
+</details>
+<div class="desc"></div>
 </dd>
 </dl>
 </dd>
@@ -113,9 +171,11 @@ el.replaceWith(d);
 <li><h3><a href="#header-classes">Classes</a></h3>
 <ul>
 <li>
-<h4><code><a title="tests.test_utils.TestUtils" href="#tests.test_utils.TestUtils">TestUtils</a></code></h4>
+<h4><code><a title="tests.test_data_node.TestDataNode" href="#tests.test_data_node.TestDataNode">TestDataNode</a></code></h4>
 <ul class="">
-<li><code><a title="tests.test_utils.TestUtils.get_test_node" href="#tests.test_utils.TestUtils.get_test_node">get_test_node</a></code></li>
+<li><code><a title="tests.test_data_node.TestDataNode.test_constructor" href="#tests.test_data_node.TestDataNode.test_constructor">test_constructor</a></code></li>
+<li><code><a title="tests.test_data_node.TestDataNode.test_equals_hash_code" href="#tests.test_data_node.TestDataNode.test_equals_hash_code">test_equals_hash_code</a></code></li>
+<li><code><a title="tests.test_data_node.TestDataNode.test_str" href="#tests.test_data_node.TestDataNode.test_str">test_str</a></code></li>
 </ul>
 </li>
 </ul>

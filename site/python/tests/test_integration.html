@@ -60,7 +60,7 @@ el.replaceWith(d);
 
         def test_node_equality(self):
                 &#34;&#34;&#34;A test to make sure identical data nodes are being treated as equal.&#34;&#34;&#34;
-                self.assertEqual(TestUtils.get_test_node(), TestUtils.get_test_node())
+                self.assertEqual(TestingUtils.get_test_node(), TestingUtils.get_test_node())
         
 
 
@@ -73,7 +73,7 @@ el.replaceWith(d);
                 # Write test data to a file
                 writer: DataWriter = DataWriter(&#34;test.txt&#34;)
                 writer.open()
-                writer.write(TestUtils.get_test_node())
+                writer.write(TestingUtils.get_test_node())
                 writer.close()
 
                 # Read test data from the file
@@ -88,7 +88,7 @@ el.replaceWith(d);
                 Path.unlink(Path(&#34;test.txt&#34;))
 
                 # Check to make sure there were no issues
-                self.assertEqual(TestUtils.get_test_node(), loaded_node)
+                self.assertEqual(TestingUtils.get_test_node(), loaded_node)
 
 
 
@@ -99,7 +99,7 @@ el.replaceWith(d);
                 &#34;&#34;&#34;
 
                 # Build the node
-                node: DataNode = TestUtils.get_test_node()
+                node: DataNode = TestingUtils.get_test_node()
                 name: str | None = Builder.build_string(node, 0)
                 mass: int = 0
                 drag: float = 0
@@ -146,7 +146,7 @@ el.replaceWith(d);
                 loaded_node: DataNode = root_node.children[0]
 
                 # Check to make sure there were no issues
-                self.assertEqual(TestUtils.get_test_node(), loaded_node)
+                self.assertEqual(TestingUtils.get_test_node(), loaded_node)
 
 
 
@@ -164,7 +164,7 @@ el.replaceWith(d);
                 loaded_node: DataNode = root_node.children[0]
 
                 # Check to make sure there were no issues
-                self.assertEqual(TestUtils.get_test_node(), loaded_node)
+                self.assertEqual(TestingUtils.get_test_node(), loaded_node)
         
 
 
@@ -176,7 +176,7 @@ el.replaceWith(d);
 
                 # Open and parse the test data
                 root_node: DataNode = DataNode.create_root_node()
-                reader: DataReader = DataReader(&#34;../testdata/spaceindented.txt&#34;, root_node)
+                reader: DataReader = DataReader(&#34;../testdata/terriblyindented.txt&#34;, root_node)
                 try:
                         reader.parse()
                         self.fail()
@@ -187,7 +187,7 @@ el.replaceWith(d);
                 loaded_node: DataNode = root_node.children[0]
 
                 # Check to make sure there were no issues
-                self.assertEqual(TestUtils.get_test_node(), loaded_node)</code></pre>
+                self.assertEqual(TestingUtils.get_test_node(), loaded_node)</code></pre>
 </details>
 <div class="desc"><p>The integration tests for this library.</p>
 <p>Create an instance of the class that will use the named test
@@ -214,7 +214,7 @@ not have a method with the specified name.</p></div>
         &#34;&#34;&#34;
 
         # Build the node
-        node: DataNode = TestUtils.get_test_node()
+        node: DataNode = TestingUtils.get_test_node()
         name: str | None = Builder.build_string(node, 0)
         mass: int = 0
         drag: float = 0
@@ -270,7 +270,7 @@ working properly.</p></div>
         loaded_node: DataNode = root_node.children[0]
 
         # Check to make sure there were no issues
-        self.assertEqual(TestUtils.get_test_node(), loaded_node)</code></pre>
+        self.assertEqual(TestingUtils.get_test_node(), loaded_node)</code></pre>
 </details>
 <div class="desc"><p>This test checks to make sure that nodes with extra empty lines in the
 middle of their definitions still parse properly.</p></div>
@@ -292,7 +292,7 @@ middle of their definitions still parse properly.</p></div>
         # Write test data to a file
         writer: DataWriter = DataWriter(&#34;test.txt&#34;)
         writer.open()
-        writer.write(TestUtils.get_test_node())
+        writer.write(TestingUtils.get_test_node())
         writer.close()
 
         # Read test data from the file
@@ -307,7 +307,7 @@ middle of their definitions still parse properly.</p></div>
         Path.unlink(Path(&#34;test.txt&#34;))
 
         # Check to make sure there were no issues
-        self.assertEqual(TestUtils.get_test_node(), loaded_node)</code></pre>
+        self.assertEqual(TestingUtils.get_test_node(), loaded_node)</code></pre>
 </details>
 <div class="desc"><p>This test creates a new DataNode, writes it to a file using DataWriter,
 reads it using DataReader, and compares it against the original node.</p></div>
@@ -322,7 +322,7 @@ reads it using DataReader, and compares it against the original node.</p></div>
 </summary>
 <pre><code class="python">def test_node_equality(self):
         &#34;&#34;&#34;A test to make sure identical data nodes are being treated as equal.&#34;&#34;&#34;
-        self.assertEqual(TestUtils.get_test_node(), TestUtils.get_test_node())</code></pre>
+        self.assertEqual(TestingUtils.get_test_node(), TestingUtils.get_test_node())</code></pre>
 </details>
 <div class="desc"><p>A test to make sure identical data nodes are being treated as equal.</p></div>
 </dd>
@@ -348,7 +348,7 @@ reads it using DataReader, and compares it against the original node.</p></div>
         loaded_node: DataNode = root_node.children[0]
 
         # Check to make sure there were no issues
-        self.assertEqual(TestUtils.get_test_node(), loaded_node)</code></pre>
+        self.assertEqual(TestingUtils.get_test_node(), loaded_node)</code></pre>
 </details>
 <div class="desc"><p>This test checks to make sure that space-based indentation is parsed properly.</p></div>
 </dd>
@@ -368,7 +368,7 @@ reads it using DataReader, and compares it against the original node.</p></div>
 
         # Open and parse the test data
         root_node: DataNode = DataNode.create_root_node()
-        reader: DataReader = DataReader(&#34;../testdata/spaceindented.txt&#34;, root_node)
+        reader: DataReader = DataReader(&#34;../testdata/terriblyindented.txt&#34;, root_node)
         try:
                 reader.parse()
                 self.fail()
@@ -379,7 +379,7 @@ reads it using DataReader, and compares it against the original node.</p></div>
         loaded_node: DataNode = root_node.children[0]
 
         # Check to make sure there were no issues
-        self.assertEqual(TestUtils.get_test_node(), loaded_node)</code></pre>
+        self.assertEqual(TestingUtils.get_test_node(), loaded_node)</code></pre>
 </details>
 <div class="desc"><p>This test checks to make sure that even the worst indentation can still be parsed,
 but that the proper warnings are thrown when you attempt to do so.</p></div>
