@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
 <meta name="generator" content="pdoc3 0.11.6">
 <title>weftspace.data_reader API documentation</title>
-<meta name="description" content="">
+<meta name="description" content="A class which reads data from a file and stores it in a node tree.">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/sanitize.min.css" integrity="sha512-y1dtMcuvtTMJc1yPgEqF0ZjQbhnc/bFhyvIyVNb9Zk5mIGtqVaAB1Ttl28su8AvFMOY0EwRbAe+HCLqj6W7/KA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/13.0.0/typography.min.css" integrity="sha512-Y1DYSb995BAfxobCkKepB1BqJJTPrOp3zPL74AWFugHHmmdcvO+C48WLrUOlhGMc0QG7AE3f7gmvvcrmX2fDoA==" crossorigin>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/default.min.css" crossorigin>
@@ -36,6 +36,7 @@ el.replaceWith(d);
 <h1 class="title">Module <code>weftspace.data_reader</code></h1>
 </header>
 <section id="section-intro">
+<p>A class which reads data from a file and stores it in a node tree.</p>
 </section>
 <section>
 </section>
@@ -65,7 +66,7 @@ el.replaceWith(d);
         def file(self) -&gt; str:
                 &#34;&#34;&#34;The file this DataReader is parsing.&#34;&#34;&#34;
                 return self._file
-        
+
         @file.setter
         def file(self, file: str) -&gt; None:
                 &#34;&#34;&#34;Changes the file being parsed.&#34;&#34;&#34;
@@ -77,7 +78,7 @@ el.replaceWith(d);
         def root(self) -&gt; DataNode:
                 &#34;&#34;&#34;The node this DataReader is using as its root.&#34;&#34;&#34;
                 return self._root
-        
+
         @root.setter
         def root(self, root: DataNode) -&gt; None:
                 &#34;&#34;&#34;Changes the root node being added to.&#34;&#34;&#34;
@@ -107,7 +108,7 @@ el.replaceWith(d);
 
                         indent_depths.append(0)
 
-                        with open(self.file, &#34;r&#34;) as f:
+                        with open(self.file, &#34;r&#34;, encoding=&#34;UTF-8&#34;) as f:
                                 for line in f:
                                         line_number += 1
                                         if len(line.split(&#34;#&#34;)) == 0:
@@ -117,17 +118,17 @@ el.replaceWith(d);
                                                 tl: str = line.split(&#34;#&#34;)[0]
                                                 if tl.isspace() or not tl:
                                                         continue
-                                
+
                                         indent = DataReader.count_leading_whitespace(line)
                                         indent_substring: str = DataReader.get_indent_substring(line, indent_depths[-1])
 
-                                        if (expected_indent_string == None and len(indent_substring) &gt; 0):
+                                        if (expected_indent_string is None and len(indent_substring) &gt; 0):
                                                 expected_indent_string = indent_substring
                                                 if (&#34; &#34; in expected_indent_string and &#34;\t&#34; in expected_indent_string):
                                                         mixed_whitespace = True
 
 
-                                        if indent &gt; indent_depths[-1] and current_node != None:
+                                        if indent &gt; indent_depths[-1] and current_node is not None:
                                                 if expected_indent_string != indent_substring:
                                                         mixed_whitespace = True
 
@@ -137,23 +138,24 @@ el.replaceWith(d);
                                                 while indent_depths[-1] &gt; indent:
                                                         node_stack.pop()
                                                         indent_depths.pop()
-                                        
+
                                         current_node = self.make_node(line, line_number)
 
-                                        if len(node_stack) == 0 and current_node != None:
+                                        if len(node_stack) == 0 and current_node is not None:
                                                 self.root.children.append(current_node)
                                                 current_node.parent = self.root
-                                        elif current_node != None:
+                                        elif current_node is not None:
                                                 parent: DataNode = node_stack[-1]
                                                 parent.children.append(current_node)
                                                 current_node.parent = parent
-                                
+
                                 f.close()
 
                                 if mixed_whitespace:
-                                        raise ReaderError(&#34;Warning - mixed whitespace in file %s (parsing completed with issue)&#34; % (self.file))
-                except FileNotFoundError:
-                        raise ReaderError(&#34;No such file as %s&#34; % (self.file))
+                                        raise ReaderError(
+                                                f&#34;Warning - mixed whitespace in file {self.file}(parsing completed without further issues)&#34;)
+                except FileNotFoundError as exc:
+                        raise ReaderError(f&#34;No such file as {self.file}&#34;) from exc
 
 
 
@@ -194,14 +196,14 @@ el.replaceWith(d);
 
                         # Add to the current item.
                         current_item += char
-                
+
                 # Items can end at the end of the line, too.
                 if current_item:
                         data.append(current_item)
-                
+
                 if len(data) == 0:
                         return None
-                
+
                 # Treat the first entry as the node name, and everything else as args.
                 node_name: str = data.pop(0)
 
@@ -220,7 +222,7 @@ el.replaceWith(d);
                 while (i &lt; len(line) and (line[i] == &#34;\t&#34; or line[i] == &#34; &#34;)):
                         s += line[i]
                         i += 1
-                
+
                 return s
 
 
@@ -231,7 +233,7 @@ el.replaceWith(d);
                 i: int = 0
                 while (i &lt; len(line) and (line[i] == &#34;\t&#34; or line[i] == &#34; &#34;)):
                         i += 1
-                
+
                 return i</code></pre>
 </details>
 <div class="desc"><p>A class which reads data from a file and stores it in a node tree.</p></div>
@@ -327,14 +329,14 @@ def root(self) -&gt; DataNode:
 
                 # Add to the current item.
                 current_item += char
-        
+
         # Items can end at the end of the line, too.
         if current_item:
                 data.append(current_item)
-        
+
         if len(data) == 0:
                 return None
-        
+
         # Treat the first entry as the node name, and everything else as args.
         node_name: str = data.pop(0)
 
@@ -364,7 +366,7 @@ def root(self) -&gt; DataNode:
 
                 indent_depths.append(0)
 
-                with open(self.file, &#34;r&#34;) as f:
+                with open(self.file, &#34;r&#34;, encoding=&#34;UTF-8&#34;) as f:
                         for line in f:
                                 line_number += 1
                                 if len(line.split(&#34;#&#34;)) == 0:
@@ -374,17 +376,17 @@ def root(self) -&gt; DataNode:
                                         tl: str = line.split(&#34;#&#34;)[0]
                                         if tl.isspace() or not tl:
                                                 continue
-                        
+
                                 indent = DataReader.count_leading_whitespace(line)
                                 indent_substring: str = DataReader.get_indent_substring(line, indent_depths[-1])
 
-                                if (expected_indent_string == None and len(indent_substring) &gt; 0):
+                                if (expected_indent_string is None and len(indent_substring) &gt; 0):
                                         expected_indent_string = indent_substring
                                         if (&#34; &#34; in expected_indent_string and &#34;\t&#34; in expected_indent_string):
                                                 mixed_whitespace = True
 
 
-                                if indent &gt; indent_depths[-1] and current_node != None:
+                                if indent &gt; indent_depths[-1] and current_node is not None:
                                         if expected_indent_string != indent_substring:
                                                 mixed_whitespace = True
 
@@ -394,23 +396,24 @@ def root(self) -&gt; DataNode:
                                         while indent_depths[-1] &gt; indent:
                                                 node_stack.pop()
                                                 indent_depths.pop()
-                                
+
                                 current_node = self.make_node(line, line_number)
 
-                                if len(node_stack) == 0 and current_node != None:
+                                if len(node_stack) == 0 and current_node is not None:
                                         self.root.children.append(current_node)
                                         current_node.parent = self.root
-                                elif current_node != None:
+                                elif current_node is not None:
                                         parent: DataNode = node_stack[-1]
                                         parent.children.append(current_node)
                                         current_node.parent = parent
-                        
+
                         f.close()
 
                         if mixed_whitespace:
-                                raise ReaderError(&#34;Warning - mixed whitespace in file %s (parsing completed with issue)&#34; % (self.file))
-        except FileNotFoundError:
-                raise ReaderError(&#34;No such file as %s&#34; % (self.file))</code></pre>
+                                raise ReaderError(
+                                        f&#34;Warning - mixed whitespace in file {self.file}(parsing completed without further issues)&#34;)
+        except FileNotFoundError as exc:
+                raise ReaderError(f&#34;No such file as {self.file}&#34;) from exc</code></pre>
 </details>
 <div class="desc"><p>Parses the file associated with this object, and stores all nodes in the tree.</p></div>
 </dd>
