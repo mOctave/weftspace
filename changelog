@@ -17,7 +17,7 @@ Stable Release - 2 August 2026
   - Added linting for both Java and Python
   - Added codespell (@TheGirrafe3)
   - Implemented null-checking for Java
-  - Upgraded Java documentation job from Oracle 17 to Temurin 25 for checkstyle compatibility (CI intentionally remains on Oracle 17 to ensure backwards compatibilty)
+  - Upgraded Java documentation job from Oracle 17 to Temurin 25 for checkstyle compatibility (CI intentionally remains on Oracle 17 to ensure backwards compatibility)
 - Minor:
   - Switched to using system line separator properties instead of \n
   - Improved the banner image
