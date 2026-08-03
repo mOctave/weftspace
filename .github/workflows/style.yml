@@ -51,7 +51,7 @@ jobs:
     name: Code Style (Python)
     runs-on: ubuntu-latest
     needs: changed
-    if: ${{ needs.changed.outputs.java == 'true' || needs.changed.outputs.actions == 'true' || needs.changed.outputs.testdata == 'true' }}
+    if: ${{ needs.changed.outputs.python == 'true' || needs.changed.outputs.actions == 'true' || needs.changed.outputs.testdata == 'true' }}
 
 
     steps:
