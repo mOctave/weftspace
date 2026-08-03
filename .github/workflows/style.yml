@@ -45,3 +45,4 @@ jobs:
         cache: maven
     - name: Run Checkstyle
       run: mvn checkstyle:check
+      working-directory: ./java
