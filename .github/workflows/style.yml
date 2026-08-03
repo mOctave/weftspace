@@ -25,7 +25,6 @@ jobs:
         show-progress: false
     - uses: codespell-project/actions-codespell@master
       with:
-        exclude_file: ./.github/codespell-exclude
         skip: ./site/java/*,./site/python/*
 
   java:
