@@ -62,12 +62,12 @@ el.replaceWith(d);
         _file: str
 
         @property
-        def file(self):
+        def file(self) -&gt; str:
                 &#34;&#34;&#34;The file this DataWriter is writing to.&#34;&#34;&#34;
                 return self._file
         
         @file.setter
-        def file(self, file: str):
+        def file(self, file: str) -&gt; None:
                 &#34;&#34;&#34;Changes the file being written to.&#34;&#34;&#34;
                 self._file = file
         
@@ -76,7 +76,7 @@ el.replaceWith(d);
         _io_wrapper: TextIOWrapper
 
         @property
-        def io_wrapper(self):
+        def io_wrapper(self) -&gt; TextIOWrapper:
                 &#34;&#34;&#34;The TextIOWrapper used to write to this DataWriter&#39;s file.&#34;&#34;&#34;
                 return self._io_wrapper
         
@@ -85,51 +85,51 @@ el.replaceWith(d);
 
 
         # MARK: Constructor
-        def __init__(self, file: str):
+        def __init__(self, file: str) -&gt; None:
                 &#34;&#34;&#34;Sole constructor.&#34;&#34;&#34;
                 self.file = file
 
         
 
         # MARK: Methods
-        def open(self):
+        def open(self) -&gt; None:
                 &#34;&#34;&#34;Opens the TextIOWrapper for this DataWriter.&#34;&#34;&#34;
                 self._io_wrapper = open(self.file, &#34;a&#34;)
 
 
 
-        def close(self):
+        def close(self) -&gt; None:
                 &#34;&#34;&#34;Closes the TextIOWrapper for this DataWriter.&#34;&#34;&#34;
                 self.io_wrapper.close()
         
 
 
-        def write(self, node: DataNode):
+        def write(self, node: DataNode) -&gt; None:
                 &#34;&#34;&#34;Writes a node to a file with no indent.&#34;&#34;&#34;
                 self.write_indented(node, 0)
 
         
 
 
-        def write_indented(self, node: DataNode, indent: int):
+        def write_indented(self, node: DataNode, indent: int) -&gt; None:
                 &#34;&#34;&#34;Writes a node to the file.&#34;&#34;&#34;
                 for _ in range(indent):
                         self.io_wrapper.write(&#34;\t&#34;)
                         
                 self.io_wrapper.write(DataWriter.node_to_line(node))
-                self.io_wrapper.write(&#34;\n&#34;)
+                self.io_wrapper.write(os.linesep)
                 self.io_wrapper.flush()
 
                 for child in node.children:
                         self.write_indented(child, indent + 1)
                         
                 if indent == 0:
-                        self.io_wrapper.write(&#34;\n&#34;)
+                        self.io_wrapper.write(os.linesep)
 
 
 
         @classmethod
-        def node_to_line(cls, node: DataNode):
+        def node_to_line(cls, node: DataNode) -&gt; str:
                 &#34;&#34;&#34;
                 Represents a node as a line to be saved to a file.
                 Not to be confused with DataNode.__str__
@@ -147,7 +147,7 @@ el.replaceWith(d);
 
 
         @classmethod
-        def quote_word(cls, word: str):
+        def quote_word(cls, word: str) -&gt; str:
                 &#34;&#34;&#34;
                 Puts quotes around text, adapting between no quotes, double quotes, and backticks as
                 necessary. Does not conform to Endless Sky human readability conventions, but uses the
@@ -166,14 +166,14 @@ el.replaceWith(d);
 <h3>Static methods</h3>
 <dl>
 <dt id="weftspace.data_writer.DataWriter.node_to_line"><code class="name flex">
-<span>def <span class="ident">node_to_line</span></span>(<span>node: <a title="weftspace.data_node.DataNode" href="data_node.html#weftspace.data_node.DataNode">DataNode</a>)</span>
+<span>def <span class="ident">node_to_line</span></span>(<span>node: <a title="weftspace.data_node.DataNode" href="data_node.html#weftspace.data_node.DataNode">DataNode</a>) ‑> str</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Represents a node as a line to be saved to a file.
 Not to be confused with DataNode.<strong>str</strong></p></div>
 </dd>
 <dt id="weftspace.data_writer.DataWriter.quote_word"><code class="name flex">
-<span>def <span class="ident">quote_word</span></span>(<span>word: str)</span>
+<span>def <span class="ident">quote_word</span></span>(<span>word: str) ‑> str</span>
 </code></dt>
 <dd>
 <div class="desc"><p>Puts quotes around text, adapting between no quotes, double quotes, and backticks as
@@ -183,27 +183,27 @@ simplest possible quotes for a given word.</p></div>
 </dl>
 <h3>Instance variables</h3>
 <dl>
-<dt id="weftspace.data_writer.DataWriter.file"><code class="name">prop <span class="ident">file</span></code></dt>
+<dt id="weftspace.data_writer.DataWriter.file"><code class="name">prop <span class="ident">file</span> : str</code></dt>
 <dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def file(self):
+def file(self) -&gt; str:
         &#34;&#34;&#34;The file this DataWriter is writing to.&#34;&#34;&#34;
         return self._file</code></pre>
 </details>
 <div class="desc"><p>The file this DataWriter is writing to.</p></div>
 </dd>
-<dt id="weftspace.data_writer.DataWriter.io_wrapper"><code class="name">prop <span class="ident">io_wrapper</span></code></dt>
+<dt id="weftspace.data_writer.DataWriter.io_wrapper"><code class="name">prop <span class="ident">io_wrapper</span> : _io.TextIOWrapper</code></dt>
 <dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
 <pre><code class="python">@property
-def io_wrapper(self):
+def io_wrapper(self) -&gt; TextIOWrapper:
         &#34;&#34;&#34;The TextIOWrapper used to write to this DataWriter&#39;s file.&#34;&#34;&#34;
         return self._io_wrapper</code></pre>
 </details>
@@ -213,69 +213,69 @@ def io_wrapper(self):
 <h3>Methods</h3>
 <dl>
 <dt id="weftspace.data_writer.DataWriter.close"><code class="name flex">
-<span>def <span class="ident">close</span></span>(<span>self)</span>
+<span>def <span class="ident">close</span></span>(<span>self) ‑> None</span>
 </code></dt>
 <dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def close(self):
+<pre><code class="python">def close(self) -&gt; None:
         &#34;&#34;&#34;Closes the TextIOWrapper for this DataWriter.&#34;&#34;&#34;
         self.io_wrapper.close()</code></pre>
 </details>
 <div class="desc"><p>Closes the TextIOWrapper for this DataWriter.</p></div>
 </dd>
 <dt id="weftspace.data_writer.DataWriter.open"><code class="name flex">
-<span>def <span class="ident">open</span></span>(<span>self)</span>
+<span>def <span class="ident">open</span></span>(<span>self) ‑> None</span>
 </code></dt>
 <dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def open(self):
+<pre><code class="python">def open(self) -&gt; None:
         &#34;&#34;&#34;Opens the TextIOWrapper for this DataWriter.&#34;&#34;&#34;
         self._io_wrapper = open(self.file, &#34;a&#34;)</code></pre>
 </details>
 <div class="desc"><p>Opens the TextIOWrapper for this DataWriter.</p></div>
 </dd>
 <dt id="weftspace.data_writer.DataWriter.write"><code class="name flex">
-<span>def <span class="ident">write</span></span>(<span>self,<br>node: <a title="weftspace.data_node.DataNode" href="data_node.html#weftspace.data_node.DataNode">DataNode</a>)</span>
+<span>def <span class="ident">write</span></span>(<span>self,<br>node: <a title="weftspace.data_node.DataNode" href="data_node.html#weftspace.data_node.DataNode">DataNode</a>) ‑> None</span>
 </code></dt>
 <dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def write(self, node: DataNode):
+<pre><code class="python">def write(self, node: DataNode) -&gt; None:
         &#34;&#34;&#34;Writes a node to a file with no indent.&#34;&#34;&#34;
         self.write_indented(node, 0)</code></pre>
 </details>
 <div class="desc"><p>Writes a node to a file with no indent.</p></div>
 </dd>
 <dt id="weftspace.data_writer.DataWriter.write_indented"><code class="name flex">
-<span>def <span class="ident">write_indented</span></span>(<span>self,<br>node: <a title="weftspace.data_node.DataNode" href="data_node.html#weftspace.data_node.DataNode">DataNode</a>,<br>indent: int)</span>
+<span>def <span class="ident">write_indented</span></span>(<span>self,<br>node: <a title="weftspace.data_node.DataNode" href="data_node.html#weftspace.data_node.DataNode">DataNode</a>,<br>indent: int) ‑> None</span>
 </code></dt>
 <dd>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def write_indented(self, node: DataNode, indent: int):
+<pre><code class="python">def write_indented(self, node: DataNode, indent: int) -&gt; None:
         &#34;&#34;&#34;Writes a node to the file.&#34;&#34;&#34;
         for _ in range(indent):
                 self.io_wrapper.write(&#34;\t&#34;)
                 
         self.io_wrapper.write(DataWriter.node_to_line(node))
-        self.io_wrapper.write(&#34;\n&#34;)
+        self.io_wrapper.write(os.linesep)
         self.io_wrapper.flush()
 
         for child in node.children:
                 self.write_indented(child, indent + 1)
                 
         if indent == 0:
-                self.io_wrapper.write(&#34;\n&#34;)</code></pre>
+                self.io_wrapper.write(os.linesep)</code></pre>
 </details>
 <div class="desc"><p>Writes a node to the file.</p></div>
 </dd>
