@@ -86,12 +86,12 @@ public class DataWriter {
 			writer.append("\t");
 		}
 		writer.append(nodeToLine(node));
-		writer.append("\n");
+		writer.append(System.lineSeparator());
 		for (DataNode child : node.getChildren()) {
 			write(child, indentLevel + 1);
 		}
 		if (indentLevel == 0) {
-			writer.append("\n");
+			writer.append(System.lineSeparator());
 		}
 	}
 
