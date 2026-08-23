@@ -41,6 +41,14 @@
     <maven.compiler.release>17</maven.compiler.release>
   </properties>
 
+  <distributionManagement>
+    <repository>
+      <id>central</id>
+      <name>Maven Central</name>
+      <url>https://central.sonatype.com/api/v1/publisher/upload</url>
+    </repository>
+  </distributionManagement>
+
   <dependencyManagement>
     <dependencies>
       <dependency>
