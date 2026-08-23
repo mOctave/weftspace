@@ -20,18 +20,16 @@ jobs:
           server-password: MAVEN_PASSWORD
           gpg-private-key: ${{ secrets.GPG_SIGNING_KEY }}
           gpg-passphrase: MAVEN_GPG_PASSPHRASE
-      - name: Import GPG key
-        uses: crazy-max/ghaction-import-gpg@v6
+      - name: Publish to Maven Central
+        uses: openMF/mifos-x-actionhub-publish-library-kmp@v1.0.0
         with:
-          gpg_private_key: ${{ secrets.GPG_SIGNING_KEY }}
-          passphrase: ${{ secrets.GPG_SIGNING_KEY_PASSWORD }}
-      - name: Publish package
-        run: mvn -B clean deploy -DperformRelease=true
-        working-directory: ./java
-        env:
-          MAVEN_USERNAME: ${{ secrets.CENTRAL_TOKEN_USERNAME }}
-          MAVEN_PASSWORD: ${{ secrets.CENTRAL_TOKEN_PASSWORD }}
-          MAVEN_GPG_PASSPHRASE: ${{ secrets.GPG_SIGNING_KEY_PASSWORD }}
+          version: ${{ github.event.release.tag_name }}
+          maven-central-username: ${{ secrets.CENTRAL_TOKEN_USERNAME }}
+          maven-central-password: ${{ secrets.CENTRAL_TOKEN_PASSWORD }}
+          gpg-key-id: ${{ secrets.GPG_SIGNING_KEY_ID }}
+          gpg-key: ${{ secrets.GPG_SIGNING_KEY }}
+          gpg-passphrase: ${{ secrets.GPG_SIGNING_KEY_PASSWORD }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
   python:
     runs-on: ubuntu-latest
