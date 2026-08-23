@@ -13,12 +13,14 @@
     Weftspace is a Java library designed to provide the maximum possible level of support for Endless Sky datafile syntax. As well as providing read/write functionality through the DataReader and DataWriter classes, it provides support for handling the data nodes themselves.
   </description>
   <url>https://github.com/mOctave/weftspace</url>
+
   <licenses>
     <license>
       <name>Gnu Affero General Public License, Version 3</name>
       <url>https://www.gnu.org/licenses/agpl-3.0.html</url>
     </license>
   </licenses>
+
   <developers>
     <developer>
       <name>mOctave</name>
@@ -27,6 +29,7 @@
       <organizationUrl>https://github.com/mOctave</organizationUrl>
     </developer>
   </developers>
+
   <scm>
     <connection>scm:git:git@github.com:mOctave/weftspace.git</connection>
     <developerConnection>scm:git:ssh://github.com:mOctave/weftspace.git</developerConnection>
@@ -37,14 +40,6 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.release>17</maven.compiler.release>
   </properties>
-
-  <distributionManagement>
-    <repository>
-      <id>github</id>
-      <name>GitHub Packages</name>
-      <url>https://maven.pkg.github.com/mOctave/weftspace</url>
-    </repository>
-  </distributionManagement>
 
   <dependencyManagement>
     <dependencies>
@@ -113,6 +108,20 @@
         <configuration>
           <configLocation>checkstyle.xml</configLocation>
         </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-source-plugin</artifactId>
+        <version>3.4.0</version>
+        <executions>
+          <execution>
+            <id>attach-sources</id>
+            <phase>verify</phase>
+            <goals>
+              <goal>jar-no-fork</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
