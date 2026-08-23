@@ -18,8 +18,6 @@ jobs:
           server-id: central
           server-username: MAVEN_USERNAME
           server-password: MAVEN_PASSWORD
-          gpg-private-key: ${{ secrets.GPG_SIGNING_KEY }}
-          gpg-passphrase: MAVEN_GPG_PASSPHRASE
       - name: Import GPG key
         uses: crazy-max/ghaction-import-gpg@v6
         with:
