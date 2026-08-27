@@ -16,23 +16,10 @@ Version 2.0.0 contains some big breaking changes that have streamlined the libra
 - The builder no longer takes context; rather than including context in error messages all error messages include a trace of the node tree that can be accessed by calling `represent()` on the exception
 
 ## Installation
-The Weftspace Java library is best installed with Maven. To use it, add both a repository and a dependency to your `pom.xml` file. Something along the following lines should work:
+The Weftspace Java library is now on (Maven Central)[https://mvnrepository.com/artifact/io.github.moctave.weftspace/weftspace]!
 
-```xml
-  <repositories>
-	[...]
-    <repository>
-      <id>github</id>
-      <name>Weftspace on GitHub</name>
-      <url>https://maven.pkg.github.com/mOctave/weftspace</url>
-      <releases><enabled>true</enabled></releases>
-      <snapshots><enabled>true</enabled></snapshots>
-    </repository>
-	[...]
-  </repositories>
-```
+To use Weftspace with Maven, add the following to your `pom.xml` file:
 
-As a dependency, you'll need to add:
 ```xml
   <dependencies>
 	[...]
@@ -45,21 +32,7 @@ As a dependency, you'll need to add:
   </dependencies>
 ```
 
-In order to make Maven play nicely with GitHub, you may also need to add the following to your global `settings.xml` file (usually located somewhere like `~/.m2/settings.xml`):
-
-```xml
-  <servers>
-	[...]
-    <server>
-      <id>github</id>
-      <username>[your username here]</username>
-      <password>[personal access token with read perms]</password>
-    </server>
-	[...]
-  </servers>
-```
-
-Now, assuming everything went right, you should be able to install with `mvn install` and use Weftspace for your project!
+Then, run `mvn install` and Weftspace will be included in your project!
 
 ## Parser
 
