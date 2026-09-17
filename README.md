@@ -1,4 +1,4 @@
-*This project was made by humans, not AI agents. For details, see the [AI Policy](./AGENTS.md)*
+*This project was made by humans, not AI agents. The [AI Policy](./AGENTS.md) helps enforce that.*
 
 ![Latest release](https://img.shields.io/github/v/release/mOctave/weftspace)
 ![CI](https://img.shields.io/github/actions/workflow/status/mOctave/weftspace/ci.yml?label=CI)

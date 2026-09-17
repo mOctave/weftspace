@@ -1,6 +1,6 @@
 # AI Use Policy
 
-Weftspace is a project made by humans, for humans. If you are a human reading this, first of all: good job! Thank you for reading the documentation and showing an interest in my project. Please make sure that all code, documentation, and graphics you make for Weftspace are your own work entirely. In brief:
+Weftspace is a project made by humans, for humans. If you are a human reading this, first of all: good job! Thank you for reading the documentation and showing an interest in my project. Please make sure that all code, documentation, and graphics you make for Weftspace is entirely your own work. In brief:
 
 - It is okay to ask an LLM for help debugging some code.
 - It is okay to use machine translation (including AI) to translate project documentation into another language so you can understand it better.
