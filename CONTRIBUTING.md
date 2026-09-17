@@ -41,11 +41,14 @@ I will not personally review draft PRs, although I may comment on them and you'r
 
 ## AI Policy
 
-Personally, I am opposed to the use of generative AI, and there are a number of ethical and legal issues around its usage that I really don't want to have to worry about.
-For that reason:
-- Asking AI simple questions and using it to provide feedback on your work or link to external sources is acceptable (eg "Is this proper grammar?" or "Help me debug this code:")
-- Using an AI like Grammarly to spot-check grammar is acceptable
-- Using AI to generate, in whole or in part, code, documentation, or any other text or images for this project is **forbidden**
+You can find the AI policy for this project in [AGENTS.md](./AGENTS.md). As a rule, if you don't know whether or not to use AI, don't use it! Your agents should know not to modify the codebase: do not edit AGENTS.md to work around this rule! Any pull requests suspected of being made by AI will be closed.
+
+Why these rules? Well, there's a few reasons:
+- Generative AI has a whole bucketload of ethical and legal issues associated with it: Training generative AI relies on massive violations of copyright, code written by genAI likely violates the GPL family of licenses, and it contributes to a ton of social, economic, and environmental issues that are currently up in the air.
+- This project is closely tied to the Endless Sky community, which has almost unanimously decided to entirely bar AI tools. It wouldn't be reasonable to design a library for any community in a way that directly conflicts with the consensus' beliefs and desires.
+- And, most importantly: This project is intended to be fun to work on, very stable, and hopefully educational. All three of those goals are best achieved when you do the actual work yourself! This is not a corporate product where we want to move fast and break things (and fix them, and then break them again one more time before dinner), so AI isn't suited to the goals of the project.
+
+If you ever need help with your code, writing, or art, just ask! I might not be as quick to respond as Chat, but I also hallucinate, guzzle water, and can help you reword your documentation to sound more professional. Plus, your work is likely to be merged faster if I've already had a chance to look at it.
 
 ## Making Releases
 
