@@ -41,7 +41,7 @@ I will not personally review draft PRs, although I may comment on them and you'r
 
 ## AI Policy
 
-You can find the AI policy for this project in [AGENTS.md](./AGENTS.md). As a rule, if you don't know whether or not to use AI, don't use it! Your agents should know not to modify the codebase: do not edit AGENTS.md to work around this rule! Any pull requests suspected of being made by AI will be closed.
+You can find the AI policy for this project at [AI Usage Policy.md](./AI Usage Policy.md). As a rule, if you don't know whether or not to use AI, don't use it! Your agents should know not to modify the codebase: do not edit AGENTS.md to work around this rule! Any pull requests suspected of being made by AI will be closed.
 
 Why these rules? Well, there's a few reasons:
 - Generative AI has a whole bucketload of ethical and legal issues associated with it: Training generative AI relies on massive violations of copyright, code written by genAI likely violates the GPL family of licenses, and it contributes to a ton of social, economic, and environmental issues that are currently up in the air.
