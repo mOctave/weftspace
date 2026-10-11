@@ -39,13 +39,11 @@ public class Document {
 	/** The components of this document. */
 	private @NonNull List<DocumentComponent> components;
 
-
-
 	// MARK: Constructor
 	/**
 	 * Constructs a new document reading from the given file.
 	 * 
-	 * @param root The data node all nodes in this document are descended from.
+	 * @param root   The data node all nodes in this document are descended from.
 	 * @param source The file to read data from.
 	 */
 	public Document(@NonNull DataNode root, @NonNull File source) throws ReaderException {
@@ -53,9 +51,9 @@ public class Document {
 		this.root = root;
 
 		try {
-			final Scanner s = new Scanner(source);
+			final @NonNull Scanner s = new Scanner(source);
 
-			final Deque<DocumentNode> nodeStack = new ArrayDeque<>();
+			final @NonNull Deque<DocumentNode> nodeStack = new ArrayDeque<>();
 			DocumentNode currentNode = null;
 
 			int indent = 0;
@@ -64,12 +62,12 @@ public class Document {
 			indentDepths.push(0);
 
 			while (s.hasNextLine()) {
-				String line = s.nextLine();
+				@NonNull String line = Objects.requireNonNull(s.nextLine());
 
 				int blankLines = 0;
 				while (line.trim().length() == 0) {
 					blankLines++;
-					line = s.nextLine();
+					line = Objects.requireNonNull(s.nextLine());
 				}
 				if (blankLines > 0) {
 					if (nodeStack.isEmpty()) {
@@ -79,21 +77,7 @@ public class Document {
 					}
 				}
 
-				if (line.startsWith("#")) {
-					final Comment c = new Comment(Objects.requireNonNull(line.substring(1)), true);
-					if (nodeStack.isEmpty()) {
-						components.add(c);
-					} else {
-						nodeStack.peek().getComponents().add(c);
-					}
-					continue;
-				} else if (line.trim().startsWith("#")) {
-					final Comment c = new Comment(Objects.requireNonNull(line.trim().substring(1)), false);
-					if (nodeStack.isEmpty()) {
-						components.add(c);
-					} else {
-						nodeStack.peek().getComponents().add(c);
-					}
+				if (checkAndAddComment(line, nodeStack)) {
 					continue;
 				}
 
@@ -129,9 +113,36 @@ public class Document {
 		}
 	}
 
-
-
 	// MARK: Methods
+	/**
+	 * Checks if the given line is a comment, and handles it if it is.
+	 * 
+	 * @param line The line to parse
+	 * @param nodeStack The current node stack
+	 * @return {@code true} if there is a comment, {@code false} otherwise
+	 */
+	private boolean checkAndAddComment(@NonNull String line, @NonNull Deque<DocumentNode> nodeStack) {
+		if (line.startsWith("#")) {
+			final Comment c = new Comment(Objects.requireNonNull(line.substring(1)), true);
+			if (nodeStack.isEmpty()) {
+				components.add(c);
+			} else {
+				nodeStack.peek().getComponents().add(c);
+			}
+			return true;
+		} else if (line.trim().startsWith("#")) {
+			final Comment c = new Comment(Objects.requireNonNull(line.trim().substring(1)), false);
+			if (nodeStack.isEmpty()) {
+				components.add(c);
+			} else {
+				nodeStack.peek().getComponents().add(c);
+			}
+			return true;
+		}
+
+		return false;
+	}
+
 	/**
 	 * Parses a single line and converts it to a node.
 	 * 
@@ -192,7 +203,9 @@ public class Document {
 			data.add(currentItem);
 		}
 
-		if (data.size() == 0) return null;
+		if (data.size() == 0) {
+			return null;
+		}
 
 		// The first entry is the node name, everything else is args.
 		final String nodeName = Objects.requireNonNull(data.get(0));
@@ -203,8 +216,6 @@ public class Document {
 
 		return node;
 	}
-
-
 
 	/**
 	 * Writes the contents of this document out to the given file.
@@ -219,5 +230,26 @@ public class Document {
 		}
 
 		writer.close();
+	}
+
+
+	// MARK: Getters
+	/**
+	 * Getter: Returns the root node for this document.
+	 * 
+	 * @return {@link #root}
+	 */
+	public DataNode getRoot() {
+		return root;
+	}
+
+
+	/**
+	 * Getter: Returns the components of this document.
+	 * 
+	 * @return {@link #components}
+	 */
+	public List<DocumentComponent> getComponents() {
+		return components;
 	}
 }
