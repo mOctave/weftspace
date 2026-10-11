@@ -1,1 +1,1 @@
-AI Usage Policy.md
+AI_POLICY.md
