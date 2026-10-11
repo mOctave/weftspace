@@ -17,6 +17,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Objects;
 
 import org.jspecify.annotations.*;
 
@@ -82,16 +83,18 @@ public class DataWriter {
 	public void write(@NonNull DataNode node, int indentLevel) {
 		if (writer == null) return;
 
+		final PrintWriter nonNullWriter = Objects.requireNonNull(writer);
+
 		for (int i = 0; i < indentLevel; i++) {
-			writer.append("\t");
+			nonNullWriter.append("\t");
 		}
-		writer.append(nodeToLine(node));
-		writer.append(System.lineSeparator());
+		nonNullWriter.append(nodeToLine(node));
+		nonNullWriter.append(System.lineSeparator());
 		for (DataNode child : node.getChildren()) {
-			write(child, indentLevel + 1);
+			write(Objects.requireNonNull(child), indentLevel + 1);
 		}
 		if (indentLevel == 0) {
-			writer.append(System.lineSeparator());
+			nonNullWriter.append(System.lineSeparator());
 		}
 	}
 
@@ -108,10 +111,10 @@ public class DataWriter {
 		String s = quoteWord(node.getName()) + " ";
 
 		for (String arg : node.getArgs()) {
-			s += quoteWord(arg) + " ";
+			s += quoteWord(Objects.requireNonNull(arg)) + " ";
 		}
 
-		return s.trim();
+		return Objects.requireNonNull(s.trim());
 	}
 
 
@@ -155,7 +158,7 @@ public class DataWriter {
 	 * 
 	 * @return {@link #writer}
 	 */
-	public @NonNull PrintWriter getWriter() {
+	public @Nullable PrintWriter getWriter() {
 		return writer;
 	}
 

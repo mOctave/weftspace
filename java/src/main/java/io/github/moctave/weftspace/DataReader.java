@@ -19,6 +19,7 @@ import java.util.Scanner;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Deque;
 
 import org.jspecify.annotations.*;
@@ -90,7 +91,7 @@ public class DataReader {
 				}
 
 				if (indent > indentDepths.peek() && currentNode != null) {
-					if (!expectedIndentString.equals(indentSubstring)) {
+					if (!Objects.requireNonNull(expectedIndentString).equals(indentSubstring)) {
 						mixedWhitespace = true;
 					}
 					nodeStack.push(currentNode);
@@ -181,7 +182,7 @@ public class DataReader {
 		if (data.size() == 0) return null;
 
 		// The first entry is the node name, everything else is args.
-		final String nodeName = data.get(0);
+		final String nodeName = Objects.requireNonNull(data.get(0));
 		data.remove(0);
 
 		return new LoadedNode(nodeName, null, data, new ArrayList<>(), number, file);
@@ -215,7 +216,7 @@ public class DataReader {
 	 * @return The uncommented line.
 	 */
 	public static @NonNull String trimComments(@NonNull String line) {
-		return line.split("#")[0];
+		return Objects.requireNonNull(line.split("#")[0]);
 	}
 
 
