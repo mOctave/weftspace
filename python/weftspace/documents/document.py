@@ -11,6 +11,10 @@
 # You should have received a copy of the GNU Affero General Public License along with
 # this program. If not, see <https://www.gnu.org/licenses/>.
 
+"""
+A file consisting of nodes, blank lines, and comments.
+"""
+
 from collections import deque
 import os
 
@@ -22,10 +26,6 @@ from .spacer import Spacer
 from ..data_node import DataNode
 from ..data_reader import DataReader
 from ..reader_error import ReaderError
-
-"""
-A file consisting of nodes, blank lines, and comments.
-"""
 
 class Document:
 	"""A file consisting of nodes, blank lines, and comments."""
@@ -65,23 +65,23 @@ class Document:
 
 			with open(source, "r", encoding="UTF-8") as f:
 				for line in f:
-					if (line.isspace()):
+					if line.isspace():
 						consecutive_blanks += 1
 						continue
 
-					if (consecutive_blanks > 0):
+					if consecutive_blanks > 0:
 						if len(node_stack) == 0:
 							self._components.append(Spacer(consecutive_blanks))
-
 						else:
 							node_stack[-1].components.append(Spacer(consecutive_blanks))
+						consecutive_blanks = 0
 
 					if self.__check_and_add_comment(line, node_stack):
 						continue
 
 					indent = DataReader.count_leading_whitespace(line)
 
-					if indent > indent_depths[-1] and current_node != None:
+					if indent > indent_depths[-1] and current_node is not None:
 						node_stack.append(current_node)
 						indent_depths.append(indent)
 					else:
@@ -91,11 +91,11 @@ class Document:
 
 					current_node = self.__make_node(line)
 
-					if len(node_stack) == 0 and current_node != None:
+					if len(node_stack) == 0 and current_node is not None:
 						self.components.append(current_node)
 						root.children.append(current_node)
 						current_node.parent = root
-					elif current_node != None:
+					elif current_node is not None:
 						parent = node_stack[-1]
 						parent.add_child(current_node)
 
@@ -117,7 +117,7 @@ class Document:
 			return True
 
 		if line.strip().startswith("#"):
-			c: Comment = Comment(line[1:], False)
+			c: Comment = Comment(line.strip()[1:], False)
 			if len(node_stack) == 0:
 				self.components.append(c)
 			else:
@@ -139,7 +139,7 @@ class Document:
 		comment: str | None = None
 
 		for c in trimmed_line:
-			if comment != None:
+			if comment is not None:
 				comment += c
 				continue
 
@@ -168,7 +168,7 @@ class Document:
 				continue
 
 			if c == "#" and split_on == " ":
-				if comment == None:
+				if comment is None:
 					comment = ""
 				continue
 
@@ -176,7 +176,7 @@ class Document:
 			current_item += c
 
 		# Items can end at the end of the line, too
-		if len(current_item) == 0:
+		if current_item:
 			data.append(current_item)
 
 		if len(data) == 0:

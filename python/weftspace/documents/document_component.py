@@ -11,11 +11,11 @@
 # You should have received a copy of the GNU Affero General Public License along with
 # this program. If not, see <https://www.gnu.org/licenses/>.
 
-from abc import ABC, abstractmethod
-
 """
 An interface consisting of common attributes of document components.
 """
+
+from abc import ABC, abstractmethod
 
 class DocumentComponent(ABC):
 	"""An interface consisting of common attributes of document components."""

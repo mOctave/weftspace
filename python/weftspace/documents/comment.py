@@ -52,7 +52,7 @@ class Comment(DocumentComponent):
 	def __init__(self, text: str, ignores_indentation: bool) -> None:
 		"""Sole constructor. Creates a new comment with the given text and indentation policy."""
 		super().__init__()
-		self._text = text
+		self._text = text.rstrip("\r\n")
 		self._ignores_indentation = ignores_indentation
 
 

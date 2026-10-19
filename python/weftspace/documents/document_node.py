@@ -56,7 +56,7 @@ class DocumentNode(DataNode, DocumentComponent):
 
 
 	@staticmethod
-	def create(node: DataNode) -> DocumentNode:
+	def create(node: DataNode) -> "DocumentNode":
 		"""
 		A constructor that creates and returns a new document node given an existing data node.
 		This constructor may share data with the original node.
@@ -86,8 +86,8 @@ class DocumentNode(DataNode, DocumentComponent):
 
 		line += DataWriter.node_to_line(self)
 
-		if self._comment != None:
-			line += "#" + self._comment
+		if self._comment is not None:
+			line += " #" + self._comment
 
 		for component in self._components:
 			line += os.linesep + component.as_line(indentation + 1)
