@@ -99,7 +99,6 @@ public class Document {
 
 				if (nodeStack.isEmpty() && currentNode != null) {
 					components.add(currentNode);
-					currentNode.setParent(currentNode);
 					root.addChild(currentNode);
 					currentNode.setParent(root);
 				} else if (currentNode != null) {
