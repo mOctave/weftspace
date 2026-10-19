@@ -1,3 +1,5 @@
+*This project was made by humans, not AI agents. The [AI Policy](./AI_POLICY.md) helps enforce that.*
+
 ![Latest release](https://img.shields.io/github/v/release/mOctave/weftspace)
 ![CI](https://img.shields.io/github/actions/workflow/status/mOctave/weftspace/ci.yml?label=CI)
 ![Documentation](https://img.shields.io/github/actions/workflow/status/mOctave/weftspace/docs.yml?label=Documentation)
@@ -15,4 +17,4 @@ For installation and usage instructions, see the README inside the directory cor
 
 ## Contributing and Contact Information
 
-All forms of contribution are welcome! If you've found a bug, want a feature, or would like to contribute your own code to Weftspace, feel free to open an issue or PR. You can reach me anytime on the Endless Sky Discord or by email (moctave31415@gmail.com).
+All forms of human-authored contribution are welcome! If you've found a bug, want a feature, or would like to contribute your own code to Weftspace, feel free to open an issue or PR. You can reach me anytime on the Endless Sky Discord or by email (moctave31415@gmail.com).
