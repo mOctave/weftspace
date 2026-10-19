@@ -15,7 +15,7 @@ This PR addresses the issue/bug described in issue #{{issue number}}.
 
 - [ ] I have read and understand the [Contributing Guidelines](https://github.com/mOctave/weftspace/blob/main/CONTRIBUTING.md) and [AI Policy](https://github.com/mOctave/weftspace/blob/main/AI_POLICY.md).
 - [ ] I accept the terms of the AGPL-3-or-later license of this project, and recognize that, if and when this pull request is merged, I relinquish individual ownership of my work.
-- [ ] All changes made by this PR were made by me or other credited contributors, not generative AI tools.
+- [ ] All changes made by this PR were made by me or other human contributors (that I have appropriately credited), not generative AI tools.
 
 For code PRs only:
 - [ ] I have tested any code I've added, and added unit tests where needed.
