@@ -61,20 +61,23 @@ public class Document {
 
 			indentDepths.push(0);
 
-			while (s.hasNextLine()) {
-				@NonNull String line = Objects.requireNonNull(s.nextLine());
+			int consecutiveBlanks = 0;
 
-				int blankLines = 0;
-				while (line.trim().length() == 0) {
-					blankLines++;
-					line = Objects.requireNonNull(s.nextLine());
+			while (s.hasNextLine()) {
+				final @NonNull String line = Objects.requireNonNull(s.nextLine());
+
+				if (line.trim().length() == 0) {
+					consecutiveBlanks++;
+					continue;
 				}
-				if (blankLines > 0) {
+
+				if (consecutiveBlanks > 0) {
 					if (nodeStack.isEmpty()) {
-						components.add(new Spacer(blankLines));
+						components.add(new Spacer(consecutiveBlanks));
 					} else {
-						nodeStack.peek().getComponents().add(new Spacer(blankLines));
+						nodeStack.peek().getComponents().add(new Spacer(consecutiveBlanks));
 					}
+					consecutiveBlanks = 0;
 				}
 
 				if (checkAndAddComment(line, nodeStack)) {
