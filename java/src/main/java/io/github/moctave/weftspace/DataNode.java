@@ -15,6 +15,7 @@ package io.github.moctave.weftspace;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import org.jspecify.annotations.*;
 
@@ -142,7 +143,7 @@ public class DataNode {
 				return false;
 			}
 
-			return (node.getParent().equals(this.getParent()));
+			return (Objects.requireNonNull(node.getParent()).equals(this.getParent()));
 		} else {
 			return !(this.hasParent());
 		}
@@ -158,12 +159,12 @@ public class DataNode {
 	 */
 	@Override
 	public @NonNull String toString() {
-		return String.format(
+		return Objects.requireNonNull(String.format(
 			"Node{name: %s, args: %s, children: %d}",
 			name,
 			args.toString(),
 			children.size()
-		);
+		));
 	}
 
 
@@ -185,7 +186,7 @@ public class DataNode {
 	 * @return The selected argument.
 	 */
 	public @NonNull String getArg(int i) {
-		return args.get(i);
+		return Objects.requireNonNull(args.get(i));
 	}
 
 
@@ -218,7 +219,7 @@ public class DataNode {
 	 * @return The selected child.
 	 */
 	public @NonNull DataNode getChild(int i) {
-		return children.get(i);
+		return Objects.requireNonNull(children.get(i));
 	}
 
 
