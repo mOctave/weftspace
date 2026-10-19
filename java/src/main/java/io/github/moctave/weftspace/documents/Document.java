@@ -104,7 +104,6 @@ public class Document {
 				} else if (currentNode != null) {
 					final DataNode parent = nodeStack.peek();
 					parent.addChild(currentNode);
-					currentNode.setParent(parent);
 				}
 			}
 
